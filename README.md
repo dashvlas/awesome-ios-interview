@@ -4,7 +4,7 @@
 
 ## About project
 
-Available both in English and in Russian
+Available both in English and in Russian✌🏻
 
 'Awesome Interview' helps you to prepare for an interview and refresh your knowledge. There are a lot of questions both in English and in Russian.
 We provide a huge variety of questions categories, from concurrency to UI.
