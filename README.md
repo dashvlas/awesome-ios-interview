@@ -10,6 +10,8 @@ We provide a huge variety of questions categories, from concurrency to UI.
 https://itunes.apple.com/us/app/awesome-interview/id1187318406?l=ru&ls=1&mt=8
 
 ## Contribute
-App is updated once a week.
-Feel free to add your questions and tasks to database.
-Just fork the project and pull request.
+⏰ App is updated once a week.
+
+👨🏼‍💻 Feel free to add your questions and tasks to database.
+
+🚀Just fork the project and pull request.
