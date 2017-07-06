@@ -1,15 +1,18 @@
-# iOS Interview
+## About
 
-<img src="https://github.com/dashvlas/Awesome-Interview/blob/master/iPad%20Landscape.png" width="750">
-
-## About project
-
-Available both in English and in Russian✌🏻
-
-'Awesome Interview' helps you to prepare for an interview and refresh your knowledge. There are a lot of questions both in English and in Russian.
+'Awesome Interview' helps you to prepare for an interview and refresh your knowledge.
 We provide a huge variety of questions categories, from concurrency to UI.
 
-https://itunes.apple.com/us/app/awesome-interview/id1187318406?l=ru&ls=1&mt=8
+<img src="https://github.com/dashvlas/awesome-ios-interview/blob/master/ezgif.com-video-to-gif.gif" width="600">
+
+https://itunes.apple.com/app/id1187318406
+
+
+## Languages support
+
+Available both in English and in Russian✌🏻
+There is an opportunity for you to switch langs right inside the app
+
 
 ## Contribute
 ⏰ App is updated once a week.
