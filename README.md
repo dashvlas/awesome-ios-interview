@@ -1,3 +1,5 @@
+<img src="https://github.com/dashvlas/awesome-ios-interview/blob/master/Preview%403x.png">
+
 ## About
 
 'Awesome Interview' helps you to prepare for an interview and refresh your knowledge.
