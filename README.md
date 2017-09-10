@@ -25,7 +25,7 @@ There is an opportunity for you to switch langs right inside the app
 
 
 
-# UIKit
+> UIKit
 
 ## Чем отличаются bounds и frame?
 
@@ -58,7 +58,7 @@ UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentif
 
 `Auto Layout` занимается динамическим вычислением позиции и размера всех view в view иерархии, на основе constraints — правил заданных для того или иного view. Самый большой и очевидный плюс для разработчика в использовании Auto Layout в том, что исчезает необходимость в подгонке размеров приложения под определенные устройства — Auto Layout делает это за вас, динамически изменяя интерфейс в зависимости от внешних или внутренних изменений
 
-# TESTING
+> TESTING
 
 ## Unit-тесты
 
