@@ -10,12 +10,6 @@ We provide a huge variety of questions categories, from concurrency to UI.
 https://itunes.apple.com/app/id1187318406
 
 
-## Languages support
-
-Available both in English and in Russian✌🏻
-There is an opportunity for you to switch langs right inside the app
-
-
 ## Contribute
 ⏰ App is updated once a week.
 
@@ -24,6 +18,8 @@ There is an opportunity for you to switch langs right inside the app
 🚀 Just fork the project and pull request.
 
 ***
+
+
 
 # UIKit
 
