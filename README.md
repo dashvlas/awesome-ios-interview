@@ -27,19 +27,19 @@ There is an opportunity for you to switch langs right inside the app
 
 # UIKit
 
-< Чем отличаются bounds и frame?
+> Чем отличаются bounds и frame?
 
 `frame` – это прямоугольник описываемый положением location(x, y) и размерами size (width, height) вьюхи относительно ее superview в которой она содержится.  
 `bounds` – это прямоугольник описываемый положением location(x, y) и размерами size (width, height) вьюхи относительно ее собственной системы координат (0, 0).  
 
-< Как работает UITableView?
+> Как работает UITableView?
 
 Ячейки таблицы, которые больше не отображаются на экране, не выбрасываются из памяти. Их можно использовать повторно, указав идентификатор в процессе инициализации. Когда ячейка table view, отмеченная для повторного использования, пропадает с экрана, table view помещает ее в очередь для повторного использования в дальнейшем. Когда  dataSource запрашивает у table view новую ячейку и указывает идентификатор, table view сначала проверяет очередь ячеек для повторного использования на предмет наличия необходимой ячейки. Если ячейка table view не была обнаружена, то table view создает новую, передавая ее затем объекту dataSource
 ```objectivec
 UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier  
 							forIndexPath:indexPath];
 ```
-< Разница между points и pixels?
+> Разница между points и pixels?
 
 `Pixels` (px) - точки на экране.  
 `Points` (pt) - плотность точек на экране.  
@@ -58,7 +58,7 @@ UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentif
 
 `Auto Layout` занимается динамическим вычислением позиции и размера всех view в view иерархии, на основе constraints — правил заданных для того или иного view. Самый большой и очевидный плюс для разработчика в использовании Auto Layout в том, что исчезает необходимость в подгонке размеров приложения под определенные устройства — Auto Layout делает это за вас, динамически изменяя интерфейс в зависимости от внешних или внутренних изменений
 
-> TESTING
+# TESTING
 
 ## Unit-тесты
 
