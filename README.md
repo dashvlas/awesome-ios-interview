@@ -271,22 +271,22 @@ Responder (ответчик) – объект, который может реа�
 1. У вас более чем один объект-обработчик.  
 2. У вас есть несколько объектов обработчика, при этом вы не хотите специфицировать, который объект должен обрабатывать в даный момент времени.  
 Примеры:
-`
-[foo becomeFirstResponder];  
-[foo resignFirstResponder];   
-[foo respondsToSelector:@selector(methodName:)];
-`
+```objectivec
+[foo becomeFirstResponder];    
+[foo resignFirstResponder];    
+[foo respondsToSelector:@selector(methodName:)];   
+```
 
 ## Singleton
 
 Существует в системе в единственном экземпляре => не может быть повторно создан. Объект, к которому обращаются много объектов. Примеры синглтонов в системе:
 
-`
-[NSUserDefaults standardUserDefaults];  
-[UIApplication sharedApplication];  
-[UIScreen mainScreen];  
-[NSFileManager defaultManager];  
-`
+```objectivec
+[NSUserDefaults standardUserDefaults];   
+[UIApplication sharedApplication];   
+[UIScreen mainScreen];   
+[NSFileManager defaultManager];   
+```
 
 ## Способы реализации паттерна Observer
 
