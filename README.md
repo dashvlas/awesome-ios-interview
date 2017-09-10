@@ -166,7 +166,9 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispat
 ```objectivec
 func application(_ application: UIApplication, didFinishLaunchingWithOptions...) -> Bool {
     DispatchQueue.global().async {
-        Timer.scheduledTimer(timeInterval: 0.4, target: self, selector: #selector(self.tickTimer), userInfo: nil, repeats: true)
+        Timer.scheduledTimer(timeInterval: 0.4, target: self, 
+	                         selector: #selector(self.tickTimer),
+				 userInfo: nil, repeats: true)
     }
     return true
 }
@@ -362,7 +364,8 @@ selector:@selector(update:) name:@"broadcastMessage" object:nil];
     cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         //ленивая загрузка
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+	                              reuseIdentifier:CellIdentifier];
     }
     cell.textLabel.text = someText;
     return cell;
