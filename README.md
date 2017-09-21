@@ -1,11 +1,11 @@
-<img src="https://github.com/dashvlas/awesome-ios-interview/blob/master/Preview%403x.png">
+<img src="https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Banner.png">
 
 ## About
 
 'Awesome Interview' helps you to prepare for an interview and refresh your knowledge.
 We provide a huge variety of questions categories, from concurrency to UI.
 
-<img src="https://github.com/dashvlas/awesome-ios-interview/blob/master/ezgif.com-video-to-gif.gif" width="600">
+<https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Preview.gif" width="650">
 
 https://itunes.apple.com/app/id1187318406
 
