@@ -19,519 +19,964 @@ https://itunes.apple.com/app/id1187318406
 
 
 ***
+- [UIKit](#uikit)
+	  - [Чем отличаются bounds и frame?](#чем-отличаются-bounds-и-frame?)
+	  - [Как работает UITableView?](#как-работает-UITableView?)
+		- [Разница между points и pixels?](#разница-между-points-и-pixels?)
+		- [Как поймать неприятный лаг? На что обращать внимание?](#как-поймать-неприятный-лаг?-На-что-обращать-внимание?)
+	  - [Autolayout](#autolayout)
+- [Testing](#testing)
+		- [Unit-тесты](#unit-тесты)
+		- [TDD](#tdd)
+- [Tasks](#tasks)
+		- [Какой метод вызовется: класса A или класса B?](#какой-метод-вызовется:-класса-A-или-класса-B?) 
+		- [Что выведется в консоль?](#что-выведется-в-консоль?)
+		- [Как это сделать повторяемый таймер в бекграунде?](#нужно-сделать-повторяемый-таймер,-который-вызывается-каждую-минуту-в-бекграунде.-Как-это-сделать?)
+		- [Что произойдет после запуска приложения?](#что-произойдет-после-запуска-приложения?)
+- [SDK](#sdk)
+		- [Какие существуют root классы в iOS? Для чего нужны root классы?](#какие-существуют-root-классы-в-iOS?Для-чего-нужны-root-классы?)
+		- [NSCoding, archiving](#nscoding,-archiving)
+		- [Как работают push-уведомления?](#как-работают-push-уведомления?)
+		- [Memory warning](#memory-warning)
+- [Patterns](#patterns)
+		- [Observer](#observer)
+		- [Chain of responsibility](#chain-of-responsibility)
+		- [Singleton](#singleton)
+		- [Способы реализации паттерна Observer](#способы-реализации-паттерна-Observer)
+		- [Factory Method](#factory-Method)
+		- [MVC. Чем отличается пассивная модель от активной?](#mvc.-чем-отличается-пассивная-модель-от-активной?)
 
-# UI
-### How could you setup Live Rendering?
-The attribute `@IBDesignable` lets Interface Builder perform live updates on a particular view
+# UIKit
 
-## What are different ways that you can specify the layout of elements in a UIView?
-Here are a few common ways to specify the layout of elements in a UIView:
+### Чем отличаются bounds и frame?
 
-Using `Interface Builder`, you can add a `XIB file` to your project, layout elements within it, and then load the XIB in your application code (either automatically, based on naming conventions, or manually). Also, using InterfaceBuilder you can create a storyboard for your application.
-You can your own code to use NSLayoutConstraints to have elements in a view arranged by Auto Layout.
-You can create CGRects describing the exact coordinates for each element and pass them to UIView’s  
-```objectivec  
-  - (id)initWithFrame:(CGRect)frame method.
+`frame` – это прямоугольник описываемый положением location(x, y) и размерами size (width, height) вьюхи относительно ее superview в которой она содержится.  
+`bounds` – это прямоугольник описываемый положением location(x, y) и размерами size (width, height) вьюхи относительно ее собственной системы координат (0, 0).  
+
+## Как работает UITableView?
+
+Ячейки таблицы, которые больше не отображаются на экране, не выбрасываются из памяти. Их можно использовать повторно, указав идентификатор в процессе инициализации. Когда ячейка, отмеченная для повторного использования, пропадает с экрана, `UITableView` помещает ее в очередь для повторного использования в дальнейшем. Когда `dataSource` запрашивает у `UITableView` новую ячейку и указывает идентификатор, `UITableView` сначала проверяет очередь ячеек для повторного использования на предмет наличия необходимой. Если ячейка не была обнаружена, то создается новая, которая затем передается `dataSource`'у.
+
+```objectivec
+UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier  
+							forIndexPath:indexPath];
 ```
-## Formula of Autolayout
-Attribute 1 = Multiplier * Attribute 2 + Constant
+## Разница между points и pixels?
 
-## Size Classes
-A size class is a new technology used by iOS to allow you to custom your app for a given device class, based on its orientation and screen size.
-There are presently four size classes:  
-- Horizontal Regular   
-- Horizontal Compact  
-- Vertical Regular  
-- Vertical Compact  
+`Pixels` (px) - точки на экране.  
+`Points` (pt) - плотность точек на экране.  
+ 
+## Как поймать неприятный лаг? На что обращать внимание?
 
-## Intrinsic Content Size
-The Intrinsic Content Size is one of the most powerful features you gain when you opt-in to using Auto Layout to describe your interfaces. When a view has an intrinsic content size, it is promising Auto Layout that it will have a predefined size that the engine can use to calculate and lay out its views
+Есть приложение с таблицей. В процессе скроллинга периодически наблюдаются легкие притормаживания. Тестировщики не выявили явной закономерности, но проблема регулярно встречается.
 
-## What’s the difference between the frame and the bounds? 
-`The bounds` of an UIView is the rectangle, expressed as a location (x,y) and size (width,height) relative to its own coordinate system (0,0)   
-`The frame` of an UIView is the rectangle, expressed as a location (x,y) and size (width,height) relative to the superview it is contained within.  
+Причиной торможения может быть: 
+- Перегруженный main thread
+- Инстанциирующиеся ячейки. Если у вас таблица состоит больше, чем из одного вида ячеек, то при отсутствии в очереди нужной, она сначала создастся, это требует ресурсов. Особенно при разархивации из `nib`
+- Все касающееся прорисовки, подсчет высоты и переиспользуемые ресурсы
+
+## Autolayout
+
+`Auto Layout` занимается динамическим вычислением позиции и размера всех view в иерархии, на основе constraints — правил заданных для того или иного view. Самый большой и очевидный плюс для разработчика в использовании `Auto Layout` в том, что исчезает необходимость в подгонке размеров приложения под определенные устройства — `Auto Layout` динамически изменяет интерфейс в зависимости от внешних или внутренних изменений.
 
 # TESTING
-### What is the benefit writing tests in iOS apps ?
-Tests gives us a clear perspective on the API design, by getting into the mindset of being a client of the API before it exists.
-Good tests serve as great documentation of expected behavior.
-It gives us confidence to constantly refactor our code because we know that if we break anything our tests fail.
-If tests are hard to write its usually a sign architecture could be improved. Following RGR ( Red — Green — Refactor ) helps you make improvements early on.
 
-## Please explain “Arrange-Act-Assert”
-AAA is a pattern for arranging and formatting code in Unit Tests. If we were to write XCTests each of our tests would group these functional sections, separated by blank lines:
-Arrange all necessary preconditions and inputs.
-Act on the object or method under test.
-Assert that the expected results have occurred.
+### Unit-тесты
 
+`Модульное тестирование`, или юнит-тестирование (англ. unit testing) — процесс в программировании, позволяющий проверить на корректность отдельные модули исходного кода программы.
 
-## What is the Test Driven Development of three simple rules ?
-You are not allowed to write any production code unless it is to make a failing unit test pass.
-You are not allowed to write any more of a unit test than is sufficient to fail; and compilation failures are failures.
-You are not allowed to write any more production code than is sufficient to pass the one failing unit test.
+Идея состоит в том, чтобы писать тесты для каждой нетривиальной функции или метода. Это позволяет достаточно быстро проверить, не привело ли очередное изменение кода к регрессии, то есть к появлению ошибок в уже оттестированных местах программы, а также облегчает обнаружение и устранение таких ошибок.
+
+## TDD
+
+`Test-Driven Development` («разработка через тестирование») – это специальная методика разработки ПО, которая основывается на коротких циклах работы, где сначала создаётся тест, а потом функционал.
+
+Создавая тесты до реализации кода, мы создаем модель предметной области в уме, управляем процессом разработки кода, и, наконец, обеспечиваем себя средствами для автоматической проверки корректности кода. В результате мы получаем более безопасный, структурированный, легко читаемый код, уменьшаем количество дефектов и т.д. Этот способ программирования полностью отличается от тех, к которым мы привыкли, и намного приятнее.
 
 
 # TASKS
-### Explain why a compile time error occurs. How can you fix it?
-Task:
-The following code snippet results in a compile time error:
-```objectivec  
-struct IntStack {
-  var items = [Int]()
-  func add(x: Int) {
-    items.append(x) // Compile time error here
-  }
+
+### Какой метод вызовется: класса A или класса B?
+
+```objectivec
+@interface A : NSObject
+- (void)someMethod;
+@end
+
+@implementation A
+- (void)someMethod {
+	NSLog(@"This is class A");
 }
-``` 
+@end
 
-Solution:
-Structures are value types. By default, the properties of a value type cannot be modified from within its instance methods.
-However, you can optionally allow such modification to occur by declaring the instance methods as ‘mutating’:
-```objectivec  
-struct IntStack {
-  var items = [Int]()
-  mutating func add(x: Int) {
-    items.append(x) // All good!
-  }
+@interface B : A
+@end
+
+@implementation B
+- (void)someMethod {
+	NSLog(@"This is class B");
 }
-``` 
+@end
 
-## Consider the following code
-Task:
-```objectivec  
-var defaults = UserDefaults.standard()
-var userPref = defaults.stringForKey("userPref")!
-printString(userPref)
- 
-func printString(string: String) {
-    print(string)
+@interface C : NSObject
+@end
+
+@implementation C
+- (void)method {
+	A *a = [B new];
+	[a someMethod];
 }
-``` 
-
-
-Solution:
-The second line uses the stringForKey method of UserDefaults, which returns an optional, to account for the key not being found, or for the corresponding value not being convertible to a string.
-
-During its execution, if the key is found and the corresponding value is a string, the above code works correctly. But if the key doesn’t exist, or the corresponding value is not a string, the app crashes with the following error:
-
-fatal error: unexpectedly found nil while unwrapping an Optional value
-The reason is that the forced unwrapping operator ! is attempting to force unwrap a value from a nil optional. The forced unwrapping operator should be used only when an optional is known to contain a non-nil value.
-
-The solution consists of making sure that the optional is not nil before force-unwrapping it:
-```objectivec  
-
-let userPref = defaults.stringForKey("userPref")
-if userPref != nil {
-    printString(userPref!)
-}
-``` 
-## Determine the value of “x” in the Swift code below. Explain your answer.
-Task: 
-```swift  
-var a1 = [1, 2, 3, 4, 5]
-var a2 = a1
-a2.append(6)
-var x = a1.count
+@end
 ```
 
-Solution:
-In Swift, arrays are implemented as structs, making them value types rather than reference types (i.e., classes). When a value type is assigned to a variable as an argument to a function or method, a copy is created and assigned or passed. As a result, the value of “x” or the count of array “a1” remains equal to 5 while the count of array “a2” is equal to 6, appending the integer “6” onto a copy of the array “a1.” The arrays appear in the box below.
-```swift
-a1 = [1, 2, 3, 4, 5]  
-a2 = [1, 2, 3, 4, 5, 6]  
-``` 
+Ответ: вызовется метод класса B.
+
+## Что выведется в консоль?
+
+```objectivec
+NSObject *object = [NSObject new];
+dispatch_async(dispatch_get_main_queue(), ^ {
+	NSLog(@"A %d", [object retainCount]);
+	dispatch_async(dispatch_get_main_queue(), ^ {
+		NSLog(@"B %d", [object retainCount]);
+	});
+	NSLog(@"C %d", [object retainCount]);
+});
+NSLog(@"D %d", [object retainCount]);
+```
+
+Ответ:
+```
+D 2
+A 2
+C 3
+B 2
+```
+
+## Нужно сделать повторяемый таймер, который вызывается каждую минуту в бекграунде. Как это сделать?
+
+Пояснение к заданию:
+Прицельная точность тиков не важна, достаточно некая периодичность.
+
+Решение:
+Если надо сделать таймер в фоне, то стоит выбирать поток с бегущим ранлупом. Либо воспользоваться уже готовым решением для GCD.  
+```objectivec
+dispatch_source_t CreateDispatchTimer(uint64_t interval, uint64_t leeway, dispatch_queue_t queue, dispatch_block_t block) {
+    dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
+    if (timer) {
+        dispatch_source_set_timer(timer, dispatch_walltime(NULL, 0), interval, leeway);
+        dispatch_source_set_event_handler(timer, block);
+        dispatch_resume(timer);
+    }
+    return timer;
+}
+```
+
+## Что произойдет после запуска приложения?
+
+```objectivec
+func application(_ application: UIApplication, didFinishLaunchingWithOptions...) -> Bool {
+    DispatchQueue.global().async {
+        Timer.scheduledTimer(timeInterval: 0.4, target: self, 
+	                         selector: #selector(self.tickTimer),
+				 userInfo: nil, repeats: true)
+    }
+    return true
+}
+    
+func tickTimer() {
+    print("Tick-Tack")
+}
+```
+
+Решение:
+Ничего не произойдет. Ранлуп не взведен. А еще будет небольшая утечка памяти.  
+Для исправления ошибки нужно выбирать бегущий ранлуп или использовать функцию sync
 
 # SDK
-### Application States
-The iOS application states are as follows:
 
-Not running state: The app has not been launched or was running but was terminated by the system.  
+### Какие существуют root классы в iOS? Для чего нужны root классы?
 
-Inactive state: The app is running in the foreground but is currently not receiving events. (It may be executing other code though.) An app usually stays in this state only briefly as it transitions to a different state. The only time it stays inactive for any period of time is when the user locks the screen or the system prompts the user to respond to some event (such as an incoming phone call or SMS message).  
+Корневой класс не наследует ни одного другого класса и определяет интерфейс и поведение, общие для всех объектов в иерархии под ним. Все объекты в этой иерархии в конечном счете наследуются от корневого класса.  
 
-Active state: The app is running in the foreground and is receiving events. This is the normal mode for foreground apps.  
+Корневым классом всех классов Objective-C является NSObject, который является частью основы Foundation. Все объекты в приложении Cocoa или Cocoa Touch в конечном итоге наследуют от NSObject. Этот класс является основной точкой доступа, с которой другие классы взаимодействуют с рабочей средой Objective-C. Он также объявляет фундаментальный интерфейс объекта и реализует базовое поведение объекта, включая интроспекцию, управление памятью и вызов метода. Объекты Cocoa и Cocoa Touch обладают способностью вести себя как объекты в значительной степени от корневого класса. Фреймворк Foundation определяет другой корневой класс NSProxy, но этот класс редко используется в приложениях Cocoa и никогда в приложениях Cocoa Touch.
 
-Background state: The app is in the background and executing code. Most apps enter this state briefly on their way to being suspended. However, an app that requests extra execution time may remain in this state for a period of time. In addition, an app being launched directly into the background enters this state instead of the inactive state.  
+## NSCoding, archiving
 
-Suspended state: While suspended, an app remains in memory but does not execute any code. When a low-memory condition occurs, the system may purge suspended apps without notice to make more space for the foreground app.
+`NSCoder` — это абстрактный класс, который преобразует поток данных. Используется для архивации и разархивации объектов. Протокол `<NSCoding>` позволяет реализовать архивирование или разархивирование данных. Например, у нас есть обьект мы его можем сохранить, а при следующей загрузке приложения подгрузить обратно. Часто программе требуется хранить состояние объектов в файле для дальнейшего их полного либо частичного восстановления, а также работы с ними. Такой процесс называют сериализацией. Многие современные языки и фреймворки предоставляют для этого вспомогательные средства.  
 
-## Can you explain what happens when you call autorelease on an object?
-When you send an object a autorelease message, its retain count is decremented by 1 at some stage in the future. The object is added to an autorelease pool on the current thread. The main thread loop creates an autorelease pool at the beginning of the function, and release it at the end. This establishes a pool for the lifetime of the task. However, this also means that any autoreleased objects created during the lifetime of the task are not disposed of until the task completes. This may lead to the taskʼs memory footprint increasing unnecessarily. You can also consider creating pools with a narrower scope or use NSOperationQueue with itʼs own autorelease pool. (Also important – You only release or autorelease objects you own.)
+Сохранить состояние объекта в Cocoa Framework можно двумя способами при помощи:
+* архивации (archivation)
+* сериализации (serialization)
 
-## What are iBeacons?
-iBeacon.com defines iBeacon as Apple’s technology standard which allows Mobile Apps to listen for signals from beacons in the physical world and react accordingly. iBeacon technology allows Mobile Apps to understand their position on a micro-local scale, and deliver hyper-contextual content to users based on location. The underlying communication technology is Bluetooth Low Energy.
+Каждый из них имеет свои области применения. Так, при помощи сериализации нельзя сохранить объект пользовательского класса. Рассмотрим подробнее оба способа. Протокол `<NSCoding>` объявляет два метода, которые должен реализовать класс, так что экземпляры этого класса могут быть закодированы и декодированы. Эта возможность обеспечивает основу для архивирования (где объекты и другие структуры хранятся на диске) и распространения (где объекты копируются в разные адресные пространства).
 
-## What kind of JSONSerialization have ReadingOptions ?
-- MutableContainers specifies that arrays and dictionaries are created as variables objects, not constants    
-- MutableLeaves specifies that leaf strings in the JSON object graph are created as instances of variable String   
-- AllowFragments specifies that the parser should allow top-level objects that are not an instance of Array or Dictionary   
+- `encodeWithCoder` : кодирует приемник с помощью данного архиватора. (обязательный)  
+- `encodeWithCoder:(NSCoder *)encoder`   
+- `initWithCoder` : возвращает объект инициализированный из данных в данном разархиваторе  
+- `initWithCoder:(NSCoder *)decoder`  
 
-# PATTERNS
-### What is Adapter Pattern ? 
-An Adapter allows classes with incompatible interfaces to work together. It wraps itself around an object and exposes a standard interface to interact with that object.
+### Создание архивов
 
-## What Are B-Trees? 
-B-trees are search trees that provide an ordered key-value store with excellent performance characteristics. In principle, each node maintains a sorted array of its own elements, and another array for its children
+Самый простой способ создать архив - использовать метод archiveRootObject:toFile: архиватора. Этот метод класса создает временный экземпляр архиватора и записывает объект в файл.
+```objectivec
+MapView *myMapView;
+result = [NSKeyedArchiver archiveRootObject:myMapView toFile:@"/tmp/MapArchive"];
+```
+### Чтение архивов
 
-## What is Memento Pattern ? 
-In Memento Pattern saves your stuff somewhere. Later on, this externalized state can be restored without violating encapsulation; that is, private data remains private. One of Apple’s specialized implementations of the Memento pattern is Archiving.
+Для чтения архивов, также как и для записи (см. выше), можно использовать 2 метода. Первый - простой и пригодный для большинства случаев - с использованием метода класса:
+```objectivec
+MapView *myMapView;
+myMapView = [NSKeyedUnarchiver unarchiveObjectWithFile:@"/tmp/MapArchive"];
+```
+Второй метод предполагает создание экземпляра объекта NSKeyedUnarchiver.
 
-## MVC
-`Model` —   responsible for the domain data or a data access layer which manipulates the data, think of ‘Person’ or ‘PersonDataProvider’ classes.
-`Views`  —  responsible for the presentation layer (GUI), for iOS environment think of everything starting with ‘UI’ prefix.
-`Controller/Presenter/ViewModel` —  mediator between the Model and the View, in general responsible for altering the Model by reacting to the user’s actions performed on the View and updating the View with changes from the Model.
+## Как работают push-уведомления?
 
-## What is Responder Chain ? 
-A ResponderChain is a hierarchy of objects that have the opportunity to respond to events received.
+`Push`- уведомление — это короткое сообщение, состоящее из токена девайса, полезной нагрузки (payload) и ещё некоторой информации. Полезная нагрузка — это актуальные данные, которые будут отправляться на девайс. Схема работы выглядит следующим образом:  
+1. `Apple Push Notification Service (APNS)` запрашивает у устройства token, своеобразный ключ, который можно считать «адресом»
+2. Приложение отправляет token на сервер, который занимается отправкой push-уведомлений.  
+3. Когда произойдёт какое-либо событие для вашего приложения, сервер отправит push-уведомление в `APNS`.  
+4. `APNS` отправит push-уведомление на девайс пользователя.  
 
-## MVVM 
-UIKit independent representation of your View and its state. The View Model invokes changes in the Model and updates itself with the updated Model, and since we have a binding between the View and the View Model, the first is updated accordingly.
-Your `View Model` will actually take in your model, and it can format the information that’s going to be displayed on your view.
+Для разработки push-уведомлений, надо учитывать следующие моменты:  
+• iPhone, iPad или iPod touch. Push-уведомления не работают в симуляторе, поэтому для тестирования нужен настоящий девайс.  
+• Регистрация в iOS Developer Program. Для каждого приложения, в котором будет интегрирован механизм push-уведомлений, необходимо создать новый App ID и provisioning profile, а также SSL-сертификат для сервера. Эти действия выполняются на iOS Provisioning Portal.  
+• Необходимо создать provisioning profile и SSL-сертификат.  
+• Сервер, подключенный к интернету. Push-уведомления всегда отправляются сервером.  
 
-## What is Observer Pattern ? 
-In the Observer pattern, one object notifies other objects of any state changes.
+`Push - уведомления` — это нечто довольно маленькое; размер полезной нагрузки не может превышать 256 байт. Это примерно столько же, сколько позволяет вместить в себя СМС или твит. Push-сервер не будет тратиться на переносы на новую строку и пробелы.  
 
-## What is Singleton Pattern ? 
-The Singleton design pattern ensures that only one instance exists for a given class and that there’s a global access point to that instance. It usually uses lazy loading to create the single instance when it’s needed the first time.
+Тонкие моменты при работе с push-уведомлениями:
+> 1. Они не надёжны! Нет гарантий, что push-уведомления будут доставлены, даже если APNS примет их.  
+> 2. Как только ваш сервер сформировал push-уведомление, он безответно отправляет его в APNS. Нет способа узнать статус доставки уведомления конечному пользователю после отправки. Время доставки может варьироваться от нескольких секунд до получаса.  
+> 3. Кроме этого, у пользователей i-девайсов может не быть возможности получать push-уведомления всё время. Например, рядом нет Wi-Fi сети с доступом в интернет либо девайс может быть вообще выключен.  
+> 4. APNS будет пытаться доставить последнее отправленное уведомление, когда девайс станет доступен для приёма. Но эти попытки ограничены по времени. После тайм-аута push-уведомление будет потеряно навсегда!  
+> 5. Они могут быть дорогими! Добавить push-функционал в приложение довольно просто и недорого, если вы владеете данными. Однако если у вас много пользователей либо необходимо запрашивать данные, то затраты резко возрастают.  
 
-## What is Decorator Design Pattern ? 
-The Decorator pattern dynamically adds behaviors and responsibilities to an object without modifying its code. It’s an alternative to subclassing where you modify a class’s behavior by wrapping it with another object.
+## Memory warning
 
-## What is Facade Design Pattern ? 
-The Facade design pattern provides a single interface to a complex subsystem. Instead of exposing the user to a set of classes and their APIs, you only expose one simple unified API.
-
-# OOP
-### Inheritance
-It allows a class to be defined that has a certain set of characteristics (such as methods and instance variables) and then other classes to be created which are derived from that class. The derived class inherits all of the features of the parent class and typically then adds some features of its own.
-
-## Polymorphism
-The word polymorphism means having many forms. Typically, polymorphism occurs when there is a hierarchy of classes and they are related by inheritance.
-
-Objective-C polymorphism means that a call to a member function will cause a different function to be executed depending on the type of object that invokes the function.
-
-Consider the example, we have a class Shape that provides the basic interface for all the shapes. Square and Rectangle are derived from the base class Shape.
-
-## Encapsulation
-Encapsulation is an Object-Oriented Programming concept that binds together the data and functions that manipulate the data and that keeps both safe from outside interference and misuse. Data encapsulation led to the important OOP concept of data hiding.
-
-Data encapsulation is a mechanism of bundling the data and the functions that use them, and data abstraction is a mechanism of exposing only the interfaces and hiding the implementation details from the user.
-
-# LANGUAGE
-### What is the difference fileprivate and private access level ?
-`Fileprivate` is accessible within the current file, private is accessible within the current declaration.
-
-## What is final class?
-By adding the keyword final in front of the method name, we prevent the method from being overridden
-
-## Structs vc Classes
-1. Inheritance.
-
-Structures can't inherit in swift. If you want 
-
-class Vehicle {
+Этот метод вызывается, когда система обнаружила недостаточное количество памяти. Вы можете переопределить этот метод, чтобы освободить любую дополнительную память (например, кэш) в контроллере. 
+```objectivec
+- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application {
+	/*
+	Free up as much memory as possible by purging cached data objects that can be recreated (or reloaded from disk) later.
+	*/
 }
 
-class Car : Vehicle {
-}
-
-Go for an class.
-
-2. Pass By
-
-Swift structures pass by value and class instances pass by reference.
-
-3. Thread Safety
-
-Structs are thread-safe
-
-## Swift Standart Library Protocol
-There are a few different protocol. Equatable protocol, that governs how we can distinguish between two instances of the same type. That means we can analyze. If we have a specific value is in our array. The comparable protocol, to compare two instances of the same type and sequence protocol: prefix(while:) and drop(while:) [SE-0045].
-Swift 4 introduces a new Codable protocol that lets us serialize and deserialize custom data types without writing any special code.
-
-## What is Downcasting ?
-When we’re casting an object to another type in Objective-C, it’s pretty simple since there’s only one way to do it. In Swift, though, there are two ways to cast — one that’s safe and one that’s not .
-as used for upcasting and type casting to bridged type
-as? used for safe casting, return nil if failed
-as! used to force casting, crash if failed. should only be used when we know the downcast will succeed.
-
-## What are “strong” and “weak” references?
-By default, any variable that points to another object does so with what is referred to as a “strong” reference. A retain cycle occurs when two or more objects have reciprocal strong references (i.e., strong references to each other). Any such objects will never be destroyed by ARC (iOS’ Automatic Reference Counting). Even if every other object in the application releases ownership of these objects, these objects (and, in turn, any objects that reference them) will continue to exist by virtue of those mutual strong references. This therefore results in a memory leak.
-
-Reciprocal strong references between objects should therefore be avoided to the extent possible. However, when they are necessary, a way to avoid this type of memory leak is to employ weak references. Declaring one of the two references as weak will break the retain cycle and thereby avoid the memory leak.
-
-To decide which of the two references should be weak, think of the objects in the retain cycle as being in a parent-child relationship. In this relationship, the parent should maintain a strong reference (i.e., ownership of) its child, but the child should not maintain maintain a strong reference (i.e., ownership of) its parent.
-
-For example, if you have Employer and Employee objects, which reference one another, you would most likely want to maintain a strong reference from the Employer to the Employee object, but have a weak reference from the Employee to thr Employer.
-
-## Explain [weak self] and [unowned self] ?
-unowned does the same as weak with one exception: The variable will not become nil and therefore the variable must not be an optional.
-But when you try to access the variable after its instance has been deallocated. That means, you should only use unowned when you are sure, that this variable will never be accessed after the corresponding instance has been deallocated.
-However, if you don’t want the variable to be weak AND you are sure that it can’t be accessed after the corresponding instance has been deallocated, you can use unowned.
-By declaring it [weak self] you get to handle the case that it might be nil inside the closure at some point and therefore the variable must be an optional. A case for using [weak self] in an asynchronous network request, is in a view controller where that request is used to populate the view.
-
-## Lazy in Swift ? 
-An initial value of the lazy stored properties is calculated only when the property is called for the first time. There are situations when the lazy properties come very handy to developers.
-
-## Difference between raw and associated values in Swift
-This question tests the developer’s understanding of enumeration in Swift. Enumeration provides a type-safe method of working with a group of related values. Raw values are compile time-set values directly assigned to every case within an enumeration, as in the example detailed below:
-enum Alphabet: Int {
-case A = 1
-case B
-case C
-}
-
-In the above example code, case “A” was explicitly assigned a raw value integer of 1, while cases “B” and “C” were implicitly assigned raw value integers of 2 and 3, respectively. Associated values allow you to store values of other types alongside case values, as demonstrated below:
-enum Alphabet: Int {
-case A(Int)
-case B
-case C(String)
-}
-
-
-## Can you briefly describe differences between Swift and Objective-C?
-When Swift was first launched in 2014, it was aptly described as “Objective-C without the C.” By dropping the legacy conventions that come with a language built on C, Swift is faster, safer, easier to read, easier to maintain, and designed specifically for the modern world of consumer-facing apps. One of the most immediately visible differences is the fact that Objective-C lacks formal support for namespaces, which forces Objective-C code to use two- or three-letter prefixes to differentiate itself. Instead of simple names like “String,” “Dictionary,” and “Array,” Objective-C must use oddities like “NSString,” “NSDictionary,” and “NSArray.”
-Another major advantage is that Swift avoids exposing pointers and other “unsafe” accessors when referring to object instances. That said, Objective-C has been around since 1983, and there is a mountain of Objective-C code and resources available to the iOS developer. The best iOS developers tend to be pretty well versed in both, with an understanding that Swift is the future of iOS development.
-
-## What is the difference Non-Escaping and Escaping Closures ?
-The lifecycle of a non-escaping closure is simple:
-Pass a closure into a function
-The function runs the closure (or not)
-The function returns
-Escaping closure means, inside the function, you can still run the closure (or not); the extra bit of the closure is stored some place that will outlive the function. There are several ways to have a closure escape its containing function:
-Asynchronous execution: If you execute the closure asynchronously on a dispatch queue, the queue will hold onto the closure for you. You have no idea when the closure will be executed and there’s no guarantee it will complete before the function returns.
-Storage: Storing the closure to a global variable, property, or any other bit of storage that lives on past the function call means the closure has also escaped.
-
-## Please explain Method Swizzling in Swift
-Method Swizzling is a well known practice in Objective-C and in other languages that support dynamic method dispatching.
-Through swizzling, the implementation of a method can be replaced with a different one at runtime, by changing the mapping between a specific #selector(method) and the function that contains its implementation.
-To use method swizzling with your Swift classes there are two requirements that you must comply with:
-The class containing the methods to be swizzled must extend NSObject
-The methods you want to swizzle must have the dynamic attribute
-
-## How should one handle errors in Swift?
-The method for handling errors in Swift differ a bit from Objective-C. In Swift, it's possible to declare that a function throws an error. It is, therefore, the caller's responsibility to handle the error or propagate it. This is similar to how Java handles the situation.
-
-You simply declare that a function can throw an error by appending the throws keyword to the function name. Any function that calls such a method must call it from a try block.
-
-func canThrowErrors() throws -> String
- 
-//How to call a method that throws an error
-try canThrowErrors()
- 
-//Or specify it as an optional
-let maybe = try? canThrowErrors()
-
-## What is the difference strong, weak, readonly and copy ?
-- `Strong` means that the reference count will be increased and the reference to it will be maintained through the life of the object
-- `Weak` means that we are pointing to an object but not increasing its reference count. It’s often used when creating a parent child relationship. The parent has a strong reference to the child but the child only has a weak reference to the parent.
-- `Readonly`, we can set the property initially but then it can’t be changed.
-- `Copy` means that we’re copying the value of the object when it’s created. Also prevents its value from changing.
-
-## What are benefits of Guard ?
-There are two big benefits to guard. One is avoiding the pyramid of doom, as others have mentioned — lots of annoying if let statements nested inside each other moving further and further to the right. The other benefit is provide an early exit out of the function using break or using return.
-
-
-## When applied to strings, what’s the complexity of the countElements function and why?
-Comments: The String struct doesn’t provide a count or length property or method to count the number of characters it contains. Instead a global countElements<T>() function is available.
-
-
-Solution: Swift strings support extended grapheme clusters. Each character stored in a string is a sequence of one or more unicode scalars that, when combined, produce a single human readable character. Since different characters can require different amounts of memory, and considering that an extreme grapheme cluster must be accessed sequentially in order to determine which character it represents, it’s not possible to know the number of characters contained in a string upfront, without traversing the entire string. For that reason, the complexity of the countElements function is O(n).
-
-## In Swift enumerations, what’s the difference between raw values and associated values?
-Raw values are used to associate constant (literal) values to enum cases. The value type is part of the enum type, and each enum case must specify a unique raw value (duplicate values are not allowed).
-
-The following example shows an enum with raw values of type Int:
-
-enum IntEnum : Int {
-    case ONE = 1
-    case TWO = 2
-    case THREE = 3
-}
-An enum value can be converted to its raw value by using the rawValue property:
-
-var enumVar: IntEnum = IntEnum.TWO
-var rawValue: Int = enumVar.rawValue
-A raw value can be converted to an enum instance by using a dedicated initializer:
-
-var enumVar: IntEnum? = IntEnum(rawValue: 1)
-Associated values are used to associate arbitrary data to a specific enum case. Each enum case can have zero or more associated values, declared as a tuple in the case definition:
-
-enum AssociatedEnum {
-    case EMPTY
-    case WITH_INT(value: Int)
-    case WITH_TUPLE(value: Int, text: String, data: [Float])
-}
-Whereas the type(s) associated to a case are part of the enum declaration, the associated value(s) are instance specific, meaning that an enum case can have different associated values for different enum instances.
-
-## Swift Transforming Array functions  
-→ map and flatMap— how to transform element. 
-→ filter— should an element be included?  
-→ reduce— how to fold an element into an aggregate value  
-→ sort and lexicographicCompare—in what order should two elements come?  
-→ indexOf and contains—does this element match?  
-→ minElement and maxElement—which is the min/max of two elements?  
-→ elementsEqual and startsWith—are two elements equivalent?  
-→ split—is this element a separator?  
-
-## What is dynamic in Objective-C ?
-`@dynamic` used to delegate the responsibility of implementing the accessors.
-Dynamic for properties means that it setters and getters will be created manually and/or at runtime.
-
-## What is made up of NSError object? 
-There are three parts of NSError object a domain, an error code, and a user info dictionary. The domain is a string that identifies what categories of errors this error is coming from.
-
-
-##Extensions
-Extensions add new functionality to an existing class, structure, enumeration, or protocol type. This includes the ability to extend types for which you do not have access to the original source code. Extensions are similar to categories in Objective-C
-
-Extensions in Swift can:  
-- Add computed instance properties and computed type properties  
-- Define instance methods and type methods  
-- Provide new initializers  
-- Define subscripts  
-- Define and use new nested types  
-- Make an existing type conform to a protocol  
-
-## KVO
-KVO stands for `Key-Value Observing` and allows a controller or class to observe changes to a property value. In KVO, an object can ask to be notified of any changes to a specific property; either its own or that of another object.
-
-## KVC 
-KVC adds stands for `Key-Value Coding`. It’s a mechanism by which an object’s properties can be accessed using string’s at runtime rather than having to statically know the property names at development time.
-
-## If I call performSelector:withObject:afterDelay: – is the object retained?
-Yes, the object is retained. It creates a timer that calls a selector on the current threads run loop. It may not be 100% precise time-wise as it attempts to dequeue the message from
-the run loop and perform the selector
-
-## What is defer ? 
-`defer` keyword which provides a block of code that will be executed in the case when execution is leaving the current scope.
-
-
-## Selectors
-In Objective-C, selector has two meanings. It can be used to refer simply to the name of a method when it’s used in a source-code message to an object. It also, though, refers to the unique identifier that replaces the name when the source code is compiled. Compiled selectors are of type SEL. All methods with the same name have the same selector. You can use a selector to invoke a method on an object—this provides the basis for the implementation of the target-action design pattern in Cocoa
-
-[friend performSelector:@selector(gossipAbout:) withObject:aNeighbor]
-is equivalent to
- [friend gossipAbout:aNeighbor]
-
-## What is the difference Any and AnyObject?
-According to Apple’s Swift documentation:
-Any can represent an instance of any type at all, including function types and optional types.
-AnyObject can represent an instance of any class type.
-
-
-# GENERAL
-### HTTP request types
-An HTTP request is a class consisting of HTTP style requests, request lines, request methods, request URL, header fields, and body content. The most common methods that are used by a client in an HTTP request are as follows:
-
-1) GET:- Used when the client is requesting a resource on the Web server.
-
-2) HEAD:- Used when the client is requesting some information about a resource but not requesting the resource itself.
-
-3) POST:- Used when the client is sending information or data to the server—for example, filling out an online form (i.e. Sends a large amount of complex data to the Web Server).
-
-4) PUT:- Used when the client is sending a replacement document or uploading a new document to the Web server under the request URL.
-
-
-## What is the abstract class?
-An abstract class is a class that contains at least one abstract method, which is a method without any actual code in it, just the name and the parameters, and that has been marked as "abstract".
-
-The purpose of this is to provide a kind of template to inherit from and to force the inheriting class to implement the abstract methods.
-
-An abstract class thus is something between a regular class and a pure interface. Also interfaces are a special case of abstract classes where ALL methods are abstract
-
-## Deep and shallow copy
-There are two kinds of object copying: shallow copies and deep copies. The normal copy is a shallow copy that produces a new collection that shares ownership of the objects with the original. Deep copies create new objects from the originals and add those to the new collection.
-
-## REST 
-An architectural style called REST (Representational State Transfer) advocates that web applications should use HTTP as it was originally envisioned. Lookups should use GET requests. PUT, POST, and DELETE requests should be used for *mutation, creation, and deletion respectively *.
-
-REST proponents tend to favor URLs, such as
-
-server.com/catalog/thing/1723
-but the REST architecture does not require these “pretty URLs”. A GET request with a parameter
-
-server.com/catalog?thing=1723
-is every bit as RESTful.
-
-GET requests should never be used for updating information. For example, a GET request for adding an item to a cart
-
-server.com/addToCart?cart=314159&thing=1723
-
-would not be appropriate. GET requests should be idempotent. That is, issuing a request twice should be no different from issuing it once. That’s what makes the requests cacheable. An “add to cart” request is not idempotent—issuing it twice adds two copies of the item to the cart. A POST request is clearly appropriate in this context. Thus, even a RESTful web application needs its share of POST requests.
-
-# DATA
-### How does NSManagedObjectContext work?
-`Managed object context` exists for three reasons: life-cycle management, notifications, and concurrency. It allows the developer to fetch an object from a persistent store and make the necessary modifications before deciding whether to discard or commit these changes back to the persistent store. The managed object context tracks these changes and allows the developer to undo and redo changes.
-
-## Explain NSFetchedResultsController ?
-`NSFetchedResultsController` is a controller, but it’s not a view controller. It has no user interface. Its purpose is to make developers’ lives easier by abstracting away much of the code needed to synchronize a table view with a data source backed by Core Data.
-Set up an NSFetchedResultsController correctly, and your table will mimic its data source without you have to write more than a few lines of code.
-
-## NSPersistentContainer ?
-The persistent container creates and returns a container, having loaded the store for the application to it. This property is optional since there are legitimate error conditions that could cause the creation of the store to fail.
-
-## Describe managed object context and the functionality that it provides.
-A managed object context (represented by an instance of NSManagedObjectContext) is basically a temporary “scratch pad” in an application for a (presumably) related collection of objects. These objects collectively represent an internally consistent view of one or more persistent stores. A single managed object instance exists in one and only one context, but multiple copies of an object can exist in different contexts.
-
-You can think of a managed object context as an intelligent scratch pad. When you fetch objects from a persistent store, you bring temporary copies onto the scratch pad where they form an object graph (or a collection of object graphs). You can then modify those objects however you like. Unless you actually save those changes, though, the persistent store remains unchanged.
-
-Key functionality provided by a managed object context includes:
-
-Life-cycle management. The context provides validation, inverse relationship handling, and undo/redo. Through a context you can retrieve or “fetch” objects from a persistent store, make changes to those objects, and then either discard the changes or commit them back to the persistent store. The context is responsible for watching for changes in its objects and maintains an undo manager so you can have finer-grained control over undo and redo. You can insert new objects and delete ones you have fetched, and commit these modifications to the persistent store.
-Notifications. A context posts notifications at various points which can optionally be monitored elsewhere in your application.
-Concurrency. Core Data uses thread (or serialized queue) confinement to protect managed objects and managed object contexts. In OS X v10.7 and later and iOS v5.0 and later, when you create a context you can specify the concurrency pattern with which you will use it using initWithConcurrencyType:
-
-## What is NSFetchRequest ?
-`NSFetchRequest` is the class responsible for fetching from Core Data. Fetch requests are both powerful and flexible. You can use fetch requests to fetch a set of objects meeting the provided criteria, individual values and more.
-
-# CONCURRENCY
-### Different ways of achieving concurrency in OS X and iOS
-There are basically three ways of achieving concurrency in iOS:  
-1. threads  
-2. GCD 
-3. NSOperationQueue  
-
-The disadvantage of threads is that they relegate the burden of creating a scalable solution to the developer. You have to decide how many threads to create and adjust that number dynamically as conditions change. Also, the application assumes most of the costs associated with creating and maintaining the threads it uses.
-
-OS X and iOS therefore prefer to take an asynchronous design approach to solving the concurrency problem rather than relying on threads.
-
-One of the technologies for starting tasks asynchronously is Grand Central Dispatch (GCD) that relegates thread management down to the system level. All the developer has to do is define the tasks to be executed and add them to the appropriate dispatch queue. GCD takes care of creating the needed threads and scheduling tasks to run on those threads.
-
-All dispatch queues are first-in, first-out (FIFO) data structures, so tasks are always started in the same order that they are added.
-
-An operation queue is the Cocoa equivalent of a concurrent dispatch queue and is implemented by the NSOperationQueue class. Unlike dispatch queues, operation queues are not limited to executing tasks in FIFO order and support the creation of complex execution-order graphs for your tasks.
-
-## What is DispatchGroup ?
-`DispatchGroup` allows for aggregate synchronization of work. We can use them to submit multiple different work items and track when they all complete, even though they might run on different queues. This behavior can be helpful when progress can’t be made until all of the specified tasks are complete. 
-
-## Synchronized
-The `@synchronized` directive is a convenient way to create mutex locks on the fly in Objective-C code.
-
-The `@synchronized` directive does what any other mutex lock would do—it prevents different threads from acquiring the same lock at the same time.
-
-Syntax:
-```objectivec  
- @synchronized(key) 
- { 
-  // thread-safe code 
- }
- ```
-
-Example:
-```objectivec  
- -(void)AppendExisting:(NSString*)val
-{
-  @synchronized (oldValue) {
-      [oldValue stringByAppendingFormat:@"-%@",val];
-  }
+- (void)didReceiveMemoryWarning {
+	// Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+    // Release any cached data, images, etc that aren't in use.
 }
 ```
-Now the above code is perfectly thread safe..Now Multiple threads can change the value.
+# PATTERNS
 
+### Observer
 
-## What is the difference between Synchronous & Asynchronous task?
-`Synchronous`: waits until the task has completed
-`Asynchronous`: completes a task in background and can notify you when complete
+Определяет отношение "один-ко-многим" между объектами, и если изменения происходят в объекте – все подписанные на него объекты тут же узнают про это изменение. Идея проста: объект который мы называем Subject – дает возможность другим объектам, которые реализуют интерфейс Observer, подписываться и отписываться от изменений происходящих в Subject. Когда изменение происходит – всем заинтерeсованным объектам высылается сообщение, что изменение произошло. В нашем случае – Subject – это издатель газеты, Observer это мы с вами – те кто подписывается на газету, ну и собственно изменение – это выход новой газеты, а оповещение – отправка газеты всем кто подписался.
 
-## Why do we use synchronized ? 
-`Synchronized` guarantees that only one thread can be executing that code in the block at any given time.
+## Chain of responsibility
+
+Responder (ответчик) – объект, который может реагировать на события и обрабатывать их. 
+
+Цепочка ответственности позволяет вам передавать объекте по цепочке объектов-обработчиков, пока не будет найден необходимый объект обработчик.  
+`First responder -> next responder -> …`  
+Первый ответчик – ответчик, получивший события первым (например view). 
+
+Когда использовать этот паттерн:
+1. У вас более чем один объект-обработчик.  
+2. У вас есть несколько объектов обработчика, при этом вы не хотите специфицировать, который объект должен обрабатывать в данный момент времени.  
+Примеры:
+```objectivec
+[foo becomeFirstResponder];    
+[foo resignFirstResponder];    
+[foo respondsToSelector:@selector(methodName:)];   
+```
+
+## Singleton
+
+Существует в системе в единственном экземпляре => не может быть повторно создан. Объект, к которому обращаются много объектов. Примеры синглтонов в системе:
+
+```objectivec
+[NSUserDefaults standardUserDefaults];   
+[UIApplication sharedApplication];   
+[UIScreen mainScreen];   
+[NSFileManager defaultManager];   
+```
+
+## Способы реализации паттерна Observer
+
+1. `Notification` – механизм использования возможностей `NotificationCenter` самой операционной системы. Использование `NSNotificationCenter` позволяет объектам коммуницировать, даже не зная друг про друга. Это очень удобно использовать когда у вас в параллельном потоке пришел push-notification, или же обновилась база, и вы хотите дать об этом знать активному на даный момент View.
+Чтобы послать такое сообщение стоит использовать конструкцию типа:
+```objectivec
+NSNotification *broadCastMessage = [NSNotification notificationWithName:@"broadcastMessage" object:self];
+```
+Как видим мы создали объект типа `NSNotification` в котором мы указали имя нашего оповещения: "broadcastMessage", и собственно сообщили о нем через NotificationCenter.
+Чтобы подписаться на событие в объекте который заинтересован в изменении стоит использовать следующую конструкцию:
+ ```objectivec
+NSNotificationCenter * notificationCenter = [NSNotificationCenter defaultCenter]; 
+[notificationCenter addObserver:self selector:@selector(update:) name:@"broadcastMessage" object:nil];
+```
+Мы подписываемся на событие и вызывается метод, который задан в свойстве selector.
+
+## Factory Method
+
+Также известен как виртуальный конструктор — порождающий шаблон проектирования, предоставляющий подклассам интерфейс для создания экземпляров некоторого класса. В момент создания наследники могут определить, какой класс создавать. Иными словами, Фабрика делегирует создание объектов наследникам родительского класса. Это позволяет использовать в коде программы не специфические классы, а манипулировать абстрактными объектами на более высоком уровне.
+
+## MVC. Чем отличается пассивная модель от активной?
+
+Концепция MVC позволяет разделить данные, представление и обработку действий пользователя на три отдельных компонента:
+- Модель (англ. `Model`). Модель предоставляет знания: данные и методы работы с этими данными, реагирует на запросы, изменяя своё состояние. Не содержит информации, как эти знания можно визуализировать.
+- Представление, вид (англ. `View`). Отвечает за отображение информации (визуализацию). Часто в качестве представления выступает форма (окно) с графическими элементами.
+- Контроллер (англ. `Controller`). Обеспечивает связь между пользователем и системой: контролирует ввод данных пользователем и использует модель и представление для реализации необходимой реакции.
+
+Важно отметить, что как представление, так и контроллер зависят от модели. Однако модель не зависит ни от представления, ни от контроллера. Тем самым достигается назначение такого разделения: оно позволяет строить модель независимо от визуального представления, а также создавать несколько различных представлений для одной модели.
+
+Пассивная модель — модель не имеет никаких способов воздействовать на представление или контроллер, и пользуется ими в качестве источника данных для отображения. Все изменения модели отслеживаются контроллером и он же отвечает за перерисовку представления, если это необходимо. Такая модель чаще используется в структурном программировании, так как в этом случае модель представляет просто структуру данных, без методов их обрабатывающих.
+
+Активная модель — модель оповещает представление о том, что в ней произошли изменения, а представления, которые заинтересованы в оповещении, подписываются на эти сообщения. Это позволяет сохранить независимость модели как от контроллера, так и от представления.
+
+## Чем плох Singleton?
+
+1. Синглтон нарушает SRP (`Single Responsibility Principle`) — класс синглтона, помимо того чтобы выполнять свои непосредственные обязанности, занимается еще и контролированием количества своих экземпляров.  
+2. Глобальное состояние. Про вред глобальных переменных вроде бы уже все знают, но тут та же самая проблема. Когда мы получаем доступ к экземпляру класса, мы не знаем текущее состояние этого класса, и кто и когда его менял, и это состояние может быть вовсе не таким, как ожидается. Иными словами, корректность работы с синглтоном зависит от порядка обращений к нему, что вызывает неявную зависимость подсистем друг от друга и, как следствие, серьезно усложняет разработку.  
+3. Зависимость обычного класса от синглтона не видна в публичном контракте класса. Так как обычно экземпляр синглтона не передается в параметрах метода, а получается напрямую, через GetInstance(), то для выявления зависимости класса от синглтона надо залезть в тело каждого метода — просто просмотреть публичный контракт объекта недостаточно.  
+4. Наличие синглтона понижает тестируемость приложения в целом и классов, которые используют синглтон, в частности. Во-первых, вместо синглтона нельзя подставить Mock-объект, а во-вторых, если синглтон имеет интерфейс для изменения своего состояния, то тесты начинают зависеть друг от друга. Говоря же проще — синглтон повышает связность, и все вышеперечисленное, в том или ином виде, есть следствие повышения связности.  
+
+## Что такое responder chain?
+
+Это цепочка по которой проходит событие от отправителя к получателю, от First Responder, по иерархии контроллеров, до root view controller, window object и последнего - app object.
+
+- UIControl Actions (например, нажатие кнопки)
+- User events: (touches, shakes, motion, etc...)
+- System events: (low memory, rotation, etc...)
+
+## Lazy initialization
+
+Приём в программировании, когда некоторая ресурсоёмкая операция (создание объекта, вычисление значения) выполняется непосредственно перед тем, как будет использован её результат. Таким образом, инициализация выполняется «по требованию», а не заблаговременно. Аналогичная идея находит применение в самых разных областях: например, компиляция «на лету» и логистическая концепция «Точно в срок». Частный случай ленивой инициализации — создание объекта в момент обращения к нему — является одним из порождающих шаблонов проектирования.
+
+### Достоинства
+
+- Инициализация выполняется только в тех случаях, когда она действительно необходима
+- Ускоряется начальная инициализация
+
+### Недостатки
+
+- Невозможно явным образом задать порядок инициализации объектов
+- Возникает задержка при первом обращении к объекту
+
+### Пример
+```objectivec
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *CellIdentifier = @"CellIdentifier";
+    cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        // ленивая загрузка
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+	                              reuseIdentifier:CellIdentifier];
+    }
+    cell.textLabel.text = someText;
+    return cell;
+}
+```
+
+# OOP
+
+### Когда лучше использовать категорию, а когда наследование? `Категория` vs `наследование`?
+
+При наследовании меняетcя поведение класса, обернув его в подкласс категория позволяет добавлять методы к существующим классам без наследования не создавая экземпляр класса, который она расширяет. Новые методы добавляются при компиляции и могут быть выполнены как обычные методы расширенного класса.
+
+## Что такое SOLID?
+
+`SOLID` (сокр. от англ. Single responsibility, Open-closed, Liskov substitution, Interface segregation и Dependency inversion) - акроним, введённый Майклом Фэзерсом для первых пяти принципов, названных Робертом Мартином в начале 2000-х, которые означали пять основных принципов ООП и проектирования.
+
+Принцип единственной ответственности обозначает, что каждый объект должен иметь одну ответственность и эта ответственность должна быть полностью инкапсулирована в класс. Все его поведения должны быть направлены исключительно на обеспечение этой ответственности. Следующие приёмы позволяют соблюдать принцип единственной ответственности: разработка через тестирование, выделение класса, фасад, Proxy, DAO.
+
+Принцип открытости / закрытости означает, что программные сущности должны быть:
+- открыты для расширения: поведение сущности может быть расширено, путём создания новых типов сущностей
+- закрыты для изменения: в результате расширения поведения сущности, не должны вносится изменения в код, которые эти сущности использует
+
+Принцип подстановки Барбары Лисков даёт определение понятия замещения — если S является подтипом T, тогда объекты типа T в программе могут быть замещены объектами типа S без каких-либо изменений желательных свойств этой программы (например, корректность). Более простыми словами можно сказать, что поведение наследуемых классов не должно противоречить поведению, заданному базовым классом, то есть поведение наследуемых классов должно быть ожидаемым для кода, использующего переменную базового типа.
+
+Принцип разделения интерфейса Роберт Мартин определил так: «Клиенты не должны зависеть от методов, которые они не используют». Принцип разделения интерфейсов говорит о том, что слишком «толстые» интерфейсы необходимо разделять на более маленькие и специфические, чтобы клиенты маленьких интерфейсов знали только о методах, которые необходимы им в работе. В итоге, при изменении метода интерфейса не должны меняться клиенты, которые этот метод не используют.
+
+Принцип инверсии зависимостей — принцип, используемый для уменьшения зацепления в компьютерных программах.
+Модули верхних уровней не должны зависеть от модулей нижних уровней. Оба типа модулей должны зависеть от абстракций.
+Абстракции не должны зависеть от деталей. Детали должны зависеть от абстракций.
+
+## Виртуальный метод
+
+В объектно-ориентированном программировании метод (функция) класса, который может быть переопределён в классах-наследниках так, что конкретная реализация метода для вызова будет определяться во время исполнения. Таким образом, программисту необязательно знать точный тип объекта для работы с ним через виртуальные методы: достаточно лишь знать, что объект принадлежит классу или наследнику класса, в котором метод объявлен. 
+
+Виртуальные методы — один из важнейших приёмов реализации полиморфизма. Они позволяют создавать общий код, который может работать как с объектами базового класса, так и с объектами любого его класса-наследника. При этом базовый класс определяет способ работы с объектами и любые его наследники могут предоставлять конкретную реализацию этого способа. В некоторых языках программирования, например в Java, нет понятия виртуального метода, данное понятие следует применять лишь для языков, в которых методы родительского класса не могут быть переопределены по умолчанию, а только с помощью некоторых вспомогательных ключевых слов. В некоторых же (как, например, в Python), все методы — виртуальные. 
+
+Базовый класс может и не предоставлять реализации виртуального метода, а только декларировать его существование. Такие методы без реализации называются «чистыми виртуальными» (перевод англ. pure virtual) или абстрактными. Класс, содержащий хотя бы один такой метод, тоже будет абстрактным. Объект такого класса создать нельзя (в некоторых языках допускается, но вызов абстрактного метода при-ведёт к ошибке). Наследники абстрактного класса должны предоставить реализацию для всех его абстрактных методов, иначе они, в свою очередь, будут абстрактными классами. Для каждого класса, имеющего хотя бы один виртуальный метод, создаётся таблица виртуальных методов. Каждый объект хранит указатель на таблицу своего класса. 
+
+Для вызова виртуального метода используется такой механизм: из объекта берётся указатель на соответствующую таблицу виртуальных методов, а из неё, по фиксированному смещению, — указатель на реализацию метода, используемого для данного класса. При использовании множественного наследования ситуация несколько усложняется за счёт того, что таблица виртуальных методов становится нелинейной. Принцип единственной обязанности (Single responsibility principle) обозначает, что каждый объект должен иметь одну обязанность и эта обязанность должна быть полностью инкапсулирована в класс. Все его сервисы должны быть направлены исключительно на обеспечение этой обязанности.
+
+## Деструктор
+
+Вызывается при уничтожении объекта. Он обычно используется для освобождения памяти.
+
+## Конструктор
+
+В объектно-ориентированном программировании конструктор класса (от англ. constructor) — специальный блок инструкций, вызываемый при создании объекта. Конструктор схож с методом, но отличается от метода тем, что не имеет явным образом определённого типа возвращаемых данных, не наследуется, и обычно имеет различные правила для рассматриваемых модификаторов. Конструкторы часто выделяются наличием одинакового имени с именем класса, в котором объявляется. Их задача — инициализировать члены объекта и определить инвариант класса, сообщив в случае некорректности инварианта. Корректно написанный конструктор оставит объект в «правильном» состоянии. Неизменяемые объекты тоже должны быть проинициализированы конструктором. В большинстве языков конструктор может быть перегружен, что позволяет использовать несколько конструкторов в одном классе, причём каждый конструктор может иметь различные параметры.
+
+## Что такое нарушение инкапсуляции?
+
+Наружу (т.е. public) торчат какие-то данные, которые можно изменить, и объект уходит в противоречивое состояние.
+
+# LANGUAGE
+
+### Различия isKindOfClass и isMemberOfClass
+
+`isKindOfClass`: возвращает логическое значение, указывающее, является ли приемник экземпляром заданного класса или экземпляром любого класса, который наследует от этого класса.  
+`isMemberOfClass`: возвращает логическое значение, указывающее, является ли приемник экземпляром заданного класса.  
+
+## Когда лучше использовать категорию, а когда наследование?
+
+В отличие от наследования, категории не могут добавлять новые переменные в класс. Однако, вы можете переопределять существующие методы в классе, но должны быть очень осторожны. Запомните, что все изменения сделанные в классе через категории повлияют на экземпляры данного объекта в программе.
+
+## Из чего состоит NSError?
+
+Существует три части объекта `NSError`: 
+1. Domain - это строка, которая идентифицирует категорию ошибок, из которых исходит эта ошибка
+2. Error code - это числовой идентификатор ошибки
+3. UserInfo - это описание ошибки
+
+## KVC
+
+`KVC (Key-Value Coding)` представляет собой механизм для доступа к свойству объекта косвенно, с помощью строк для идентификации свойств, а не через вызов аксессора или доступ к ним непосредственно через переменных экземпляра. Часто используется для фильтрации в массивах (NSPredicate).
+
+## Что такое быстрое перечисление (fast enumeration)?
+
+Это итерация по обьектам любого класса, который реализует протокол `NSFastEnumeration`, в том числе NSArray, NSSet и NSDictionary. Реализация протокола состоит из одного метода:
+```objectivec
+ -(NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id *)stackbuf count:(NSUInteger)len;
+```
+## Чем объект Objective-C отличается от структуры С?
+
+Структура – специальный тип данных языка C, который содержит в себе другие типы данных в одном блоке и группрует их под одним именем. Объекты в Objective-C представляют собой структуры в которых имеется ссылка на объект класса.
+
+## Чем категория отличается от расширения?
+
+С помощью категорий добавляются новые методы в существующий класс Расширения особый случай категорий, которые позволяют определить методы, которые должны быть объявлены в основном блоке реализации.
+
+## Что такое runLoop, когда он используется?
+
+Циклы выполнения (run loop) - цикл обработки событий, который используется для планирования работы и координации получения входящих событий. Объект NSRunLoop также обрабатывает события NSTimer
+
+## nil, Nil, NULL, NSNull
+
+` #define nil (id)0` -  это указатель на нулевой объект.  
+` #define NULL ((void *)0)` - используется для указателей (тоже самое что nil).  
+` #define Nil (Class)0` - нулевой указатель типа Class.  
+`NSNull` — это своего рода обёртка над NULL и nil, позволяющая хранить их в объектах-коллекциях Objective-C.  
+
+## Формальные и неформальные протоколы
+
+Цели для которых используются протоколы:
+- Ожидание, что класс поддерживающий протокол выполнит описанные в протоколе функции
+- Поддержка протокола на уровне объекта, не раскрывая методы и реализацию самого класса (в противоположность наследованию)
+- Ввиду отсутствия множественного наследования - объединить общие черты нескольких классов
+
+###### Формальные протоколы
+
+Объявление формального протокола гарантирует, что все методы объявленные протоколом будут реализованы классом.
+
+###### Неформальные протоколы
+
+Добавление категории к классу NSObject называется созданием неформального протокола. При работе с неформальными протоколами мы реализуем только те методы, которые хотим. Узнать поддержевает ли класс какой-либо метод можно с помощью селекторов:
+```objectivec
+First *f = [[First alloc] init];
+if ([f respondsToSelector:@selector(setName:)]) {
+    NSLog (@"Метод поддерживается");
+}
+```
+
+## Что такое `@dynamic`?
+
+`@dynamic` используется для делегирования ответственности за реализацию аксессеров.
+`@dynamic` для свойств означает, что сеттеры и геттеры будут созданы вручную и/или в runtime.
+
+## Тип id
+
+Переменная типа id фактически является указателем на произвольный объект. Для обозначения нулевого указателя на объект используется константа nil. При этом вместо id можно использовать и более привычное обозначение с явным указанием класса. В частности последнее позволяет компилятору осуществлять некоторую проверку поддержки сообщения объектами — если компилятор из типа переменной не может сделать вывод о поддержке объектом данного сообщения, то он выдаст предупреждение, а не ошибку.
+
+## Опишите основные понятия ОО-программирования в терминах Objective-C (интерфейс, реализация, свойства, протоколы, и т.д)
+
+`@interface` Начинает объявление класса или категории (категория – расширение класса дополнительными методами без наследования).  
+`@implementation` Начинает определение класса или категории.  
+`@protocol` Начинает объявление протокола (аналог класса С++, состоящего из чисто виртуальных функций). 
+`@end` Завершает объявление\определение любого класса, категории или протокола.  
+`@private` Ограничивает область видимости инвариантов класса методами класса (аналогично С++).  
+`@protected` Стоит по умолчанию. Ограничивает область видимости инвариантов класса методами класса и методами производных классов (аналогично С++).  
+`@public` Удаляет ограничения на облать видимости (аналогично С++).  
+`@try` Определяет блок с возможной генерацией исключений (аналогично С++).  
+`@throw` Генерирует объект-исключение (аналогично С++).  
+`@catch` () Обрабатывает исключение, сгенерированное в предшествующем блоке `@try` (аналогично С++).  
+`@finally` Определяет блок после блока @try, в который предается управление независимо от того, было или нет сгенерировано исключение.   
+`@class` Сокращенная форма объявления класса (только имя (аналогично С++)).  
+`@selector(method_name)` Возвращает скомпилированный селектор для имени метода method_name.  
+`@protocol(protocol_name)` Возвращает экземпляр класса-протокола с именем protocol_name.  
+`@encode(type_spec)` Инициализирует строку символов, которая будет использована для шифрования данных типа type_spec.  
+`@synchronized()` Определяет блок кода, выполняющегося только одной нитью в любой определенный момент времени.    
+
+## Как работает механизм сообщений?
+
+Компилятор переводит каждую посылку сообщения, т.е. конструкцию вида `[object msg]` в вызов функции `objc_msgSend`.
+
+Эта функция в качестве своего первого параметра принимает указатель на объект-получатель сообщения, в качестве второго параметра выступает селектор, служащий для идентификации посылаемого сообщения. Если в сообщении присутствуют аргументы, то они также передаются в функции objc_msgSend как третий, четвертый и т.д. параметры.
+
+Каждый объект Objective-C содержит в себе атрибут isa - указатель на class object для данного объекта. class object автоматически создается компилятором и существует как один экземпляр, на который через isa ссылаются все экземпляры данного класса.
+
+Каждый `class object` обязательно содержит в себе указатель на class object для родительского класса (superclass) и dispatch table. `Dispatch Table `представляет из себя словарь, сопоставляющий селекторам сообщений фактические адреса реализующих их методов (функций).
+
+Функция objc_msgSend ищет метод с данным селектором в dispatch table для данного объекта. Если его там нет, то поиск продолжается в dispatch table для его родительского класса и т.д.
+
+## Есть ли приватные или защищенные методы в Objective-C? А в Swift?
+
+Нет. Нужно использовать расширение. Для имитации private методов с помощью расширения, нужно в .m файле, перед @implementation добавить безымянную категорию. 
+
+Для класса NetworkManager ее определение будет выглядеть как:
+```objectivec
+@interface NetworkManager () 
+... 
+@end
+```
+
+Стоит обратить особое внимание на пустые скобки — они показывают, что мы определяем именно безымянную категорию. После этого, мы можем добавлять в категорию методы, которые будут для нас считаться private. За счет того, что категория безымянная, имплементация данных методов может находиться рядом с имплементацией основных методов в разделе @implementation .. @end и нет необходимости создавать отдельные разделы для имплементации категорий. А за счет того, что она находится в .m файле, которые никто не подключает через #import, видимость методов для автодополнения ограничена текущим файлом. 
+
+Конечно, послать объекту это сообщение извне все равно возможно, но от случайного вызова вы точно застрахованы.
+
+## Можно ли добавить ivar в категорию?
+
+Директива `@interface` для категорий не может добавлять переменных экземпляра. Однако, она может определять, что категория поддерживает дополнительные протоколы.
+
+## Как сделать так, чтобы данные в таблице обновлялись по мере изменения массива?
+
+Задание: Есть одномерный строковый массив, данные из которого выводятся в таблицу. При этом массив может меняться откуда-то извне. Например, если объект добавился в массив, то в таблице должна появиться новая строка.
+
+Решение: KVO. Если хочется совсем чистого решения, то можно еще засвиззлить некоторые методы. 
+
+## Garbage Collector
+
+Это особенный режим управления памятью, основанный на периодическом запуске сборщика мусора. Мы выделяем память, но не освобождаем ее. За нас память освобождает сборщик мусора. Но он имеет ряд огромных недостатков:
+- Его должны поддерживать все без исключения используемые библиотеки. Скажем, если ARC позволяет использовать не-ARC подход, то с GС такое не пройдет, либо программа и все ее библиотеки полностью поддерживают этот метод управления памятью, либо программа просто не будет скомпилирована
+- Сборка мусора - это достаточно ресурсоемкая задача, она требует как дополнительной памяти, так и достаточно много процессорного времени. И каждый раз, когда программа будет вызывать сборщик мусора, выполнение программы в это время будет сопровождаться достаточно заметным подтормаживанием
+
+## ARC
+
+Автоматический подсчет ссылок является компиляторной функцией, которая обеспечивает автоматическое управление памятью в Objective-C объектах. Вместо того, чтобы думать о со-хранении и освобождении объектов, ARC позволяет сосредоточиться на непосредственном коде Вашего приложения. ARC работает путем добавления кода во время компиляции, чтобы время жизни объекта было ровно столько, сколько необходимо, но не более того. Концептуально, это то же управление памятью, что и ручной подсчет ссылок (описанное в практическом управлении памятью) путем добавления соответствующего кода управления памятью, за вас. ARC поддерживается начиная с Xcode 4.2 для Mac OS X v10.6 и v10.7 (64-bit applications), а также iOS 4 и iOS 5. Слабые (`weak`) ссылки не поддерживаются в Mac OS X v10.6 и iOS 4 и более ранних.
+Существует несколько ограничений на использование механизма ARC.
+* Нельзя использовать свойство, имя которого начинается со слова `new`. Например, не допускается объявление
+```objectivec
+@property NSString *newString;
+```
+* Нельзя использовать свойство только для чтения без атрибутов управления памятью. Если вы не используете механизм ARC, то можете использовать объявление
+```objectivec
+@property (readonly) NSString *title;
+```
+Но если вы используете механизм ARC, то должны указать, кто управляет памятью, так что достаточно просто вставить ключевое слово unsafe_unretained, потому что по умолчанию используется атрибут `assign`.  
+
+## Освобождение памяти в MRC
+
+Способ 1 - моментальное освобождение памяти (`[str release];`).  
+Если указатель хотите использовать далее, то рекомендуется после этого выполнить следующую конструкцию:
+`str = nil;`
+
+Способ 2 - `[str autorelease];` - а вот этот способ требует более детального рассмотрения. Для каждого потока формируется определенный пул, куда записываются методы, память которых вы не хотите освобождать моментально. То есть после выполнения этого оператора, объект какое то время будет доступен.
+
+А теперь как узнать, какое это время? Тут есть два варианта:
+1) пока не выполнится команда `[pool drain]` (в версиях XCode < 4), или пока не выйдете из блока `@autorelease pool { ... }`;
+2) Либо на следующем витке цикла EventMessage. То есть каждый виток цикла сообщений ведет к просмотру объектов в пуле, обозначенных для удаления методом autorelease.  
+
+К сожалению, ко второму случаю, аналогию в чистом языке C++ со стандартной библиотекой я привести не могу, так как такого пула нет, но скорее всего есть какие-либо сторонние библиотеки, которые реализуют подобный механизм.
+А вот аналог первого варианта в C++ всем известен: `delete str;`
+Так же при создании объекта, можно сделать его изначально как autorelease.
+Например можно создать объект следующей строкой:
+`NSMutableString *str1 = [[[NSMutableStirng alloc] init] autorelease];`
+Такой способ выделит память под новый объект, инициализирует его, а затем изначально сообщит в пул, что удаление объекта кладется на плечи autorelease пула, после чего передаст указатель на объект переменной str1.
+В итоге, объект, находящийся по адрессу, записанному в str1 автоматический уничтожится по условию освобождения пула.
+Кстати, после такой записи, если вызвать `[str1 release];` - то объект сразу же будет уничтожен, но при попытке освободить пул, получим исключение, и последующий вылет из программы с ошибкой удаления несуществующего объекта.
+Так же есть такой стандартизированный способ создания авторелизнутых объектов классов как применение Convenience конструкторов.
+Еще хотелось бы порекомендовать, по возможности всегда использовать release вместо autorelease при программировании под IOs. Конечно, проще было бы создать объект изначально авторелизнутым и забыть про удаление объекта, эдакий почти сборщик мусора). Но не забывайте, что если пул очищается очень редко, то при программировании для мобильных устройств, где количество памяти ограничено, можно столкнутся с проблемой нехватки памяти еще до то того, как пул будет очищен.
+Еще один момент связанный с autorelease pool - если в основном потоке, каждый новый виток циклов сообщений (Event Message) очищает пул, то в потоках реализация периодической очистки пула ложиться на плечи программиста. Поэтому не забывайте иногда делать [pool drain];.
+P.s я так понимаю, что в версии XCode начиная с 4.2 [pool drain] делать уже не обязательно, так как там пул освобождается автоматический при выходе операторов за скобки `@autorelease pool{ текст программы }`.
+
+## Что такое указатель isa? Для чего он нужен?
+
+Каждый объект Objective-C содержит в себе атрибут `isa` - указатель на class object для данного объекта. `class object` автоматически создается компилятором и существует как один экземпляр, на который через isa ссылаются все экземпляры данного класса. 
+
+```objectivec
+typedef struct objc_object {
+    Class isa;
+} *id;
+``` 
+## В чем отличие void* от id?
+
+Отличие в том, что `id` указатель на objective - c объекты, а `void*` указатель на неопределенный тип, или просто область в памяти (в которой может хранится все что угодно). 
+
+## KVO
+
+Еще одна реализация паттерна наблюдатель. В этом случае наблюдатель следит за конкретным свойством объекта. Когда значение этого свойства меняется, наблюдателю приходит уведомление и он соответствующим образом реагируют. По сравнению со многими другими языками реализация KVO в Objective-C радуют довольно простым синтаксисом. Так в коде наблюдателя достаточно написать:
+
+`[company_a addObserver:self forKeyPath:@"people" options:NSKeyValueObservingOptionNew context:nil];`
+И каждый раз когда в company_a будет изменяться значение переменной people наблюдатель будет уведомляться с помощью вызова метода
+ - `observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context` и надо лишь реализовать код, который будет реагировать на уведомление.
+
+### Плюсы
+
+- Минимализм кода (достаточно написать всего лишь несколько строчек, чтобы полностью реализовать паттерн наблюдатель)
+- Возможность слежения за любыми свойствами любых классов как написанными нами, так и чужими. Фактически внешние переменные всегда оформляются через свойства, что позволяет с легкостью следить любыми изменениями
+
+### Недостатки
+
+- Заметное падение производительности при обильном использовании KVO. Не стоит писать код, где ваши объекты общаются в основном через KVO. Рассматривайте KVO как вспомогательно средство для работы с чужим кодом, а не как основной инструмент
+- Необходимость очень аккуратно писать код при использовании KVO. Так как строковые идентификаторов не проверяются компилятором на валидность, то это может привести к ошибкам при переименовании переменных. Также, KVO очень чувствительно к порядку добавления / удаления наблюдателей. Так, если наблюдатель пытается отписаться от наблюдаемого, на который наблюдатель в данный момент не подписан, то происходит крэш. Если же, наоброт, наблюдатель не отпишется до того, как наблюдаемый будет уничтожен, то произойдет утечка памяти
+
+## `Atomic` vs `nonatomic`. Как вручную переопределить сеттер в не ARC коде?
+
+Cинхронизировать чтение/запись между потоками или нет. 
+`Atomic` – thread safe. Тут все сложнее и неоднозначнее, есть ряд способов как сделать threadsafe аксессоры к пропертям. Самый простой способ это сделать – добавить конструкцию @synchronized:
+```objectivec
+- (NSString *)foo {
+    @synchronized(self) {
+       	return foo;
+    }
+}
+
+- (void)setFoo:(NSString)newFoo {
+    @synchronized(self) {
+       	if (foo != newFoo) {
+          	[foo release];
+          	foo = [newFoo retain];
+       	}
+    }
+}
+```
+Таким образом используя `@synchronized` мы лочим по ключу self доступ к foo, однако у такого метода есть очевидный недостаток, если в классе будет две переменные (или 100500) к которым нужен одновременный доступ с разных потоков, то они будут лочиться и друг относительно друга, т.к self для них один и тот же, в таких случаях нужно использовать другие методы лока, как NSLock, NSRecursiveLock,...
+
+## Чем отличается include от import
+
+`import` защищен от многократного включения кода
+
+## Что такое селектор (selector)? Как его вызвать?
+
+Селектор - это имя метода закодированное специальным образом, используемым языком для быстрого поиска. Указание компилятору на селектор происходит при помощи директивы @selector(метод)
+`First* f = [[First alloc] init];
+if([f respondsToSelector:@selector(setName:)])
+	NSLog (@"Метод поддерживается");`
+
+В этом примере создается экземпляр класса First - f (наследник NSObject), после с помощью метода respondsToSelector проверяем может ли класс ответить на метод setName
+
+# GENERAL
+
+### Архитектура REST
+
+`REST` (Representational state transfer) – это стиль архитектуры программного обеспечения для распределенных систем, таких как World Wide Web, который, как правило, используется для построения веб-служб. Термин REST был введен в 2000 году Роем Филдингом, одним из авторов HTTP-протокола. Системы, поддерживающие REST, называются RESTful-системами. Каждая единица информации однозначно определяется глобальным идентификатором, таким как URL. Каждый URL в свою очередь имеет строго заданный формат. Вот как это будет выглядеть на примере:
+GET /book/ — получить список всех книг
+GET /book/3/ — получить книгу номер 3
+PUT /book/ — добавить книгу (данные в теле запроса)
+POST /book/3 — изменить книгу (данные в теле запроса)
+DELETE /book/3 — удалить книгу
+
+Как необходимые условия для построения распределенных REST-приложений Филдинг перечислил следующие:
+- Клиент-серверная архитектура.  
+- Сервер не обязан сохранять информацию о состоянии клиента.  
+- В каждом запросе клиента должно явно содержаться указание о возможности кэширования ответа и получения ответа из существующего кэша.  
+- Клиент может взаимодействовать не напрямую с сервером, а с произвольным количеством промежуточных узлов. При этом клиент может не знать о существовании промежуточных узлов, за исключением случаев передачи конфиденциальной информации.  
+- Унифицированный программный интерфейс сервера. Филдинг приводил URI в качестве примера формата запросов к серверу, а в качестве примера ответа сервера форматы HTML, XML и JSON, различаемые с использованием идентификаторов MIME.  
+Филдинг указывал, что приложения, не соответствующие приведённым условиям, не могут называться REST-приложениями.   
+
+## Поверхностное и глубокое копирование
+
+`Поверхностное копирование` — это просто создание нового указателя на те же самые байты в куче. То есть, в результате мы можем получить два объекта, которые указывают на одно и то же значение.
+
+Глубокое копирование:
+```objectivec
+- (id)copyWithZone:(NSZone *)zone;
+
+@implementation Person
+- (id)copyWithZone:(NSZone *)zone {
+	Person *copy = [[self class] allocWithZone:zone];
+	copy.name = self.name;
+	copy.age = self.age;
+	copy.surname = self.surname;
+	return copy;
+}
+@end
+```
+Метод объекта класса NSArray с управлением логикой копирования:
+```objectivec
+- (instancetype)initWithArray:(NSArray<ObjectType> *)array copyItems:(BOOL)flag;
+```
+## Жизненный цикл приложения
+
+`Not running` (не запущенное) — приложение не было запущено или его работа была прекращена.  
+`Inactive` (неактивное) — приложение работает, но не принимает события (например, когда пользователь заблокировал телефон при запущенном приложении).   
+`Active` (активное) — нормальное состояние приложения при его работе.  
+`Background` (фоновое) — приложение больше не на дисплее, но оно все еще выполняет код.  
+`Suspended` (приостановленное) — приложение занимает память, но не выполняет код.  
+
+## Что такое назначенный инициализатор?
+
+Класс содержит только один основной инициализатор. Если класс содержит другие инициализаторы, то их реализация должна вызывать (прямо или косвенно) основной инициализатор.
+* Если класс имеет несколько инициализаторов, только один из них должен выполнять реальную работу. Этот метод называется основным инцициалuзатором. Все остальные инициализаторы должны вызывать основной инициализатор (прямо или косвенно).
+* Основной инициализатор вызывает основной инициализатор суперкласса перед инициализацией своих переменных экземпляров `if (self  = [super...])`
+* Если имя основного инициализатора вашего класса отличается от имени основного инициализатора его супер класса, вы должны переопределить основной инициализатор суперкласса, чтобы он вызывал новый основной инициализатор.
+* Если класс содержит несколько инициализаторов, четко укажите в заголовочном файле, какой из них является основным.
+Установившейся практикой в таком случае является выделение среди всех init-методов одного, называемого designated initializer. Все остальные init-методы должны вызывать его и только он вызывает унаследованный init-метод.
+```objectivec
+// designated initializer
+- initWithName:(const char *)theName {  
+	// call inherited method
+	[super init];                       
+	name = strdup(theName);
+}
+
+- init {
+	return [self initWithName:@"name"];
+}
+```
+
+## Чем абстрактный класс отличается от интерфейса?
+
+`Абстрактный класс` — это класс, у которого не реализован один или больше методов (некоторые языки требуют такие методы помечать специальными ключевыми словами).
+`Интерфейс` — это абстрактный класс, у которого ни один метод не реализован, все они публичные и нет переменных класса.
+Интерфейс нужен обычно когда описывается только интерфейс (тавтология). Например, один класс хочет дать другому возможность доступа к некоторым своим методам, но не хочет себя «раскрывать». Поэтому он просто реализует интерфейс.
+Абстрактный класс нужен, когда нужно семейство классов, у которых есть много общего. Конечно, можно применить и интерфейс, но тогда нужно будет писать много идентичного кода.
+
+Можно считать, что любой интерфейс — это уже абстрактный класс, но не наоборот.
+
+## Жизненный цикл ViewController
+
+`load view` — создает вью, которой управляет контроллер. Вызывается, когда контроллер создается программно. Вы можете переопределить этот метод, чтобы создать свои вью вручную.
+
+`viewDidLoad` — вью создано и загружено в память, но нет границы bounds. Хорошее место для инициализации и настройки объектов, используемых во вью контроллере.
+
+`viewWillAppear` — вью будет добавлено в иерархию, определены границы bounds вью, но ориентация экрана не определена.   Вызывается каждый раз, когда появляется вью. Так что не добавляйте сюда код, который должен быть выполнен только один раз
+
+`viewWillLayoutSubviews` —  вызывается каждый раз, когда frame изменился, например, при смене ориентации. Если вы не используете autoresizing masks или constaints, вы, вероятно, хотите обновить сабвью здесь.
+
+`viewDidLayoutSubviews` —  вызывается уведомить контроллер, что его вью только что залэйаутил сабвью.  
+Вносите дополнительные изменения здесь после того, как вью залайаутил его сабвью.
+
+`viewDidAppear` — вью добавлено в иерахию  и появилось на экране. Хорошее место для выполнения задач, связанных с анимацией вью. Метод вызывается после того, как анимация загрузки вью закончена. Иногда хорошим кейсом в этом методе будет вытаскивать данные из кордаты и отображать на вью или запрашивать данные с сервера.
+
+`viewWillDissapear` — вью уходит с экрана.
+
+`viewDidDissapear` — вью ушло с экрана и должен быть уничтожен из памяти.
+
+## Какой контент лучше хранить в Documents, а какой в Cache?
+
+Кеш - это специальный буфер (контейнер), содержащий информацию. Эта информация может быть запрошена с наибольшей вероятностью. Соответственно, доступ к этому буферу должен быть очень быстрым, он должен быть быстрее чем доступ к сети или к данным на жестком диске. В операционной системе iOS присутствует функция кэширования, но прямого доступа к данным в кэше нету. Для получения доступа следует использовать класс NSCache.
+
+Только документы и другие данные, созданные пользователем или не могут быть повторно созданы вашим приложением, должны храниться в каталоге <Application_Home>/Documents и автоматически создаваться резервными копиями iCloud.
+
+Данные, которые могут быть загружены заново или регенерированы, должны храниться в каталоге <Application_Home>/Library/Caches. Примеры файлов, которые вы должны поместить в каталог Caches, включают файлы кэша базы данных и загружаемый контент, например, используемый журналами, газетами и приложениями для карт.
+
+Данные, которые используются только временно, должны храниться в каталоге <Application_Home>/tmp. Хотя эти файлы не скопированы в iCloud, не забудьте удалить эти файлы, когда вы закончите с ними, чтобы они не продолжали потреблять пространство на устройстве пользователя.
+
+Используйте атрибут «не создавать резервную копию» для указания файлов, которые должны оставаться на устройстве, даже в ситуациях с низким объемом памяти. Используйте этот атрибут с данными, которые можно воссоздать, но для сохранения работоспособности вашего приложения даже в ситуациях с низким объемом хранения его необходимо сохранять или потому, что клиенты ожидают его доступности в автономном режиме. Этот атрибут работает с отмеченными файлами независимо от того, в каком каталоге они находятся, включая каталог Документы. Эти файлы не будут удалены и не будут включены в iCloud или iTunes. Поскольку эти файлы используют пространство на устройстве, ваше приложение отвечает за периодический мониторинг и очистку этих файлов.
+
+## Какие различия между HEAD, GET, POST, PUT?
+
+`GET` Используется для запроса содержимого указанного ресурса. С помощью метода GET можно также начать какой-либо процесс. В этом случае в тело ответного сообщения следует включить информацию о ходе выполнения процесса. Клиент может передавать параметры выполнения запроса в URI целевого ресурса после символа ?:
+`GET /path/resource?param1=value1&param2=value2 HTTP/1.1`
+
+`HEAD` Аналогичен методу GET, за исключением того, что в ответе сервера отсутствует тело. Запрос HEAD обычно применяется для извлечения метаданных, проверки наличия ресурса (валидация URL) и чтобы узнать, не изменился ли он с момента последнего обращения. Заголовки ответа могут кэшироваться. При несовпадении метаданных ресурса с соответствующей информацией в кэше копия ресурса помечается как устаревшая.
+
+`POST` Применяется для передачи пользовательских данных заданному ресурсу. Например, в блогах посетители обычно могут вводить свои комментарии к записям в HTML-форму, после чего они передаются серверу методом POST и он помещает их на страницу. При этом передаваемые данные (в примере с блогами — текст комментария) включаются в тело запроса. Аналогично с помощью метода POST обычно загружаются файлы на сервер. В отличие от метода GET, метод POST не считается идемпотентным, то есть многократное повторение одних и тех же запросов POST может возвращать разные результаты (например, после каждой отправки комментария будет появляться одна копия этого комментария). Отправить POST-запрос не так тяжело как кажется. Достаточно подготовить «правильный» NSURLRequest.
+
+```objectivec
+NSString *params = @"param=value&number=1"; // задаем параметры POST запроса
+NSURL *url = [NSURL URLWithString:@"http://server.com"]; // куда отправлять
+request.HTTPMethod = @"POST";
+request.HTTPBody = [params dataUsingEncoding:NSUTF8StringEncoding];
+// следует обратить внимание на кодировку
+// теперь можно отправить запрос синхронно или асинхронно
+NSURLSession *session = [[NSURLSession alloc]initWithUrl: url];
+session.
+```
+
+`PUT` Применяется для загрузки содержимого запроса на указанный в запросе URI. Если по заданному URI не существовало ресурса, то сервер создаёт его и возвращает статус 201 (Created). Если же был изменён ресурс, то сервер возвращает 200 (Ok) или 204 (No Content). Сервер не должен игнорировать некорректные заголовки Content-*, передаваемые клиентом вместе с сообщением. Если какой-то из этих заголовков не может быть распознан или не допустим при текущих условиях, то необходимо вернуть код ошибки 501 (Not Implemented). Фундаментальное различие методов POST и PUT заключается в понимании предназначений URI ресурсов. Метод POST предполагает, что по указанному URI будет производиться обработка передаваемого клиентом содержимого. Используя PUT, клиент предполагает, что загружаемое содержимое соответствует находящемуся по данному URI ресурсу.
+
+Единый указатель ресурсов (англ. URL — Uniform Resource Locator) — единообразный локатор (определитель местонахождения) ресурса. URL — это стандартизированный способ записи адреса ресурса в сети Интернет.
+
+URI (англ. Uniform Resource Identifier) — унифицированный (единообразный) идентификатор ресурса. URI — это символьная строка, позволяющая идентифицировать какой-либо ресурс: документ, изображение, файл, службу, ящик электронной почты и т. д. Прежде всего, речь идёт, конечно, о ресурсах сети Интернет и Всемирной паутины. URL это частный случай URI. Понятие URI включает в себя, помимо URL, например, ссылки на адреса электронной почты и т.п. URL указывает на Веб-ресурс, вроде сайта, страницы или конкретного файла, расположенных на интернет-серверах.
+
+# БД
+
+### Какие типы хранилищ поддерживает CoreData?
+
+1. XML  
+2. SQLite  
+3. In-Memory  
+4. Binary  
+
+## Что такое ленивая загрузка? Что ее связывает с Core Data?
+
+Для загрузки данных из БД в память приложения удобно пользоваться загрузкой не только данных об объекте, но и о сопряжённых с ним объектах. Это делает загрузку данных проще для разработчика: он просто использует объект, который, тем не менее вынужден загружать все данные в явном виде. Но это ведёт к случаям, когда будет загружаться огромное количество сопряжённых объектов, что плохо скажется на производительности в случаях, когда эти данные реально не нужны. Паттерн `Lazy Loading `(Ленивая Загрузка) подразумевает отказ от загрузки дополнительных данных, когда в этом нет необходимости. Вместо этого ставится маркер о том, что данные не загружены и их надо загрузить в случае, если они понадобятся. Как известно, если Вы ленивы, то вы выигрываете в том случае, если дело, которое вы не делали на самом деле и не надо было делать.
+
+## Целесообразность использования Core Data
+
+Core Data уменьшает количество кода, написанного для поддержки модели слоя приложения, как правило, на 50% - 70%, измеряемое в строках кода. Core Data имеет зрелый код, качество которого обеспечивается путем юнит-тестов, и используется ежедневно миллионами клиентов в широком спектре приложений. Структура была оптимизирована в течение нескольких версий. Она использует информацию, содержащуюся в модели и выполненяет функции, как правило, не работающие на уровне приложений в коде. Кроме того, в дополнение к отличной безопасности и обработке ошибок, она предлагает лучшую масштабируемость при работе с памятью, относительно любого конкурирующего решения. Другими словами: вы могли бы потратить долгое время тщательно обрабатывая Ваши собственные решения оптимизации для конкретной предметной области, вместо того, чтобы получить преимущество в производительности, которую Core Data предоставляет бесплатно для любого приложения.
+
+Когда нецелесообразно использовать Core Data:
+- Если планируется использовать очень небольшой объем данных. В этом случае проще воспользоваться для хранения Ваших данных объектами коллекций - массивами или словарями и сохранять их в plist-файлы
+- Если используется кроссплатформерная архитектура или требуется доступ к строго определенному формату файла с данными (хранилищу), например SQLite
+- Использование баз данных клиент-сервер, например MySQL или PostgreSQL
+
+## SQLite
+Максимальный объем хранимых данных базы SQLite составляет 2 терабайта.
+Чтение из базы данных может производиться одним и более потоками, например несколько процессов могут одновременно выполнять SELECT. Однако запись в базу данных может осуществляться, только, если база в данный момент не занята другим процессом.
+SQLite не накладывает ограничения на типы данных. Любые данные могут быть занесены в любой столбец. Ограничения по типам данных действуют только на INTEGER PRIMARY KEY, который может содержать только 64-битное знаковое целое.
+SQLite версии 3.0 и выше позволяет хранить BLOB данные в любом поле, даже если оно объявлено как поле другого типа. Обращение к SQLite базе из двух потоков одновременно неизбежно вызовет краш. Выхода два:
+
+Синхронизируйте обращения при помощи директивы @synchronized.
+Если задача закладывается на этапе проектирования, завести менеджер запросов на основе NSOperationQueue. Он страхует от ошибок автоматически, а то, что делается автоматически, часто делается без ошибок.
+Пример SQLite:
+
+```objectivec
+- (int)createTable:(NSString *)filePath {
+    sqlite3 *db = NULL;
+    int rc = 0;
+
+    rc = sqlite3_open_v2([filePath cStringUsingEncoding:NSUTF8StringEncoding], &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL);
+    if (SQLITE_OK != rc) {
+        sqlite3_close(db);
+        NSLog(@"Failed to open db connection");
+    } else {
+        char *query ="CREATE TABLE IF NOT EXISTS students (id INTEGER PRIMARY KEY AUTOINCREMENT, name  TEXT, age INTEGER, marks INTEGER)";
+        char *errMsg;
+        rc = sqlite3_exec(db, query, NULL, NULL, &errMsg);
+        if (SQLITE_OK != rc) {
+            NSLog(@"Failed to create table rc:%d, msg=%s",rc,errMsg);
+        }
+        sqlite3_close(db);
+    }
+    return rc;
+}
+```
+
+```objectivec
+
+- (int)insert:(NSString *)filePath withName:(NSString *)name age:(NSInteger)age marks:(NSInteger)marks {
+    sqlite3 *db = NULL;
+    int rc = 0;
+    rc = sqlite3_open_v2([filePath cStringUsingEncoding:NSUTF8StringEncoding], &db, SQLITE_OPEN_READWRITE, NULL);
+    if (SQLITE_OK != rc) {
+        sqlite3_close(db);
+        NSLog(@"Failed to open db connection");
+    } else {
+        NSString *query  = [NSString stringWithFormat:@"INSERT INTO students (name, age, marks) VALUES (\"%@\", %ld, %ld)", name, (long)age, (long)marks];
+        char *errMsg;
+        rc = sqlite3_exec(db, [query UTF8String], NULL, NULL, &errMsg);
+        if (SQLITE_OK != rc) {
+            NSLog(@"Failed to insert record  rc:%d, msg=%s",rc,errMsg);
+        }
+        sqlite3_close(db);
+    }
+    return rc;
+}
+```
+
+## Что такое NSManagedObjectId? Можем ли мы сохранить его на потом если приложение закроется?
+
+`NSManagedObjectID` объект является универсальным идентификатором для управляемого объекта, а также предоставляет основу для уникальности в структуре Core Data. NSManagedObjectID – универсальный потокобезопасный идентификатор. Бывает временным и постоянным. Используется в случае передачи объекта из одного контекста в другой.
+
+## Использовали ли NSFetchedResultsController? Почему?
+
+`NSFetchedResultsController` представляет собой контроллер, предоставляемый фреймворком Core Data для управления запросами к хранилищу. Использование NSFetchedResultsController становится актуальным для больших обьемов данных и операчиями над ними. NSFetchedResultsController предоставляет механизм для обработки данных (изменения, удаления, добавления) и отображает эти изменения в таблице.
+
+## Что такое контекст (Managed object context)?
+
+`NSManagedObjectContext` - это среда в которой находится объект и которая следит за состоянием обьекта и зависимыми объектами.
+
+## Что такое Persistent store coordinator и зачем он нужен?
+
+`NSPersistentStoreCoordinator` отвечает за хранение объектов данных которые передаются из NSManagedObjectContext.
+
+## Какие есть нюансы при использовании Core Data в разных потоках?
+
+`NSManagedObjectContext` не thread-safe read для многопоточности основная идея - создавать для каждого потока свой NSManagedObjectContext и потом синхронизировать.
+
+## Что такое fetch result controller?
+
+Одним из элементов представления данных в iOS служат таблицы (объекты класса `UITableView`), которые через объект класса `NSFetchedResultsController` можно привязать к CoreData. После этого при изменении данных в CoreData будет актуализироваться информация в таблице. Так же с помощью таблицы можно управлять данными в хранилище.
+`NSFetchedResultsController` — контроллер результатов выборки. 
+
+# CONCURRENCY
+
+### Runloop
+
+В Cocoa для каждого потока системой обычно создается свой Run Loop — цикл, который обрабатывает таймеры и события, а так же усыпляет поток, если ему нечего делать в текущий момент.
+Run Loop поддерживает 2 типа событий:
+1. `Input sources` — асинхронные события. Обычно это сообщения от других потоков, приложений или системных вызовов.  
+2. `Timer sources` — синхронные события. Таймеры. Вызываются синхронно с известным интервалом.  
+Каждый Run Loop определяет режим, в котором он работает: от режима зависит, какие события будут обработаны и кто будет об этом оповещен
+
+## Способы достижения многопоточности в iOS и macOS
+
+Существует три способа достижения параллелизма в iOS:
+1. Потоки (threads)
+2. GCD  
+3. NSOperationQueue  
+
+Недостатком потоков является то, что они немасштабируемы для разработчика. Вы должны решить, сколько потоков нужно создать и изменять их число динамически в соответствии с условиями. Кроме того, приложение принимает на себя большую часть затрат, связанных с созданием и встраиванием потоков, которые оно использует.
+
+Поэтому в macOS и iOS предпочтительно использовать асинхронный подход к решению проблемы параллелизма, а не полагаться на потоки.  
+
+Одной из технологий асинхронного запуска задач является Grand Central Dispatch (GCD), которая отводит управление потоками до уровня системы. Все, что разработчик должен сделать, это определить выполняемые задачи и добавить их в соответствующую очередь отправки. GCD заботится о создании необходимых потоков и время для работы в этих потоках.  
+
+Все dispatch queues представляют собой структуры данных FIFO, поэтому задачи всегда запускаются в том же порядке, в котором они добавлены.
+
+В отличие от dispatch queue очереди операций (NSOperation Queue) не ограничиваются выполнением задач в порядке FIFO и поддерживают создание сложных графиков выполнения заказов для ваших задач.
+
+## Что такое deadlock?
+
+`Deadlock` — ситуация в многозадачной среде, при которой несколько процессов находятся в состоянии бесконечного ожидания ресурсов, захваченных самими этими процессами.
+```objectivec
+dispatch_queue_t queue = dispatch_queue_create("my.label", DISPATCH_QUEUE_SERIAL);
+dispatch_async(queue, ^{
+    dispatch_sync(queue, ^{
+        //  outer block is waiting for this inner block to complete,
+        //  inner block won't start before outer block finishes
+        //  => deadlock
+    });
+
+    // this will never be reached
+})
+```
+
+## Что такое livelock?
+
+`Livelock` частая проблема в асинхронных системах. Потоки почти не блокируются на критических ресурсах. Вместо этого они выполняют свою небольшую неблокируемую задачу и отправляют её в очередь на обработку другими потоками. Может возникнуть ситуация, когда потоки друг другу начинают перекидывать какое-то событие и его обработка зацикливается. Явного бесконечного цикла, как бы, не происходит, но нагрузка на асинхронную систему резко возрастает. В результате чего эти потоки больше ничем не успевают занимаются.
+
+## Что такое DispatchGroup?
+
+`DispatchGroup` уведомляют вас, когда вся группа задач завершена. Эти задачи могут быть синхронными или асинхронными и могут даже быть отслежены из разных очередей. DispatchGroup также уведомляют вас о синхронности или асинхронности, когда все события группы завершены. Так как элементы отслеживаются в различных очередях, то экземпляр dispatch_group_t отслеживает различные задачи в очередях.
+
+## Разница между синхронными и асинхронными задачами
+
+`Синхронная операция` ждет, пока задача не завершится, блокируя тред.  
+`Асинхронная операция` выполняет задачу в фоновом режиме и может уведомить вас по завершению.  
+
+## Зачем использовать synchronized?
+
+`@synchronized` гарантирует, что только один поток может выполнять этот код в блоке в любой момент времени.
+
+## Что такое мьютекс (mutex)?
+
+`Мьютексы` — это простейшие двоичные семафоры, которые могут находиться в одном из двух состояний — отмеченном или неотмеченном. Отличается от семафора тем, что только владеющий им поток может изменить отмеченное состояние
+
+## Что такое семафор (semafor)?
+
+Семафор позволяет выполнять какой-либо участок кода одновременно только конкретному количеству потоков. В основе семафора лежит счетчик, который и определяет, можно ли выполнять участок кода текущему потоку или нет. Если счетчик больше нуля — поток выполняет код, в противном случае — нет. В GCD выглядит так: 
+`semaphore_create` – создание семафора (аналог sem_init)    
+`semaphore_destroy` – удаление, соответственно (аналог sem_destroy)  
+`semaphore_wait` – блокирующее ожидание на семафоре (аналог sem_wait)   
+`semaphore_signal` – освобождение семафора (аналог sem_post) 
