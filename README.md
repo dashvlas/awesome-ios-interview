@@ -1,4 +1,4 @@
-<img src="https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Banner.png">
+<img src="https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Main.png">
 
 ## About
 
