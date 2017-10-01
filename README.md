@@ -5,7 +5,7 @@
 'Awesome Interview' helps you to prepare for an interview and refresh your knowledge.
 We provide a huge variety of questions categories, from concurrency to UI.
 
-<div style="text-align:center"><img src="https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Preview.gif" width="650"></div>
+<p align="center"><img src="https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Preview.gif" width="650"></p>
 
 <img src="https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Artboard-filled-2.png">
 
