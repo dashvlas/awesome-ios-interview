@@ -9,7 +9,7 @@ We provide a huge variety of questions categories, from concurrency to UI.
 
 https://itunes.apple.com/app/id1187318406
 
-<img src="https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Languages.png">
+<img src="https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Artboard-filled.png">
 
 
 ## Contribute
