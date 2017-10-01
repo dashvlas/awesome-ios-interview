@@ -11,7 +11,7 @@
 	- [What is the Test Driven Development?](#What-is-the-Test-Driven-Development-of-three-simple-rules?)
 - [Tasks](#tasks)
 	- [Explain why a compile time error occurs. How can you fix it?](#Explain-why-a-compile-time-error-occurs.-How-can-you-fix-it?)
-	- [Consider the code](#Consider-the-following-code:)
+	- [Consider the code](#consider-code)
 	- [Determine the value of “x” in the Swift code](#Determine-the-value-of-“x”-in-the-Swift-code-below)
 - [SDK](#sdk)
 	- [Application States](#Application-States)
@@ -57,7 +57,7 @@
 	- [Extensions](#extensions)
 	- [KVO](#kvo)
 	- [KVC](#kvc)
-	- [By calling performSelector:withObject:afterDelay: - is the object retained?](#By-calling-performSelector:withObject:afterDelay:-is-the-object-retained?)
+	- [By calling performSelector - is the object retained?](#performSelector)
 	- [What is defer?](#What-is-defer?)
 	- [Selectors](#selectors)
 	- [Any and AnyObject](#What-is-the-difference-Any-and-AnyObject?)
@@ -154,6 +154,7 @@ struct IntStack {
 }
 ``` 
 
+<a name="consider-code"></a>
 ## Consider the following code:
 Task:
 ```objectivec  
@@ -463,6 +464,7 @@ KVO stands for `Key-Value Observing` and allows a controller or class to observe
 ## KVC 
 KVC adds stands for `Key-Value Coding`. It’s a mechanism by which an object’s properties can be accessed using string’s at runtime rather than having to statically know the property names at development time.
 
+<a name="performSelector"></a>
 ## By calling performSelector:withObject:afterDelay: is the object retained?
 Yes, the object is retained. It creates a timer that calls a selector on the current threads run loop. It may not be 100% precise time-wise as it attempts to dequeue the message from
 the run loop and perform the selector
