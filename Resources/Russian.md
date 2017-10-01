@@ -1,4 +1,6 @@
-- [UIKit](#uikit)   
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+- [UIKit](#uikit)
 	- [Чем отличаются bounds и frame?](#чем-отличаются-bounds-и-frame?)   
 	- [Как работает UITableView?](#как-работает-uitableView?)   
 	- [Разница между points и pixels?](#разница-между-points-и-pixels?)   

@@ -1,4 +1,3 @@
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
 <img src="https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Main.png">
 
