@@ -4,7 +4,9 @@
 ## Select language
 We support two languages, so you can select e a huge variety of questions categories, from concurrency to UI.
 
-<a href="https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Russian.md"><img src="https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Artboard-filled-left.png" width="430"> </a><a href="https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/English.md"><img src="https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Artboard-filled-right.png" width="430"></a>
+<a href="https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Russian.md"><img src="https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Artboard-filled-left.png" width=50%> </a>
+
+<a href="https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/English.md"><img src="https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Artboard-filled-right.png" width=50%></a>
 
 <!--'Awesome Interview' helps you to prepare for an interview and refresh your knowledge.-->
 
