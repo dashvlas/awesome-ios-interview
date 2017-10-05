@@ -17,7 +17,7 @@ You are welcome to install free app from the App Store👨🏼‍💻
 
 <!--## Contacts-->
 <!---->
-<!--<!--[https://dashvlas.com](https://dashvlas.com)-->-->
+<!--[https://dashvlas.com](https://dashvlas.com)-->
 <!---->
 <!--dariakorneichuk@icloud.com-->
 
