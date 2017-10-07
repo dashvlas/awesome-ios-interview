@@ -8,6 +8,7 @@ This repo is intended to provide you with a big QA database for an iOS-Interview
 ## About an app
 It's more convenient to have a nice mobile solution to get prepared for the big interview day on the go.  
 You are welcome to install free app from the App Store👨🏼‍💻   
+http://appstore.com/awesomeinterview   
 <p align="center"><img src="https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Devices.jpg"></p>
 
 ## Contribute
