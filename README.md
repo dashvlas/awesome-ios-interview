@@ -2,11 +2,12 @@
 <img src="https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Main.png">
 
 ## Select language
-This repo is intended to provide you with a big QA database for an iOS-Interview. We support 2 languages in README and our app. From here you can just select the language: 🇬🇧 or 🇷🇺. Lets get started!
+This repo is intended to provide you with a big QA database for an iOS-Interview. We support 2 languages in README and our app. From here you can just select the one: 🇬🇧 or 🇷🇺. Lets get started!
 <a href="https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Russian.md"><img src="https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Artboard-filled-left.png" width=50%></a><a href="https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/English.md"><img src="https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Artboard-filled-right.png" width=50%></a>
 
 ## About an app
-It's more convenient to have a nice mobile solution to get prepared for the big Interview day on the go. You are welcome to install free app from the App Store👨🏼‍💻   
+It's more convenient to have a nice mobile solution to get prepared for the big interview day on the go. 
+You are welcome to install free app from the App Store👨🏼‍💻   
 <p align="center"><img src="https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Devices.jpg"></p>
 
 ## Contribute
