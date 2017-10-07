@@ -9,7 +9,7 @@ You are welcome to install free app from the App Store👨🏼‍💻
 
 <!--'Awesome Interview' helps you to prepare for an interview and refresh your knowledge.-->
 
-<p align="center"><img src="https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Main.jpg"></p>
+<p align="center"><img src="https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Devices.jpg"></p>
 
 <!--We provide a huge variety of questions categories, from concurrency to UI-->
 <!--## Question types-->
