@@ -22,13 +22,16 @@
   * [What is Adapter Pattern?](#what-is-adapter-pattern)
   * [What Are B-Trees?](#what-are-b-trees)
   * [What is Memento Pattern?](#what-is-memento-pattern)
-  * [MVC](#mvc)
   * [What is Responder Chain?](#what-is-responder-chain)
-  * [MVVM](#mvvm)
   * [What is Observer Pattern?](#what-is-observer-pattern)
   * [What is Singleton Pattern?](#what-is-singleton-pattern)
   * [What is Decorator Design Pattern?](#what-is-decorator-design-pattern)
   * [What is Facade Design Pattern?](#what-is-facade-design-pattern)
+* [ARCHITECTURE](#acrhitecture)
+    * [MVC](#mvc)
+    * [MVVM](#mvvm)
+    * [MVP](#mvp)
+    * [Viper](#viper)
 * [OOP](#oop)
   * [Inheritance](#inheritance)
   * [Polymorphism](#polymorphism)
@@ -235,17 +238,8 @@ B-trees are search trees that provide an ordered key-value store with excellent 
 ## What is Memento Pattern? 
 In Memento Pattern saves your stuff somewhere. Later on, this externalized state can be restored without violating encapsulation; that is, private data remains private. One of Apple’s specialized implementations of the Memento pattern is Archiving.
 
-## MVC
-`Model` —   responsible for the domain data or a data access layer which manipulates the data, think of ‘Person’ or ‘PersonDataProvider’ classes.
-`Views`  —  responsible for the presentation layer (GUI), for iOS environment think of everything starting with ‘UI’ prefix.
-`Controller/Presenter/ViewModel` —  mediator between the Model and the View, in general responsible for altering the Model by reacting to the user’s actions performed on the View and updating the View with changes from the Model.
-
 ## What is Responder Chain? 
 A ResponderChain is a hierarchy of objects that have the opportunity to respond to events received.
-
-## MVVM 
-UIKit independent representation of your View and its state. The View Model invokes changes in the Model and updates itself with the updated Model, and since we have a binding between the View and the View Model, the first is updated accordingly.
-Your `View Model` will actually take in your model, and it can format the information that’s going to be displayed on your view.
 
 ## What is Observer Pattern?
 In the Observer pattern, one object notifies other objects of any state changes.
@@ -258,6 +252,65 @@ The Decorator pattern dynamically adds behaviors and responsibilities to an obje
 
 ## What is Facade Design Pattern? 
 The Facade design pattern provides a single interface to a complex subsystem. Instead of exposing the user to a set of classes and their APIs, you only expose one simple unified API.
+
+# ARCHITECTURE
+
+### MVC
+`Model` —   responsible for the domain data or a data access layer which manipulates the data, think of ‘Person’ or ‘PersonDataProvider’ classes.
+`Views`  —  responsible for the presentation layer (GUI), for iOS environment think of everything starting with ‘UI’ prefix.
+`Controller/Presenter/ViewModel` —  mediator between the Model and the View, in general responsible for altering the Model by reacting to the user’s actions performed on the View and updating the View with changes from the Model.
+
+## MVVM
+
+The MVVM defines the following
+·      The View , which is generally passive, corresponds to the Presentation Layer
+·      The Model , corresponds to the Business Logic Layer and is identical to the MVC pattern
+·      The View Model sits between the View and the Model , corresponds to the Application Logic Layer
+
+The key aspect of the MVVM pattern is the binding between the View and the View Model.  In other words, the View is automatically notified of changes to the View Model.
+
+In iOS, this can be accomplished using Key-Value-Observer (KVO) Pattern. In the KVO Pattern (https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/KeyValueObserving/KeyValueObserving.html) , one object is automatically notified of changes to the state of another object. In Objective C, this facility is built into the run-time. However, it’s not as straightforward in Swift. One option would be to add the “dynamic” modifiers to properties that need to be dynamically dispatched. However, this is limiting as objects now need to be of type NSObject.  The alternate is to simulate this behavior by defining a generic type that acts as a wrapper around properties that are observable.
+
+## MVP
+The MVP defines the following
+·      The View , which is generally passive, corresponds to the  Presentation Layer
+·      The Model , corresponds to the  Business Logic Layer and is identical to the MVC pattern
+·      The Presenter sits between the View and the Model , corresponds to the Application Logic Layer.
+A View is typically associated with one Presenter.
+
+In iOS, the interaction between the View and Presenter can be implemented using the Delegation Pattern (https://developer.apple.com/library/content/documentation/General/Conceptual/DevPedia-CocoaCore/Delegation.html). The Delegation Pattern allows one object to delegate tasks to another object. In iOS, the pattern is implemented using a Protocol. The Protocol defines the interface that is to be implemented by the delegate.
+
+In the MVP pattern, the View and Presenter are aware of each other. The Presenter holds a reference to the view it is associated with.
+
+The PresenterProtocol defines the base set of methods that any Presenter must implement. Applications must extend this Protocol to include application specific methods.
+
+```swift
+protocol PresenterProtocol: class{
+    func attachPresentingView(_view:PresentingViewProtocol)
+    func detachPresentingView(_view:PresentingViewProtocol)
+}
+```
+
+The PresentingViewProtocol  defines the base set of methods that View must implement. By providing default implementation of the methods in this interface, the conformant view does not have to provide its own implementation. This interface can be extended to define application specific methods.
+
+```swift
+protocol PresentingViewProtocol: class{
+    func dataStartedLoading()
+    func dataFinishedLoading()
+    func showErrorAlertWithTitle(_title:String?, message:String)
+    func showSuccessAlertWithTitle(_title:String?, message:String)
+}
+```
+
+## Viper
+
+This architecture is based on Single Responsibility Principle which leads to a clean architecture.
+
+- View: The responsibility of the view is to send the user actions to the presenter and shows whatever the presenter tells it.
+- Interactor: This is the backbone of an application as it contains the business logic.
+- Presenter: Its responsibility is to get the data from the interactor on user actions and after getting data from the interactor, it sends it to the view to show it. It also asks the router/wireframe for navigation.
+- Entity: It contains basic model objects used by the Interactor.
+- Router: It has all navigation logic for describing which screens are to be shown when. It is normally written as a wireframe.
 
 # OOP
 ### Inheritance
