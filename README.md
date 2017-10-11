@@ -10,7 +10,7 @@ It's more convenient to have a nice mobile solution to prepare for the interview
 <p align="center"><img src="https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Devices.jpg"></p>
 
 ## Available question types
-<p align="center"><img src="https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Available QA types@1x.png"></p>
+<p align="center"><img src="https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Available QA types.png"></p>
 
 ## Contribute
 ⏰ App is updated once a week.
