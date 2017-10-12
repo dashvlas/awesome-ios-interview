@@ -5,11 +5,11 @@
   * [Size Classes](#size-classes)
   * [Intrinsic Content Size](#intrinsic-content-size)
   * [What’s the difference between the frame and the bounds?](#whats-the-difference-between-the-frame-and-the-bounds)
-* [TESTING](#testing)
+* [Testing](#testing)
   * [What is the benefit writing tests in iOS apps?](#what-is-the-benefit-writing-tests-in-ios-apps)
   * [Please explain “Arrange-Act-Assert”](#please-explain-arrange-act-assert)
   * [What is the Test Driven Development of three simple rules?](#what-is-the-test-driven-development-of-three-simple-rules)
-* [TASKS](#tasks)
+* [Tasks](#tasks)
   * [Explain why a compile time error occurs. How can you fix it?](#explain-why-a-compile-time-error-occurs-how-can-you-fix-it)
   * [Consider the following code:](#consider-the-following-code)
   * [Determine the value of “x” in the Swift code below](#determine-the-value-of-x-in-the-swift-code-below)
@@ -18,7 +18,7 @@
   * [Can you explain what happens when you call autorelease on an object?](#can-you-explain-what-happens-when-you-call-autorelease-on-an-object)
   * [What are iBeacons?](#what-are-ibeacons)
   * [What kind of JSONSerialization have ReadingOptions?](#what-kind-of-jsonserialization-have-readingoptions)
-* [PATTERNS](#patterns)
+* [Patterns](#patterns)
   * [What is Adapter Pattern?](#what-is-adapter-pattern)
   * [What Are B-Trees?](#what-are-b-trees)
   * [What is Memento Pattern?](#what-is-memento-pattern)
@@ -27,7 +27,7 @@
   * [What is Singleton Pattern?](#what-is-singleton-pattern)
   * [What is Decorator Design Pattern?](#what-is-decorator-design-pattern)
   * [What is Facade Design Pattern?](#what-is-facade-design-pattern)
-* [ARCHITECTURE](#acrhitecture)
+* [Architecture](#acrhitecture)
     * [MVC](#mvc)
     * [MVVM](#mvvm)
     * [MVP](#mvp)
@@ -37,7 +37,7 @@
   * [Polymorphism](#polymorphism)
   * [Encapsulation](#encapsulation)
   * [What is the abstract class?](#what-is-the-abstract-class)
-* [LANGUAGE](#language)
+* [Language](#language)
   * [What is the difference fileprivate and private access level?](#what-is-the-difference-fileprivate-and-private-access-level)
   * [What is final class?](#what-is-final-class)
   * [Structs vs Classes](#structs-vs-classes)
@@ -49,7 +49,7 @@
   * [Difference between raw and associated values in Swift](#difference-between-raw-and-associated-values-in-swift)
   * [Can you briefly describe differences between Swift and Objective-C?](#can-you-briefly-describe-differences-between-swift-and-objective-c)
   * [What is the difference Non-Escaping and Escaping Closures?](#what-is-the-difference-non-escaping-and-escaping-closures)
-  * [Please explain Method Swizzling in Swift](#please-explain-method-swizzling-in-swift)
+  * [Please explain Method Swizzling](#please-explain-method-swizzling)
   * [How should one handle errors in Swift?](#how-should-one-handle-errors-in-swift)
   * [What is the difference strong, weak, readonly and copy?](#what-is-the-difference-strong-weak-readonly-and-copy)
   * [What are benefits of Guard?](#what-are-benefits-of-guard)
@@ -65,17 +65,17 @@
   * [What is defer?](#what-is-defer)
   * [Selectors](#selectors)
   * [What is the difference Any and AnyObject?](#what-is-the-difference-any-and-anyobject)
-* [GENERAL](#general)
+* [General](#general)
   * [HTTP request types](#http-request-types)
   * [REST](#rest)
   * [Deep and shallow copy](#deep-and-shallow-copy)
-* [DATA](#data)
+* [Data](#data)
   * [How does NSManagedObjectContext work?](#how-does-nsmanagedobjectcontext-work)
   * [NSFetchedResultsController](#nsfetchedresultscontroller)
   * [NSPersistentContainer](#nspersistentcontainer)
   * [Managed object context and the functionality that it provides](#managed-object-context-and-the-functionality-that-it-provides)
   * [What is NSFetchRequest?](#what-is-nsfetchrequest)
-* [CONCURRENCY](#concurrency)
+* [Concurrency](#concurrency)
   * [Different ways of achieving concurrency in OS X and iOS](#different-ways-of-achieving-concurrency-in-os-x-and-ios)
   * [What is DispatchGroup?](#what-is-dispatchgroup)
   * [Synchronized](#synchronized)
@@ -420,12 +420,29 @@ Escaping closure means, inside the function, you can still run the closure (or n
 Asynchronous execution: If you execute the closure asynchronously on a dispatch queue, the queue will hold onto the closure for you. You have no idea when the closure will be executed and there’s no guarantee it will complete before the function returns.
 Storage: Storing the closure to a global variable, property, or any other bit of storage that lives on past the function call means the closure has also escaped.
 
-## Please explain Method Swizzling in Swift
-Method Swizzling is a well known practice in Objective-C and in other languages that support dynamic method dispatching.
-Through swizzling, the implementation of a method can be replaced with a different one at runtime, by changing the mapping between a specific #selector(method) and the function that contains its implementation.
-To use method swizzling with your Swift classes there are two requirements that you must comply with:
-The class containing the methods to be swizzled must extend NSObject
-The methods you want to swizzle must have the dynamic attribute
+## Please explain Method Swizzling
+
+Method swizzling allows the implementation of an existing selector to be switched at runtime for a different implementation in a classes dispatch table. Swizzling allows you to write code that can be executed before and/or after the original method. For example perhaps to track the time method execution took, or to insert log statements.  
+
+```objectivec
+#import "UIViewController+Log.h"
+@implementation UIViewController (Log)
+    + (void)load {
+        static dispatch_once_t once_token;
+        dispatch_once(&once_token,  ^{
+            SEL viewWillAppearSelector = @selector(viewDidAppear:);
+            SEL viewWillAppearLoggerSelector = @selector(log_viewDidAppear:);
+            Method originalMethod = class_getInstanceMethod(self, viewWillAppearSelector);
+            Method extendedMethod = class_getInstanceMethod(self, viewWillAppearLoggerSelector);
+            method_exchangeImplementations(originalMethod, extendedMethod);
+        });
+    }
+    - (void) log_viewDidAppear:(BOOL)animated {
+        [self log_viewDidAppear:animated];
+        NSLog(@"viewDidAppear executed for %@", [self class]);
+    }
+@end
+```
 
 ## How should one handle errors in Swift?
 The method for handling errors in Swift differ a bit from Objective-C. In Swift, it's possible to declare that a function throws an error. It is, therefore, the caller's responsibility to handle the error or propagate it. This is similar to how Java handles the situation.
