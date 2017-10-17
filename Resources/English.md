@@ -80,6 +80,7 @@
    	* [CFStream](#cfstream)
     * [NSStream](#nsstream)
   * [REST](#rest)
+  * [SOAP](#soap)
   * [Deep and shallow copy](#deep-and-shallow-copy)
   * [Protocol Oriented Programming](#protocol-oriented-programming)
 * [Data](#data)
@@ -690,6 +691,12 @@ GET requests should never be used for updating information. For example, a GET r
 server.com/addToCart?cart=314159&thing=1723
 
 would not be appropriate. GET requests should be idempotent. That is, issuing a request twice should be no different from issuing it once. That’s what makes the requests cacheable. An “add to cart” request is not idempotent—issuing it twice adds two copies of the item to the cart. A POST request is clearly appropriate in this context. Thus, even a RESTful web application needs its share of POST requests.
+
+## SOAP
+
+SOAP (originally Simple Object Access Protocol) is a protocol specification for exchanging structured information in the implementation of web services in computer networks. Its purpose is to induce extensibility, neutrality and independence. It uses XML Information Set for its message format, and relies on application layer protocols, most often Hypertext Transfer Protocol (HTTP) or Simple Mail Transfer Protocol (SMTP), for message negotiation and transmission.
+
+SOAP allows processes running on disparate operating systems (such as Windows and Linux) to communicate using Extensible Markup Language (XML). Since Web protocols like HTTP are installed and running on all operating systems, SOAP allows clients to invoke web services and receive responses independent of language and platforms.
 
 ## Deep and shallow copy
 There are two kinds of object copying: shallow copies and deep copies. The normal copy is a shallow copy that produces a new collection that shares ownership of the objects with the original. Deep copies create new objects from the originals and add those to the new collection.
