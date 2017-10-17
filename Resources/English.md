@@ -78,9 +78,10 @@
    	* [TCP](#tcp)
    	* [UDP](#udp)
    	* [CFStream](#cfstream)
-        * [NSStream](#nsstream)
+    * [NSStream](#nsstream)
   * [REST](#rest)
   * [Deep and shallow copy](#deep-and-shallow-copy)
+  * [Protocol Oriented Programming](#protocol-oriented-programming)
 * [Data](#data)
   * [How does NSManagedObjectContext work?](#how-does-nsmanagedobjectcontext-work)
   * [NSFetchedResultsController](#nsfetchedresultscontroller)
@@ -676,6 +677,22 @@ would not be appropriate. GET requests should be idempotent. That is, issuing a 
 
 ## Deep and shallow copy
 There are two kinds of object copying: shallow copies and deep copies. The normal copy is a shallow copy that produces a new collection that shares ownership of the objects with the original. Deep copies create new objects from the originals and add those to the new collection.
+
+## Protocol Oriented Programming
+
+Protocol-Oriented Programming is a new programming paradigm ushered in by Swift 2.0. In the Protocol-Oriented approach, we start designing our system by defining protocols. We rely on new concepts: protocol extensions, protocol inheritance, and protocol compositions. The paradigm also changes how we view semantics. In Swift, value types are preferred over classes. However, object-oriented concepts don’t work well with structs and enums: a struct cannot inherit from another struct, neither can an enum inherit from another enum. So inheritancefa - one of the fundamental object-oriented concepts - cannot be applied to value types. On the other hand, value types can inherit from protocols, even multiple protocols. Thus, with POP, value types have become first class citizens in Swift.
+
+__Protocol Extensions__
+
+You can extend a protocol and provide default implementation for methods, computed properties, subscripts and convenience initializers.
+
+__Protocol Inheritance__
+
+A protocol can inherit from other protocols and then add further requirements on top of the requirements it inherits.
+
+__Protocol Composition__
+
+Swift types can adopt multiple protocols.
 
 # DATA
 ### How does NSManagedObjectContext work?
