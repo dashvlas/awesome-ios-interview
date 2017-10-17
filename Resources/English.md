@@ -132,11 +132,11 @@ The Intrinsic Content Size is one of the most powerful features you gain when yo
 `The bounds` of an UIView is the rectangle, expressed as a location (x,y) and size (width,height) relative to its own coordinate system (0,0)   
 `The frame` of an UIView is the rectangle, expressed as a location (x,y) and size (width,height) relative to the superview it is contained within.  
 
-# TESTING
+## TESTING
   
 ### Test types
 
-### Unit Tests
+## Unit Tests
 Tests the smallest unit of functionality, typically a method/function (e.g. given a class with a particular state, calling x method on the class should cause y to happen). Unit tests should be focussed on one particular feature (e.g., calling the pop method when the stack is empty should throw an InvalidOperationException). Everything it touches should be done in memory; this means that the test code and the code under test shouldn't:
 
 1.	Call out into (non-trivial) collaborators
@@ -148,16 +148,16 @@ Tests the smallest unit of functionality, typically a method/function (e.g. give
 Any kind of dependency that is slow / hard to understand / initialise / manipulate should be stubbed / mocked / whatevered using the appropriate techniques so you can focus on what the unit of code is doing, not what its dependencies do.
 In short, unit tests are as simple as possible, easy to debug, reliable (due to reduced external factors), fast to execute and help to prove that the smallest building blocks of your program function as intended before they're put together. The caveat is that, although you can prove they work perfectly in isolation, the units of code may blow up when combined which brings us to ...
 
-### Integration Tests
+## Integration Tests
 Integration tests build on unit tests by combining the units of code and testing that the resulting combination functions correctly. This can be either the innards of one system, or combining multiple systems together to do something useful. Also, another thing that differentiates integration tests from unit tests is the environment. Integration tests can and will use threads, access the database or do whatever is required to ensure that all of the code and the different environment changes will work correctly.
 If you've built some serialization code and unit tested its innards without touching the disk, how do you know that it'll work when you are loading and saving to disk? Maybe you forgot to flush and dispose filestreams. Maybe your file permissions are incorrect and you've tested the innards using in memory streams. The only way to find out for sure is to test it 'for real' using an environment that is closest to production.
 The main advantage is that they will find bugs that unit tests can't such as wiring bugs (e.g. an instance of class A unexpectedly receives a null instance of B) and environment bugs (it runs fine on my single-CPU machine, but my colleague's 4 core machine can't pass the tests). The main disadvantage is that integration tests touch more code, are less reliable, failures are harder to diagnose and the tests are harder to maintain.
 Also, integration tests don't necessarily prove that a complete feature works. The user may not care about the internal details of my programs, but I do!
 
-### Functional Tests
+## Functional Tests
 Functional tests check a particular feature for correctness by comparing the results for a given input against the specification. Functional tests don't concern themselves with intermediate results or side-effects, just the result (they don't care that after doing x, object y has state z). They are written to test part of the specification such as, "calling function `Square(x)` with the argument of `2` returns `4`".
 
-### Acceptance Tests
+## Acceptance Tests
 Acceptance testing seems to be split into two types:
 Standard acceptance testing involves performing tests on the full system (e.g. using your web page via a web browser) to see whether the application's functionality satisfies the specification. E.g. "clicking a zoom icon should enlarge the document view by 25%." There is no real continuum of results, just a pass or fail outcome.
 The advantage is that the tests are described in plain English and ensures the software, as a whole, is feature complete. The disadvantage is that you've moved another level up the testing pyramid. Acceptance tests touch mountains of code, so tracking down a failure can be tricky.
@@ -175,14 +175,13 @@ Arrange all necessary preconditions and inputs.
 Act on the object or method under test.
 Assert that the expected results have occurred.
 
-
 ## What is the Test Driven Development of three simple rules?
 You are not allowed to write any production code unless it is to make a failing unit test pass.
 You are not allowed to write any more of a unit test than is sufficient to fail; and compilation failures are failures.
 You are not allowed to write any more production code than is sufficient to pass the one failing unit test.
 
+## Tasks
 
-# TASKS
 ### Explain why a compile time error occurs. How can you fix it?
 Task:
 The following code snippet results in a compile time error:
@@ -237,6 +236,7 @@ if userPref != nil {
     printString(userPref!)
 }
 ``` 
+
 ## Determine the value of “x” in the Swift code below
 Task: 
 ```swift  
@@ -253,7 +253,8 @@ a1 = [1, 2, 3, 4, 5]
 a2 = [1, 2, 3, 4, 5, 6]  
 ``` 
 
-# SDK
+## SDK
+
 ### Application States
 The iOS application states are as follows:
 
@@ -278,7 +279,8 @@ iBeacon.com defines iBeacon as Apple’s technology standard which allows Mobile
 - MutableLeaves specifies that leaf strings in the JSON object graph are created as instances of variable String   
 - AllowFragments specifies that the parser should allow top-level objects that are not an instance of Array or Dictionary   
 
-# PATTERNS
+# Patterns
+
 ### What is Adapter Pattern? 
 An Adapter allows classes with incompatible interfaces to work together. It wraps itself around an object and exposes a standard interface to interact with that object.
 
@@ -303,7 +305,7 @@ The Decorator pattern dynamically adds behaviors and responsibilities to an obje
 ## What is Facade Design Pattern? 
 The Facade design pattern provides a single interface to a complex subsystem. Instead of exposing the user to a set of classes and their APIs, you only expose one simple unified API.
 
-# ARCHITECTURE
+# Architechture
 
 ### MVC
 `Model` —   responsible for the domain data or a data access layer which manipulates the data, think of ‘Person’ or ‘PersonDataProvider’ classes.
@@ -362,7 +364,8 @@ This architecture is based on Single Responsibility Principle which leads to a c
 - Entity: It contains basic model objects used by the Interactor.
 - Router: It has all navigation logic for describing which screens are to be shown when. It is normally written as a wireframe.
 
-# OOP
+## OOP
+
 ### Inheritance
 It allows a class to be defined that has a certain set of characteristics (such as methods and instance variables) and then other classes to be created which are derived from that class. The derived class inherits all of the features of the parent class and typically then adds some features of its own.
 
@@ -385,7 +388,8 @@ The purpose of this is to provide a kind of template to inherit from and to forc
 
 An abstract class thus is something between a regular class and a pure interface. Also interfaces are a special case of abstract classes where ALL methods are abstract
 
-# LANGUAGE
+## Language
+
 ### What is the difference fileprivate and private access level?
 `Fileprivate` is accessible within the current file, private is accessible within the current declaration.
 
@@ -584,14 +588,12 @@ KVO stands for `Key-Value Observing` and allows a controller or class to observe
 ## KVC 
 KVC adds stands for `Key-Value Coding`. It’s a mechanism by which an object’s properties can be accessed using string’s at runtime rather than having to statically know the property names at development time.
 
-
 ## By calling performSelector:withObject:afterDelay: is the object retained?
 Yes, the object is retained. It creates a timer that calls a selector on the current threads run loop. It may not be 100% precise time-wise as it attempts to dequeue the message from
 the run loop and perform the selector
 
 ## What is defer?
 `defer` keyword which provides a block of code that will be executed in the case when execution is leaving the current scope.
-
 
 ## Selectors
 In Objective-C, selector has two meanings. It can be used to refer simply to the name of a method when it’s used in a source-code message to an object. It also, though, refers to the unique identifier that replaces the name when the source code is compiled. Compiled selectors are of type SEL. All methods with the same name have the same selector. You can use a selector to invoke a method on an object—this provides the basis for the implementation of the target-action design pattern in Cocoa
@@ -605,8 +607,8 @@ According to Apple’s Swift documentation:
 Any can represent an instance of any type at all, including function types and optional types.
 AnyObject can represent an instance of any class type.
 
+## General
 
-# GENERAL
 ### HTTP request types
 An HTTP request is a class consisting of HTTP style requests, request lines, request methods, request URL, header fields, and body content. The most common methods that are used by a client in an HTTP request are as follows:
 
@@ -619,14 +621,19 @@ An HTTP request is a class consisting of HTTP style requests, request lines, req
 4) PUT:- Used when the client is sending a replacement document or uploading a new document to the Web server under the request URL.  
 
 ## Communication protocols
+
 ### Network socket
+
 __Network socket__ is an internal endpoint for sending or receiving data at a single node in a computer network. Concretely, it is a representation of this endpoint in networking software (protocol stack), such as an entry in a table (listing communication protocol, destination, status, etc.), and is a form of system resource.
 The term "socket" is analogous to physical female connectors, communication between two nodes through a channel being visualized as a cable with two male connectors plugging into sockets at each node. Similarly, the term "port" (another term for a female connector) is used for external endpoints at a node, and the term "socket" is also used for an internal endpoint of local inter-process communication (IPC) (not over a network). However, the analogy is strained, as network communication need not be one-to-one or have a channel.
-### WebSocket
+
+## WebSocket
+
 __WebSocket__ is a computer communications protocol, providing full-duplex communication channels over a single TCP connection. The WebSocket protocol was standardized by the IETF as RFC 6455 in 2011, and the WebSocket API in Web IDL is being standardized by the W3C.
 WebSocket is a different TCP protocol from HTTP. Both protocols are located at layer 7 in the OSI model and, as such, depend on TCP at layer 4. Although they are different, RFC 6455 states that WebSocket "is designed to work over HTTP ports 80 and 443 as well as to support HTTP proxies and intermediaries" thus making it compatible with the HTTP protocol. To achieve compability, the WebSocket handshake uses the HTTP Upgrade header[1] to change from the HTTP protocol to the WebSocket protocol.
 The WebSocket protocol enables interaction between a browser and a web server with lower overheads, facilitating real-time data transfer from and to the server. This is made possible by providing a standardized way for the server to send content to the browser without being solicited by the client, and allowing for messages to be passed back and forth while keeping the connection open. In this way, a two-way (bi-directional) ongoing conversation can take place between a browser and the server. The communications are done over TCP port number 80 (or 443 in the case of TLS-encrypted connections), which is of benefit for those environments which block non-web Internet connections using a firewall. Similar two-way browser-server communications have been achieved in non-standardized ways using stopgap technologies such as Comet.
-### TCP Stream Socket
+
+## TCP Stream Socket
 Is much more commonly used, as it provides the framework for a complete, structured "conversation" to occur between the two endpoints. TCP connections provide a means to ensure the message was received, and guarantees that packets are received in order. TCP is used by protocols including HTTP, FTP, and others where data must be reliably sent and received in order. To keep track of the ordering of packets, TCP employs a sequence number, which identifies the sequence of each packet. This not only keeps your conversation in order, but also adds a basic level of protection against some forms of spoofing (data forgery by a malicious party).
 
 * Dedicated & point-to-point channel between server and client.
@@ -634,7 +641,8 @@ Is much more commonly used, as it provides the framework for a complete, structu
 * Data sent/received in the similar order.
 * Long time for recovering lost/mistaken data
 * Web, SSH, FTP, TELNET, SMTP, IMAP/POP
-### UDP Datagram Socket
+
+## UDP Datagram Socket
 
 Is used for sending short messages called datagrams to the recipient. Datagrams are single packets of data that are sent and received without any "return postage." There is no guarantee that the recipient will receive a particular packet, and multiple packets may be received out of order. Datagrams are generally thought of as unreliable, in the same way that a carrier pigeon can be unreliable. This form of communication is used for sending short query/response-type messages that do not require authentication, such as DNS (name resolution) lookups, as well as by some protocols where lost packets are irrelevant; such as live video streams and online multiplayer games, where an interruption can be ignored.
 
@@ -658,10 +666,11 @@ CFSocketRef CFSocketCreate (
     const CFSocketContext *context
 );
 ```
-### CFStream
+## CFStream
 
 Socket streams provide an easy interface for reading and writing data to or from a socket. Each socket can be bound to a read and write stream, allowing for synchronous or asynchronous communication. Streams encapsulate most of the work needed for reading and writing byte streams, and replace the traditional `send()` and `recv()` functions used in C. Two different stream objects are used with sockets: `CFReadStream` and `CFWriteStream`
-### NSStream
+
+## NSStream
 
 __`NSStream`__ is an abstract class that defines the fundamental interface and properties for all stream objects. `NSInputStream` and `NSOutputStream` are subclasses of `NSStream` and implement default input-stream and output-stream behavior. `NSStream` is built on the `CFStream` layer of Core Foundation. This close relationship means that the concrete subclasses of `NSStream`, `NSOutputStream` and `NSInputStream`, are toll-free bridged with their Core Foundation counterparts `CFWriteStream` and `CFReadStream`. Although there are strong similarities between the Cocoa and Core Foundation stream APIs, their implementations are not exactly coincident. The Cocoa stream classes use the delegation model for asynchronous behavior (assuming run-loop scheduling) while Core Foundation uses client callbacks. Despite their strong similarities, __`NSStream` does give you a major advantage over `CFStream`. Because of its Objective-C underpinnings, it is extensible.__ You can subclass `NSStream`, `NSInputStream`, or `NSOutputStream` to customize stream attributes and behavior. For example, you could create an input stream that maintains statistics on the bytes it reads; or you could make a `NSStream` subclass whose instances can seek through their stream, putting back bytes that have been read. `NSStream` has its own set of required overrides, as do `NSInputStream` and `NSOutputStream`.
 
@@ -701,7 +710,8 @@ __Protocol Composition__
 
 Swift types can adopt multiple protocols.
 
-# DATA
+## Data
+
 ### How does NSManagedObjectContext work?
 `Managed object context` exists for three reasons: life-cycle management, notifications, and concurrency. It allows the developer to fetch an object from a persistent store and make the necessary modifications before deciding whether to discard or commit these changes back to the persistent store. The managed object context tracks these changes and allows the developer to undo and redo changes.
 
@@ -726,7 +736,7 @@ Concurrency. Core Data uses thread (or serialized queue) confinement to protect 
 ## What is NSFetchRequest?
 `NSFetchRequest` is the class responsible for fetching from Core Data. Fetch requests are both powerful and flexible. You can use fetch requests to fetch a set of objects meeting the provided criteria, individual values and more.
 
-# CONCURRENCY
+## Concurrency
 
 ### Different ways of achieving concurrency in OS X and iOS
 There are basically three ways of achieving concurrency in iOS:  
@@ -795,7 +805,7 @@ Dispatch sources are a C-based mechanism __for processing specific types of syst
 - sync - concurrent: the code runs on a background thread but the main thread waits for it to finish, blocking any updates to the UI. The block can't assume that it's the only block running on that queue (I could have added another block using async a few seconds previously)
 - sync - serial: the code runs on a background thread but the main thread waits for it to finish, blocking any updates to the UI. The block can assume that it's the only block running on that queue
 
-#### Swift 3 API
+### Swift 3 API
 
 The QoS classes are:
 * User-interactive: This represents tasks that need to be done immediately in order to provide a nice user experience. Use it for UI updates, event handling and small workloads that require low latency. The total amount of work done in this class during the execution of your app should be small. This should run on the main thread.
