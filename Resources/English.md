@@ -99,6 +99,7 @@
   * [Semaphore](#semaphore)
   * [Lock](#lock)
   * [Mutex](#mutex)
+  * [Semaphore vs Mutex vs Lock](#semaphore-vs-mutex-vs-lock)
 
 # UIKit
 ### How could you setup Live Rendering?
@@ -726,6 +727,7 @@ Concurrency. Core Data uses thread (or serialized queue) confinement to protect 
 `NSFetchRequest` is the class responsible for fetching from Core Data. Fetch requests are both powerful and flexible. You can use fetch requests to fetch a set of objects meeting the provided criteria, individual values and more.
 
 # CONCURRENCY
+
 ### Different ways of achieving concurrency in OS X and iOS
 There are basically three ways of achieving concurrency in iOS:  
 1. threads  
@@ -857,13 +859,13 @@ _Is the number of free identical toilet keys. Example, say we have four toilets 
 
 Variable or abstract data type used to control access to a common resource by multiple processes in a concurrent system. A trivial semaphore is a plain variable that is changed (for example, incremented or decremented, or toggled) depending on programmer-defined conditions. The variable is then used as a condition to control access to some system resource. A useful way to think of a semaphore as used in the real-world systems is as a record of how many units of a particular resource are available, coupled with operations to adjust that record safely (i.e. to avoid race conditions) as units are required or become free, and, if necessary, wait until a unit of the resource becomes available. Semaphores are a useful tool in the prevention of race conditions; however, their use is by no means a guarantee that a program is free from these problems. Semaphores which allow an arbitrary resource count are called __counting semaphores__, while semaphores which are restricted to the values 0 and 1 (or locked/unlocked, unavailable/available) are called __binary semaphores__ and are used to implement locks.
 
-### Lock
+## Lock
 Mechanism for enforcing limits on access to a resource in an environment where there are many threads of execution. A lock is designed to enforce a mutual exclusion concurrency control policy.
 
-### Mutex
+## Mutex
 _Is a key to a toilet. One person can have the key - occupy the toilet - at the time. When finished, the person gives (frees) the key to the next person in the queue._
 
-__semaphore vs. mutex vs. lock__
+## Semaphore vs Mutex vs Lock
 
 __Explanation 1__
 
