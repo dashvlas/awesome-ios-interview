@@ -89,13 +89,16 @@
   * [Managed object context and the functionality that it provides](#managed-object-context-and-the-functionality-that-it-provides)
   * [What is NSFetchRequest?](#what-is-nsfetchrequest)
 * [Concurrency](#concurrency)
-  * [Different ways of achieving concurrency in OS X and iOS](#different-ways-of-achieving-concurrency-in-os-x-and-ios)
+  * [Achieving concurrency in OS X and iOS](#different-ways-of-achieving-concurrency-in-os-x-and-ios)
   * [NSThread](#nsthread)
   * [GCD](#gcd)
   * [NSOperationQueue](#nsoperationqueue)
-  * [What is DispatchGroup?](#what-is-dispatchgroup)
-  * [Synchronized](#synchronized)
-  * [What is the difference between Synchronous &amp; Asynchronous task?](#what-is-the-difference-between-synchronous--asynchronous-task)
+  * [DispatchGroup](#what-is-dispatchgroup)
+  * [@synchronized](#synchronized)
+  * [Synchronous &amp; asynchronous tasks](#what-is-the-difference-between-synchronous--asynchronous-task)
+  * [Semaphore](#semaphore)
+  * [Lock](#lock)
+  * [Mutex](#mutex)
 
 # UIKit
 ### How could you setup Live Rendering?
@@ -847,3 +850,28 @@ Now the above code is perfectly thread safe..Now Multiple threads can change the
 ## What is the difference between Synchronous & Asynchronous task?
 `Synchronous`: waits until the task has completed
 `Asynchronous`: completes a task in background and can notify you when complete
+
+## Semaphore
+
+_Is the number of free identical toilet keys. Example, say we have four toilets with identical locks and keys. The semaphore count - the count of keys - is set to 4 at beginning (all four toilets are free), then the count value is decremented as people are coming in. If all toilets are full, ie. there are no free keys left, the semaphore count is 0. Now, when eq. one person leaves the toilet, semaphore is increased to 1 (one free key), and given to the next person in the queue._
+
+Variable or abstract data type used to control access to a common resource by multiple processes in a concurrent system. A trivial semaphore is a plain variable that is changed (for example, incremented or decremented, or toggled) depending on programmer-defined conditions. The variable is then used as a condition to control access to some system resource. A useful way to think of a semaphore as used in the real-world systems is as a record of how many units of a particular resource are available, coupled with operations to adjust that record safely (i.e. to avoid race conditions) as units are required or become free, and, if necessary, wait until a unit of the resource becomes available. Semaphores are a useful tool in the prevention of race conditions; however, their use is by no means a guarantee that a program is free from these problems. Semaphores which allow an arbitrary resource count are called __counting semaphores__, while semaphores which are restricted to the values 0 and 1 (or locked/unlocked, unavailable/available) are called __binary semaphores__ and are used to implement locks.
+
+### Lock
+Mechanism for enforcing limits on access to a resource in an environment where there are many threads of execution. A lock is designed to enforce a mutual exclusion concurrency control policy.
+
+### Mutex
+_Is a key to a toilet. One person can have the key - occupy the toilet - at the time. When finished, the person gives (frees) the key to the next person in the queue._
+
+__semaphore vs. mutex vs. lock__
+
+__Explanation 1__
+
+A mutex is essentially the same thing as a binary semaphore and sometimes uses the same basic implementation. The differences between them are in how they are used. While a binary semaphore may be used as a mutex, a mutex is a more specific use-case, in that only the thread that locked the mutex is supposed to unlock it.
+A mutex is a synchronization object. You acquire a lock on a mutex at the beginning of a section of code, and release it at the end, in order to ensure that no other thread is accessing the same data at the same time. A mutex typically has a lifetime equal to that of the data it is protecting, and that one mutex is accessed by multiple threads.
+A lock object is an object that encapsulates that lock. When the object is constructed it acquires the lock on the mutex. When it is destructed the lock is released. You typically create a new lock object for every access to the shared data.
+
+__Explanation 2__
+
+A mutex is an object which can be locked. A lock is the object which maintains the lock. To create a lock, you need to pass it a mutex.
+
