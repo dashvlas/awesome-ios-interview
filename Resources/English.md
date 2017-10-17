@@ -1,6 +1,6 @@
 * [UIKit](#uikit)
   * [Live Rendering](#how-could-you-setup-live-rendering)
-  * [What are different ways that you can specify the layout of elements in a UIView?](#what-are-different-ways-that-you-can-specify-the-layout-of-elements-in-a-uiview)
+  * [Ways of specifying the layout of elements in a UIView](#what-are-different-ways-that-you-can-specify-the-layout-of-elements-in-a-uiview)
   * [Autolayout formula](#formula-of-autolayout)
   * [Size Classes](#size-classes)
   * [Intrinsic Content Size](#intrinsic-content-size)
@@ -90,6 +90,9 @@
   * [What is NSFetchRequest?](#what-is-nsfetchrequest)
 * [Concurrency](#concurrency)
   * [Different ways of achieving concurrency in OS X and iOS](#different-ways-of-achieving-concurrency-in-os-x-and-ios)
+  * [NSThread](#nsthread)
+  * [GCD](#gcd)
+  * [NSOperationQueue](#nsoperationqueue)
   * [What is DispatchGroup?](#what-is-dispatchgroup)
   * [Synchronized](#synchronized)
   * [What is the difference between Synchronous &amp; Asynchronous task?](#what-is-the-difference-between-synchronous--asynchronous-task)
@@ -735,6 +738,83 @@ One of the technologies for starting tasks asynchronously is Grand Central Dispa
 All dispatch queues are first-in, first-out (FIFO) data structures, so tasks are always started in the same order that they are added.
 
 An operation queue is the Cocoa equivalent of a concurrent dispatch queue and is implemented by the NSOperationQueue class. Unlike dispatch queues, operation queues are not limited to executing tasks in FIFO order and support the creation of complex execution-order graphs for your tasks.
+
+## NSThread
+
+A simple Objective-C wrapper around pthreads. This makes the code look more familiar in a Cocoa environment. It is a relatively lightweight way to implement multiple paths of execution inside of an application. For example, you can define a thread as a subclass of `NSThread`, which encapsulates the code you want to run in the background.
+
+Though Operation queues is the preferred way to perform tasks concurrently, depending on application there may still be times when you need to create custom threads.
+Threads are still a good way to implement code that must run in real time.
+Use threads for specific tasks that cannot be implemented in any other way.
+If you need more predictable behavior from code running in the background, threads may still offer a better alternative.
+
+_Inter-thread Communication_
+* Direct messaging
+* Global variables, shared memory, and objects
+* Conditions
+* Run loop sources
+* Ports and sockets
+* Message queues
+* Cocoa distributed objects
+__Dispatch Queue__
+
+Dispatch queues are a C-based mechanism for __executing custom tasks__. A dispatch queue executes tasks either serially or concurrently but __always in a FIFO order__. A serial dispatch queue runs only one task at a time, waiting until that task is complete before dequeuing and starting a new one. By contrast, a concurrent dispatch queue starts as many tasks as it can without waiting for already started tasks to finish.
+
+- Serial
+
+Serial queues (also known as private dispatch queues) execute one task at a time in the order in which they are added to the queue. The currently executing task runs on a distinct thread (which can vary from task to task) that is managed by the dispatch queue. Serial queues are often used to synchronize access to a specific resource.
+You can create as many serial queues as you need, and each queue operates concurrently with respect to all other queues. In other words, if you create four serial queues, each queue executes only one task at a time but up to four tasks could still execute concurrently, one from each queue.
+
+- Concurrent
+
+Concurrent queues (also known as a type of global dispatch queue) execute one or more tasks concurrently, but tasks are still started in the order in which they were added to the queue. The currently executing tasks run on distinct threads that are managed by the dispatch queue. The exact number of tasks executing at any given point is variable and depends on system conditions.
+In iOS 5 and later, you can create concurrent dispatch queues yourself by specifying `DISPATCH_QUEUE_CONCURRENT` as the queue type. In addition, there are four predefined global concurrent queues for your application to use.
+
+- Main dispatch queue
+
+The main dispatch queue is a globally available serial queue that executes tasks on the application’s main thread. This queue works with the application’s run loop (if one is present) to interleave the execution of queued tasks with the execution of other event sources attached to the run loop. Because it runs on your application’s main thread, the main queue is often used as a key synchronization point for an application. Although you do not need to create the main dispatch queue, you do need to make sure your application drains it appropriately.
+
+__Dispatch Source__
+
+Dispatch sources are a C-based mechanism __for processing specific types of system events asynchronously__. A dispatch source encapsulates information about a particular type of system event and submits a specific block object or function to a dispatch queue whenever that event occurs. You can use dispatch sources to monitor the following types of system events:
+
+* Timers
+* Signal handlers
+* Descriptor-related events
+* Process-related events
+* Mach port events
+* Custom events that you trigger
+
+- async - concurrent: the code runs on a background thread. Control returns immediately to the main thread (and UI). The block can't assume that it's the only block running on that queue
+- async - serial: the code runs on a background thread. Control returns immediately to the main thread. The block can assume that it's the only block running on that queue
+- sync - concurrent: the code runs on a background thread but the main thread waits for it to finish, blocking any updates to the UI. The block can't assume that it's the only block running on that queue (I could have added another block using async a few seconds previously)
+- sync - serial: the code runs on a background thread but the main thread waits for it to finish, blocking any updates to the UI. The block can assume that it's the only block running on that queue
+
+#### Swift 3 API
+
+The QoS classes are:
+* User-interactive: This represents tasks that need to be done immediately in order to provide a nice user experience. Use it for UI updates, event handling and small workloads that require low latency. The total amount of work done in this class during the execution of your app should be small. This should run on the main thread.
+* User-initiated: The represents tasks that are initiated from the UI and can be performed asynchronously. It should be used when the user is waiting for immediate results, and for tasks required to continue user interaction. This will get mapped into the high priority global queue.
+* Utility: This represents long-running tasks, typically with a user-visible progress indicator. Use it for computations, I/O, networking, continous data feeds and similar tasks. This class is designed to be energy efficient. This will get mapped into the low priority global queue.
+* Background: This represents tasks that the user is not directly aware of. Use it for prefetching, maintenance, and other tasks that don’t require user interaction and aren’t time-sensitive. This will get mapped into the background priority global queue.
+```swift
+DispatchQueue.global(attributes: [.qosDefault]).async {
+  // Background thread
+  DispatchQueue.main.async(execute: {
+    // UI Updates
+  })
+}
+```
+
+## NSOperationQueue
+Operation queues are a Cocoa abstraction of the queue model exposed by GCD. While GCD offers more low-level control, operation queues implement several convenient features on top of it, which often makes it the best and safest choice for application developers. The `NSOperationQueue` class has two different types of queues: the main queue and custom queues. The main queue runs on the main thread, and custom queues are processed in the background. In any case, the tasks which are processed by these queues are represented as subclasses of `NSOperation`. Whereas dispatch queues always execute tasks in first-in, first-out order, operation queues __take other factors into account when determining the execution order of tasks__. Primary among these factors is whether a given task depends on the completion of other tasks. You configure dependencies when defining your tasks and can use them to create complex execution-order graphs for your tasks. Because the `NSOperation` class is essentially an abstract base class, you typically define custom subclasses to perform your tasks. However, the Foundation framework does include some concrete subclasses that you can create and use as is to perform tasks.
+
+`NSBlockOperation` exectues a block. `NSInvocationOperation` executes a `NSInvocation` (or a method defined by target, selector, object). `NSOperation` must be subclassed, it offers the most flexibility but requires the most code. `NSBlockOperation` and `NSInvocationOperation` are both subclasses of `NSOperation`. They are provided by the system so you don't have to create a new subclass for simple tasks. Using `NSBlockOperation` and `NSInvocationOperation` should be enough for most tasks.
+
+After an operation begins executing, it continues performing its task until it is finished or until your code explicitly cancels the operation. Cancellation can occur at any time, even before an operation begins executing. Although the NSOperation class provides a way for clients to cancel an operation, recognizing the cancellation event is voluntary by necessity. If an operation were terminated outright, there might not be a way to reclaim resources that had been allocated. As a result, operation objects are expected to check for cancellation events and to exit gracefully when they occur in the middle of the operation.
+
+## GCD
+With GCD you don’t interact with threads directly anymore. Instead you add blocks of code to queues, and GCD manages a thread pool behind the scenes. GCD decides on which particular thread your code blocks are going to be executed on, and it manages these threads according to the available system resources. This alleviates the problem of too many threads being created, because the threads are now centrally managed and abstracted away from application developers. The other important change with GCD is that you as a developer think about work items in a queue rather than threads. This new mental model of concurrency is easier to work with. GCD exposes five different queues: the main queue running on the main thread, three background queues with different priorities, and one background queue with an even lower priority, which is I/O throttled. Furthermore, you can create custom queues, which can either be serial or concurrent queues. While custom queues are a powerful abstraction, all blocks you schedule on them will ultimately trickle down to one of the system’s global queues and its thread pool(s).
 
 ## What is DispatchGroup?
 `DispatchGroup` allows for aggregate synchronization of work. We can use them to submit multiple different work items and track when they all complete, even though they might run on different queues. This behavior can be helpful when progress can’t be made until all of the specified tasks are complete. 
