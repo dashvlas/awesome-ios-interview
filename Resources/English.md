@@ -165,11 +165,13 @@ There are presently four size classes:
 ## Intrinsic Content Size
 The Intrinsic Content Size is one of the most powerful features you gain when you opt-in to using Auto Layout to describe your interfaces. When a view has an intrinsic content size, it is promising Auto Layout that it will have a predefined size that the engine can use to calculate and lay out its views
 
-<img src = "https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Articles/Intrisic%20Content%20Size.png">
+<img src = "https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Articles/Intrisic%20Content%20Size.png"  width="500" align="center">
 
 ## What’s the difference between the frame and the bounds? 
 `The bounds` of an UIView is the rectangle, expressed as a location (x,y) and size (width,height) relative to its own coordinate system (0,0)   
 `The frame` of an UIView is the rectangle, expressed as a location (x,y) and size (width,height) relative to the superview it is contained within.  
+
+<img src = "https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Articles/Frame-bounds.png" width="500" align="center">
 
 ## Testing
 
