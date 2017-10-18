@@ -1,6 +1,6 @@
 * [UIKit](#uikit)
   * [Live Rendering](#how-could-you-setup-live-rendering)
-  * [Ways of specifying the layout of elements in a UIView](#what-are-different-ways-that-you-can-specify-the-layout-of-elements-in-a-uiview)
+  * [Layout](#different-ways-to-specify-the-layout-of-elements)
   * [Autolayout formula](#formula-of-autolayout)
   * [Size Classes](#size-classes)
   * [Intrinsic Content Size](#intrinsic-content-size)
@@ -91,6 +91,7 @@
   * [What is NSFetchRequest?](#what-is-nsfetchrequest)
 * [Concurrency](#concurrency)
   * [Achieving concurrency in OS X and iOS](#different-ways-of-achieving-concurrency-in-os-x-and-ios)
+  * [POSIX Threads](#posix-threads)
   * [NSThread](#nsthread)
   * [GCD](#gcd)
   * [NSOperationQueue](#nsoperationqueue)
@@ -104,22 +105,55 @@
 
 # UIKit
 ### How could you setup Live Rendering?
-The attribute `@IBDesignable` lets Interface Builder perform live updates on a particular view
+With `@IBInspectable` and `@IBDesignable`, it’s possible to build a custom interface for configuring your custom controls and have them rendered in real-time while designing your project.
 
-## What are different ways that you can specify the layout of elements in a UIView?
+`@IBInspectable` properties provide new access to an old feature: user-defined runtime attributes. Currently accessible from the identity inspector, these attributes have been available since before Interface Builder was integrated into Xcode. They provide a powerful mechanism for configuring any key-value coded property of an instance in a NIB, XIB, or storyboard.
+
+Built-in Cocoa types can also be extended to have inspectable properties beyond the ones already in Interface Builder’s attribute inspector. If you like rounded corners, you’ll love this UIView extension:
+
+```swift
+extension UIView {
+    @IBInspectable var cornerRadius: CGFloat {
+        get {
+            return layer.cornerRadius
+        }
+        set {
+            layer.cornerRadius = newValue
+            layer.masksToBounds = newValue > 0
+        }
+    }
+}
+```
+
+The attribute `@IBDesignable` lets Interface Builder perform live updates on a particular view.
+This allows seeing how your custom views will appear without building and running your app after each change.
+
+To mark a custom view as `IBDesignable`, prefix the class name with `@IBDesignable` (or the IB_DESIGNABLE macro in Objective-C). Your initializers, layout, and drawing methods will be used to render your custom view right on the canvas:
+```swift
+@IBDesignable
+class MyCustomView: UIView {
+    ...
+}
+```
+
+## Different ways to specify the layout of elements
+
 Here are a few common ways to specify the layout of elements in a UIView:
 
-Using `Interface Builder`, you can add a `XIB file` to your project, layout elements within it, and then load the XIB in your application code (either automatically, based on naming conventions, or manually). Also, using InterfaceBuilder you can create a storyboard for your application.
-You can your own code to use NSLayoutConstraints to have elements in a view arranged by Auto Layout.
-You can create CGRects describing the exact coordinates for each element and pass them to UIView’s  
+- Using `Interface Builder`, you can add a `XIB file` to your project, layout elements within it, and then load the XIB in your application code (either automatically, based on naming conventions, or manually). Also, using InterfaceBuilder you can create a storyboard for your application.
+- You can your own code to use NSLayoutConstraints to have elements in a view arranged by Auto Layout.
+- You can create CGRects describing the exact coordinates for each element and pass them to UIView’s  
 ```objectivec  
   - (id)initWithFrame:(CGRect)frame method.
 ```
 ## Formula of Autolayout
 Attribute 1 = Multiplier * Attribute 2 + Constant
 
+<img src = "https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Articles/Autolayout.png">
+
 ## Size Classes
 A size class is a new technology used by iOS to allow you to custom your app for a given device class, based on its orientation and screen size.
+
 There are presently four size classes:  
 - Horizontal Regular   
 - Horizontal Compact  
@@ -134,8 +168,6 @@ The Intrinsic Content Size is one of the most powerful features you gain when yo
 `The frame` of an UIView is the rectangle, expressed as a location (x,y) and size (width,height) relative to the superview it is contained within.  
 
 ## TESTING
-  
-### Test types
 
 ## Unit Tests
 Tests the smallest unit of functionality, typically a method/function (e.g. given a class with a particular state, calling x method on the class should cause y to happen). Unit tests should be focussed on one particular feature (e.g., calling the pop method when the stack is empty should throw an InvalidOperationException). Everything it touches should be done in memory; this means that the test code and the code under test shouldn't:
@@ -760,6 +792,17 @@ One of the technologies for starting tasks asynchronously is Grand Central Dispa
 All dispatch queues are first-in, first-out (FIFO) data structures, so tasks are always started in the same order that they are added.
 
 An operation queue is the Cocoa equivalent of a concurrent dispatch queue and is implemented by the NSOperationQueue class. Unlike dispatch queues, operation queues are not limited to executing tasks in FIFO order and support the creation of complex execution-order graphs for your tasks.
+
+### POSIX Threads
+Usually referred to as Pthreads, is a POSIX standard for threads defines an API for creating and manipulating threads. Pthreads defines a set of C programming language types, functions and constants. It is implemented with a pthread.h header and a thread library. There are around 100 Pthreads procedures, all prefixed `pthread_` and they can be categorized into four groups:
+
+* Thread management - creating, joining threads etc.
+* Mutexes
+* Condition variables
+* Synchronization between threads using read/write locks and barriers
+
+Implementations of the API are available on many Unix-like POSIX-conformant operating systems such as FreeBSD, NetBSD, OpenBSD, GNU/Linux, Mac OS X and Solaris. DR-DOS and Microsoft Windows implementations also exist.
+Use POSIX calls if cross-platform portability is required. If you are writing networking code that runs exclusively in OS X and iOS, you should generally avoid POSIX networking calls, because they are harder to work with than higher-level APIs. However, if you are writing networking code that must be shared with other platforms, you can use the POSIX networking APIs so that you can use the same code everywhere.
 
 ## NSThread
 
