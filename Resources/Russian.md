@@ -938,13 +938,13 @@ DELETE /book/3 — удалить книгу
 Установившейся практикой в таком случае является выделение среди всех init-методов одного, называемого designated initializer. Все остальные init-методы должны вызывать его и только он вызывает унаследованный init-метод.  
 
 ```objectivec
-- initWithName:(const char *)theName {  
+- (instancetype)initWithName:(const char *)theName {  
 	// call inherited method
 	[super init];                       
 	name = strdup(theName);
 }
 
-- init {
+- (instancetype)init {
 	return [self initWithName:@"name"];
 }
 ```
