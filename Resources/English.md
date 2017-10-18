@@ -4,7 +4,7 @@
   * [Autolayout formula](#formula-of-autolayout)
   * [Size Classes](#size-classes)
   * [Intrinsic Content Size](#intrinsic-content-size)
-  * [Frame and the bounds](#whats-the-difference-between-the-frame-and-the-bounds)
+  * [Frame and bounds](#whats-the-difference-between-the-frame-and-the-bounds)
 * [Testing](#testing)
   * [Test types](#testing)
   	  * [Unit Tests](#unit-tests)
@@ -165,13 +165,15 @@ There are presently four size classes:
 ## Intrinsic Content Size
 The Intrinsic Content Size is one of the most powerful features you gain when you opt-in to using Auto Layout to describe your interfaces. When a view has an intrinsic content size, it is promising Auto Layout that it will have a predefined size that the engine can use to calculate and lay out its views
 
+<img src = "https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Articles/Intrisic%20Content%20Size.png">
+
 ## What’s the difference between the frame and the bounds? 
 `The bounds` of an UIView is the rectangle, expressed as a location (x,y) and size (width,height) relative to its own coordinate system (0,0)   
 `The frame` of an UIView is the rectangle, expressed as a location (x,y) and size (width,height) relative to the superview it is contained within.  
 
-## TESTING
+## Testing
 
-## Unit Tests
+### Unit Tests
 Tests the smallest unit of functionality, typically a method/function (e.g. given a class with a particular state, calling x method on the class should cause y to happen). Unit tests should be focussed on one particular feature (e.g., calling the pop method when the stack is empty should throw an InvalidOperationException). Everything it touches should be done in memory; this means that the test code and the code under test shouldn't:
 
 1.	Call out into (non-trivial) collaborators
