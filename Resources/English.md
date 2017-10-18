@@ -160,6 +160,8 @@ There are presently four size classes:
 - Vertical Regular  
 - Vertical Compact  
 
+<img src = "https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Articles/Size%20Classes.png">
+
 ## Intrinsic Content Size
 The Intrinsic Content Size is one of the most powerful features you gain when you opt-in to using Auto Layout to describe your interfaces. When a view has an intrinsic content size, it is promising Auto Layout that it will have a predefined size that the engine can use to calculate and lay out its views
 
