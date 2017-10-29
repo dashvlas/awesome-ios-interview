@@ -7,7 +7,7 @@ Select the language and get started!
 <a href="https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Russian.md"><img src="https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Artboard-filled-left.png" width=50%></a><a href="https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/English.md"><img src="https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Artboard-filled-right.png" width=50%></a>
 
 ## Install the app  
-It's more convenient to have a nice mobile solution to prepare for the interview day on the go. Never miss tricky question. You can find free app on the App Store http://appstore.com/awesomeinterview   
+It's more convenient to have a nice mobile solution to prepare for the iOS-Developer interview on the go. Never miss tricky question. You can find free app on the App Store http://appstore.com/awesomeinterview   
 <p align="center"><img src="https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Devices.jpg"></p>
 
 ## Available question types
