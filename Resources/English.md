@@ -16,6 +16,7 @@
   * [Test Driven Development](#what-is-the-test-driven-development-of-three-simple-rules)
 * [Tasks](#tasks)
   * [Explain why a compile time error occurs](#explain-why-a-compile-time-error-occurs-how-can-you-fix-it)
+  * [Spot the bug that occurs in the code](#spot-the-bug-that-occurs-in-the-code)
   * [Consider the following code](#consider-the-following-code)
   * [Determine the value of “x” in the Swift code](#determine-the-value-of-x-in-the-swift-code-below)
 * [SDK](#sdk)
@@ -245,6 +246,45 @@ struct IntStack {
 }
 ``` 
 
+## Spot the bug that occurs in the code:
+
+```objectivec
+@interface MyCustomController : UIViewController  
+
+@property (strong, nonatomic) UILabel *alert;  
+
+@end  
+
+@implementation MyCustomController  
+
+- (void)viewDidLoad {
+  CGRect frame = CGRectMake(100, 100, 100, 50);
+  self.alert = [[UILabel alloc] initWithFrame:frame];
+  self.alert.text = @"Please wait...";
+  [self.view addSubview:self.alert];
+  dispatch_async(
+    dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
+    ^{
+      sleep(10);
+      self.alert.text = @"Waiting over";
+    }
+  ); 
+}  
+``` 
+
+Solution:
+All UI updates must be performed on the main thread. Global dispatch queues do not make any guarantees so code should be modified to run the UI update on the main thread. Here is the fix below:
+
+```objectivec
+dispatch_async(		
+dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
+^{
+sleep(10);
+dispatch_async(dispatch_get_main_queue(), ^{
+self.alert.text = @"Waiting over";
+});
+}); 
+``` 
 
 ## Consider the following code:
 Task:
