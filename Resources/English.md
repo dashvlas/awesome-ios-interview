@@ -150,7 +150,7 @@ Here are a few common ways to specify the layout of elements in a UIView:
 ## Formula of Autolayout
 Attribute 1 = Multiplier * Attribute 2 + Constant
 
-<img src = "https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Articles/Autolayout.png">
+<img src = "Resources/Articles/Autolayout.png">
 
 ## Size Classes
 A size class is a new technology used by iOS to allow you to custom your app for a given device class, based on its orientation and screen size.
@@ -161,18 +161,18 @@ There are presently four size classes:
 - Vertical Regular  
 - Vertical Compact  
 
-<img src = "https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Articles/Size%20Classes.png">
+<img src = "Resources/Articles/Size%20Classes.png">
 
 ## Intrinsic Content Size
 The Intrinsic Content Size is one of the most powerful features you gain when you opt-in to using Auto Layout to describe your interfaces. When a view has an intrinsic content size, it is promising Auto Layout that it will have a predefined size that the engine can use to calculate and lay out its views
 
-<center><img src = "https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Articles/Intrisic%20Content%20Size.png" width="500"></center>
+<center><img src = "Resources/Articles/Intrisic%20Content%20Size.png" width="500"></center>
 
-## What’s the difference between the frame and the bounds? 
+## What’s the difference between the frame and the bounds?
 `The bounds` of an UIView is the rectangle, expressed as a location (x,y) and size (width,height) relative to its own coordinate system (0,0)   
 `The frame` of an UIView is the rectangle, expressed as a location (x,y) and size (width,height) relative to the superview it is contained within.  
 
-<center><img src = "https://github.com/dashvlas/awesome-ios-interview/blob/master/Resources/Articles/Frame-Bounds.png"></center>
+<center><img src = "Resources/Articles/Frame-Bounds.png"></center>
 
 ## Testing
 
@@ -232,7 +232,7 @@ struct IntStack {
     items.append(x) // Compile time error here
   }
 }
-``` 
+```
 
 Solution:
 Structures are value types. By default, the properties of a value type cannot be modified from within its instance methods.
@@ -244,7 +244,7 @@ struct IntStack {
     items.append(x) // All good!
   }
 }
-``` 
+```
 
 ## Spot the bug that occurs in the code:
 
@@ -268,9 +268,9 @@ struct IntStack {
       sleep(10);
       self.alert.text = @"Waiting over";
     }
-  ); 
+  );
 }  
-``` 
+```
 
 Solution:
 All UI updates must be performed on the main thread. Global dispatch queues do not make any guarantees so code should be modified to run the UI update on the main thread. Here is the fix below:
@@ -283,8 +283,8 @@ sleep(10);
 dispatch_async(dispatch_get_main_queue(), ^{
 self.alert.text = @"Waiting over";
 });
-}); 
-``` 
+});
+```
 
 ## Consider the following code:
 Task:
@@ -292,11 +292,11 @@ Task:
 var defaults = UserDefaults.standard()
 var userPref = defaults.stringForKey("userPref")!
 printString(userPref)
- 
+
 func printString(string: String) {
     print(string)
 }
-``` 
+```
 
 
 Solution:
@@ -314,10 +314,10 @@ let userPref = defaults.stringForKey("userPref")
 if userPref != nil {
     printString(userPref!)
 }
-``` 
+```
 
 ## Determine the value of “x” in the Swift code below
-Task: 
+Task:
 ```swift  
 var a1 = [1, 2, 3, 4, 5]
 var a2 = a1
@@ -330,7 +330,7 @@ In Swift, arrays are implemented as structs, making them value types rather than
 ```swift
 a1 = [1, 2, 3, 4, 5]  
 a2 = [1, 2, 3, 4, 5, 6]  
-``` 
+```
 
 ## SDK
 
@@ -360,16 +360,16 @@ iBeacon.com defines iBeacon as Apple’s technology standard which allows Mobile
 
 # Patterns
 
-### What is Adapter Pattern? 
+### What is Adapter Pattern?
 An Adapter allows classes with incompatible interfaces to work together. It wraps itself around an object and exposes a standard interface to interact with that object.
 
-## What Are B-Trees? 
+## What Are B-Trees?
 B-trees are search trees that provide an ordered key-value store with excellent performance characteristics. In principle, each node maintains a sorted array of its own elements, and another array for its children
 
-## What is Memento Pattern? 
+## What is Memento Pattern?
 In Memento Pattern saves your stuff somewhere. Later on, this externalized state can be restored without violating encapsulation; that is, private data remains private. One of Apple’s specialized implementations of the Memento pattern is Archiving.
 
-## What is Responder Chain? 
+## What is Responder Chain?
 A ResponderChain is a hierarchy of objects that have the opportunity to respond to events received.
 
 ## What is Observer Pattern?
@@ -381,7 +381,7 @@ The Singleton design pattern ensures that only one instance exists for a given c
 ## What is Decorator Design Pattern?
 The Decorator pattern dynamically adds behaviors and responsibilities to an object without modifying its code. It’s an alternative to subclassing where you modify a class’s behavior by wrapping it with another object.
 
-## What is Facade Design Pattern? 
+## What is Facade Design Pattern?
 The Facade design pattern provides a single interface to a complex subsystem. Instead of exposing the user to a set of classes and their APIs, you only expose one simple unified API.
 
 # Architechture
@@ -478,7 +478,7 @@ By adding the keyword final in front of the method name, we prevent the method f
 ## Structs vs Classes
 1. Inheritance.
 
-Structures can't inherit in swift. If you want 
+Structures can't inherit in swift. If you want
 
 class Vehicle {
 }
@@ -583,10 +583,10 @@ The method for handling errors in Swift differ a bit from Objective-C. In Swift,
 You simply declare that a function can throw an error by appending the throws keyword to the function name. Any function that calls such a method must call it from a try block.
 
 func canThrowErrors() throws -> String
- 
+
 //How to call a method that throws an error
 try canThrowErrors()
- 
+
 //Or specify it as an optional
 let maybe = try? canThrowErrors()
 
@@ -633,7 +633,7 @@ enum AssociatedEnum {
 Whereas the type(s) associated to a case are part of the enum declaration, the associated value(s) are instance specific, meaning that an enum case can have different associated values for different enum instances.
 
 ## Swift Transforming Array functions  
-→ map and flatMap— how to transform element. 
+→ map and flatMap— how to transform element.
 → filter— should an element be included?  
 → reduce— how to fold an element into an aggregate value  
 → sort and lexicographicCompare—in what order should two elements come?  
@@ -753,7 +753,7 @@ Socket streams provide an easy interface for reading and writing data to or from
 
 __`NSStream`__ is an abstract class that defines the fundamental interface and properties for all stream objects. `NSInputStream` and `NSOutputStream` are subclasses of `NSStream` and implement default input-stream and output-stream behavior. `NSStream` is built on the `CFStream` layer of Core Foundation. This close relationship means that the concrete subclasses of `NSStream`, `NSOutputStream` and `NSInputStream`, are toll-free bridged with their Core Foundation counterparts `CFWriteStream` and `CFReadStream`. Although there are strong similarities between the Cocoa and Core Foundation stream APIs, their implementations are not exactly coincident. The Cocoa stream classes use the delegation model for asynchronous behavior (assuming run-loop scheduling) while Core Foundation uses client callbacks. Despite their strong similarities, __`NSStream` does give you a major advantage over `CFStream`. Because of its Objective-C underpinnings, it is extensible.__ You can subclass `NSStream`, `NSInputStream`, or `NSOutputStream` to customize stream attributes and behavior. For example, you could create an input stream that maintains statistics on the bytes it reads; or you could make a `NSStream` subclass whose instances can seek through their stream, putting back bytes that have been read. `NSStream` has its own set of required overrides, as do `NSInputStream` and `NSOutputStream`.
 
-## REST 
+## REST
 An architectural style called REST (Representational State Transfer) advocates that web applications should use HTTP as it was originally envisioned. Lookups should use GET requests. PUT, POST, and DELETE requests should be used for *mutation, creation, and deletion respectively *.
 
 REST proponents tend to favor URLs, such as
@@ -826,7 +826,7 @@ Concurrency. Core Data uses thread (or serialized queue) confinement to protect 
 ### Different ways of achieving concurrency in OS X and iOS
 There are basically three ways of achieving concurrency in iOS:  
 1. threads  
-2. GCD 
+2. GCD
 3. NSOperationQueue  
 
 The disadvantage of threads is that they relegate the burden of creating a scalable solution to the developer. You have to decide how many threads to create and adjust that number dynamically as conditions change. Also, the application assumes most of the costs associated with creating and maintaining the threads it uses.
@@ -937,9 +937,9 @@ The `@synchronized` directive is a convenient way to create mutex locks on the f
 
 Syntax:
 ```objectivec  
- @synchronized(key) 
- { 
-  // thread-safe code 
+ @synchronized(key)
+ {
+  // thread-safe code
  }
  ```
 
@@ -982,4 +982,3 @@ A lock object is an object that encapsulates that lock. When the object is const
 __Explanation 2__
 
 A mutex is an object which can be locked. A lock is the object which maintains the lock. To create a lock, you need to pass it a mutex.
-
