@@ -124,7 +124,7 @@
 `frame` – это прямоугольник описываемый положением location(x, y) и размерами size (width, height) вьюхи относительно ее superview в которой она содержится.  
 `bounds` – это прямоугольник описываемый положением location(x, y) и размерами size (width, height) вьюхи относительно ее собственной системы координат (0, 0).  
 
-<center><img src = "Resources/Articles/Frame-Bounds.png"></center>
+<center><img src = "/Resources/Articles/Frame-Bounds.png"></center>
 
 ## Как работает UITableView?
 
@@ -140,7 +140,7 @@ UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentif
 `Pixels` (px) - точки на экране.  
 `Points` (pt) - плотность точек на экране.  
 
-<center><img src = "Resources/Articles/Points-Pixels.png"></center>
+<center><img src = "/Resources/Articles/Points-Pixels.png"></center>
 
 ## Как поймать неприятный лаг? На что обращать внимание?
 
