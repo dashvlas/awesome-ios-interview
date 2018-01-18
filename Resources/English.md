@@ -150,7 +150,7 @@ Here are a few common ways to specify the layout of elements in a UIView:
 ## Formula of Autolayout
 Attribute 1 = Multiplier * Attribute 2 + Constant
 
-<img src = "Resources/Articles/Autolayout.png">
+<img src = "/Resources/Articles/Autolayout.png">
 
 ## Size Classes
 A size class is a new technology used by iOS to allow you to custom your app for a given device class, based on its orientation and screen size.
@@ -161,18 +161,18 @@ There are presently four size classes:
 - Vertical Regular  
 - Vertical Compact  
 
-<img src = "Resources/Articles/Size%20Classes.png">
+<img src = "/Resources/Articles/Size%20Classes.png">
 
 ## Intrinsic Content Size
 The Intrinsic Content Size is one of the most powerful features you gain when you opt-in to using Auto Layout to describe your interfaces. When a view has an intrinsic content size, it is promising Auto Layout that it will have a predefined size that the engine can use to calculate and lay out its views
 
-<center><img src = "Resources/Articles/Intrisic%20Content%20Size.png" width="500"></center>
+<center><img src = "/Resources/Articles/Intrisic%20Content%20Size.png" width="500"></center>
 
 ## What’s the difference between the frame and the bounds?
 `The bounds` of an UIView is the rectangle, expressed as a location (x,y) and size (width,height) relative to its own coordinate system (0,0)   
 `The frame` of an UIView is the rectangle, expressed as a location (x,y) and size (width,height) relative to the superview it is contained within.  
 
-<center><img src = "Resources/Articles/Frame-Bounds.png"></center>
+<center><img src = "/Resources/Articles/Frame-Bounds.png"></center>
 
 ## Testing
 
