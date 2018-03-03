@@ -83,6 +83,7 @@
   * [REST](#rest)
   * [SOAP](#soap)
   * [Deep and shallow copy](#deep-and-shallow-copy)
+  * [Difference between functions and methods in Swift?](#what-is-the-difference-between-functions-and-methods-in-swift?)
   * [Protocol Oriented Programming](#protocol-oriented-programming)
 * [Data](#data)
   * [How does NSManagedObjectContext work?](#how-does-nsmanagedobjectcontext-work)
@@ -778,6 +779,10 @@ SOAP allows processes running on disparate operating systems (such as Windows an
 
 ## Deep and shallow copy
 There are two kinds of object copying: shallow copies and deep copies. The normal copy is a shallow copy that produces a new collection that shares ownership of the objects with the original. Deep copies create new objects from the originals and add those to the new collection.
+
+## What is the difference between functions and methods in Swift?
+
+Both are functions in the same terms any programmer usually knows of it. But functions are globally scoped while methods belong to a certain type.
 
 ## Protocol Oriented Programming
 
