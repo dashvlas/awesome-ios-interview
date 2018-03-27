@@ -481,11 +481,13 @@ By adding the keyword final in front of the method name, we prevent the method f
 
 Structures can't inherit in swift. If you want
 
+```swift
 class Vehicle {
 }
 
 class Car : Vehicle {
 }
+```
 
 Go for an class.
 
@@ -527,19 +529,22 @@ An initial value of the lazy stored properties is calculated only when the prope
 
 ## Difference between raw and associated values in Swift
 This question tests the developer’s understanding of enumeration in Swift. Enumeration provides a type-safe method of working with a group of related values. Raw values are compile time-set values directly assigned to every case within an enumeration, as in the example detailed below:
+```swift
 enum Alphabet: Int {
 case A = 1
 case B
 case C
 }
+```
 
 In the above example code, case “A” was explicitly assigned a raw value integer of 1, while cases “B” and “C” were implicitly assigned raw value integers of 2 and 3, respectively. Associated values allow you to store values of other types alongside case values, as demonstrated below:
+```swift
 enum Alphabet: Int {
 case A(Int)
 case B
 case C(String)
 }
-
+```
 
 ## Can you briefly describe differences between Swift and Objective-C?
 When Swift was first launched in 2014, it was aptly described as “Objective-C without the C.” By dropping the legacy conventions that come with a language built on C, Swift is faster, safer, easier to read, easier to maintain, and designed specifically for the modern world of consumer-facing apps. One of the most immediately visible differences is the fact that Objective-C lacks formal support for namespaces, which forces Objective-C code to use two- or three-letter prefixes to differentiate itself. Instead of simple names like “String,” “Dictionary,” and “Array,” Objective-C must use oddities like “NSString,” “NSDictionary,” and “NSArray.”
@@ -583,6 +588,7 @@ The method for handling errors in Swift differ a bit from Objective-C. In Swift,
 
 You simply declare that a function can throw an error by appending the throws keyword to the function name. Any function that calls such a method must call it from a try block.
 
+```swift
 func canThrowErrors() throws -> String
 
 //How to call a method that throws an error
@@ -590,6 +596,7 @@ try canThrowErrors()
 
 //Or specify it as an optional
 let maybe = try? canThrowErrors()
+```
 
 ## What is the difference strong, weak, readonly and copy?
 - `Strong` means that the reference count will be increased and the reference to it will be maintained through the life of the object
@@ -612,25 +619,34 @@ Raw values are used to associate constant (literal) values to enum cases. The va
 
 The following example shows an enum with raw values of type Int:
 
+```swift
 enum IntEnum : Int {
     case ONE = 1
     case TWO = 2
     case THREE = 3
 }
+```
 An enum value can be converted to its raw value by using the rawValue property:
 
+```swift
 var enumVar: IntEnum = IntEnum.TWO
 var rawValue: Int = enumVar.rawValue
+```
 A raw value can be converted to an enum instance by using a dedicated initializer:
 
+```swift
 var enumVar: IntEnum? = IntEnum(rawValue: 1)
+```
 Associated values are used to associate arbitrary data to a specific enum case. Each enum case can have zero or more associated values, declared as a tuple in the case definition:
 
+```swift
 enum AssociatedEnum {
     case EMPTY
     case WITH_INT(value: Int)
     case WITH_TUPLE(value: Int, text: String, data: [Float])
 }
+```
+
 Whereas the type(s) associated to a case are part of the enum declaration, the associated value(s) are instance specific, meaning that an enum case can have different associated values for different enum instances.
 
 ## Swift Transforming Array functions  
@@ -673,14 +689,18 @@ Yes, the object is retained. It creates a timer that calls a selector on the cur
 the run loop and perform the selector
 
 ## What is defer?
-`defer` keyword which provides a block of code that will be executed in the case when execution is leaving the current scope.
+defer keyword provides a safe and easy way to declare a block that will be executed only when execution leaves the current scope. 
+
+Defer is usually used to cleanup the code after execution. This might involve deallocating container, releasing memory or close the file or network handle. When put into the routine, code inside defer block is last to execute before routine exits. Routine in this case could refer to a function. Sometimes when function returns there are hanging threads, incomplete operation which needs to cleanup. Instead of having them scattered across function, we can group them together and put in the defer block. When function exits, cleanup code in the defer gets executed.
 
 ## Selectors
 In Objective-C, selector has two meanings. It can be used to refer simply to the name of a method when it’s used in a source-code message to an object. It also, though, refers to the unique identifier that replaces the name when the source code is compiled. Compiled selectors are of type SEL. All methods with the same name have the same selector. You can use a selector to invoke a method on an object—this provides the basis for the implementation of the target-action design pattern in Cocoa
 
+```objectivec
 [friend performSelector:@selector(gossipAbout:) withObject:aNeighbor]
 is equivalent to
  [friend gossipAbout:aNeighbor]
+ ```
 
 ## What is the difference Any and AnyObject?
 According to Apple’s Swift documentation:
