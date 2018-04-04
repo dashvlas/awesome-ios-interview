@@ -26,7 +26,6 @@
   * [JSONSerialization](#what-kind-of-jsonserialization-have-readingoptions)
 * [Patterns](#patterns)
   * [Adapter Pattern](#what-is-adapter-pattern)
-  * [B-Trees](#what-are-b-trees)
   * [Memento Pattern](#what-is-memento-pattern)
   * [Responder Chain](#what-is-responder-chain)
   * [Observer Pattern](#what-is-observer-pattern)
@@ -363,9 +362,6 @@ iBeacon.com defines iBeacon as Apple’s technology standard which allows Mobile
 
 ### What is Adapter Pattern?
 An Adapter allows classes with incompatible interfaces to work together. It wraps itself around an object and exposes a standard interface to interact with that object.
-
-## What Are B-Trees?
-B-trees are search trees that provide an ordered key-value store with excellent performance characteristics. In principle, each node maintains a sorted array of its own elements, and another array for its children
 
 ## What is Memento Pattern?
 In Memento Pattern saves your stuff somewhere. Later on, this externalized state can be restored without violating encapsulation; that is, private data remains private. One of Apple’s specialized implementations of the Memento pattern is Archiving.
