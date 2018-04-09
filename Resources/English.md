@@ -27,6 +27,7 @@
 * [Patterns](#patterns)
   * [Adapter Pattern](#what-is-adapter-pattern)
   * [Memento Pattern](#what-is-memento-pattern)
+  * [Factory Method Pattern](#what-is-factory-method-pattern)
   * [Responder Chain](#what-is-responder-chain)
   * [Observer Pattern](#what-is-observer-pattern)
   * [Singleton Pattern](#what-is-singleton-pattern)
@@ -366,6 +367,9 @@ An Adapter allows classes with incompatible interfaces to work together. It wrap
 
 ## What is Memento Pattern?
 In Memento Pattern saves your stuff somewhere. Later on, this externalized state can be restored without violating encapsulation; that is, private data remains private. One of Apple’s specialized implementations of the Memento pattern is Archiving.
+
+## What is Factory Method Pattern?
+Factory Method is used to replace class constructors, to abstract and hide objects initialization so that the type can be determined at runtime, and to hide and contain switch/if statements that determine the type of object to be instantiated.
 
 ## What is Responder Chain?
 A ResponderChain is a hierarchy of objects that have the opportunity to respond to events received.
