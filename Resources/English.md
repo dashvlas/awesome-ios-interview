@@ -66,6 +66,7 @@
   * [Extensions](#extensions)
   * [KVO](#kvo)
   * [KVC ](#kvc)
+  * [What is the difference between Delegate and KVO?](#what-is-the-difference-between-delegate-and-kvo)
   * [By calling performSelector:withObject:afterDelay: is the object retained?](#by-calling-performselectorwithobjectafterdelay-is-the-object-retained)
   * [What is defer?](#what-is-defer)
   * [Selectors](#selectors)
@@ -679,6 +680,9 @@ KVO stands for `Key-Value Observing` and allows a controller or class to observe
 
 ## KVC 
 KVC adds stands for `Key-Value Coding`. It’s a mechanism by which an object’s properties can be accessed using string’s at runtime rather than having to statically know the property names at development time.
+
+## What is the difference between Delegate and KVO?
+Both are ways to have relationships between objects. Delegation is a one-to-one relationship where one object implements a delegate protocol and another uses it and sends messages to it, assuming that those methods are implemented since the receiver promised to comply to the protocol. KVO is a many-to-many relationship where one object could broadcast a message and one or multiple other objects can listen to it and react. KVO does not rely on protocols. KVO is the first step and the fundamental block of reactive programming (RxSwift, ReactiveCocoa, etc.)
 
 ## By calling performSelector:withObject:afterDelay: is the object retained?
 Yes, the object is retained. It creates a timer that calls a selector on the current threads run loop. It may not be 100% precise time-wise as it attempts to dequeue the message from
