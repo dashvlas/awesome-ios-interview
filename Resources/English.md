@@ -26,8 +26,8 @@
   * [JSONSerialization](#what-kind-of-jsonserialization-have-readingoptions)
 * [Patterns](#patterns)
   * [Adapter Pattern](#what-is-adapter-pattern)
-  * [B-Trees](#what-are-b-trees)
   * [Memento Pattern](#what-is-memento-pattern)
+  * [Factory Method Pattern](#what-is-factory-method-pattern)
   * [Responder Chain](#what-is-responder-chain)
   * [Observer Pattern](#what-is-observer-pattern)
   * [Singleton Pattern](#what-is-singleton-pattern)
@@ -67,6 +67,7 @@
   * [Extensions](#extensions)
   * [KVO](#kvo)
   * [KVC ](#kvc)
+  * [What is the difference between Delegate and KVO?](#what-is-the-difference-between-delegate-and-kvo)
   * [By calling performSelector:withObject:afterDelay: is the object retained?](#by-calling-performselectorwithobjectafterdelay-is-the-object-retained)
   * [What is defer?](#what-is-defer)
   * [Selectors](#selectors)
@@ -364,25 +365,25 @@ iBeacon.com defines iBeacon as Apple’s technology standard which allows Mobile
 ### What is Adapter Pattern?
 An Adapter allows classes with incompatible interfaces to work together. It wraps itself around an object and exposes a standard interface to interact with that object.
 
-## What Are B-Trees?
-B-trees are search trees that provide an ordered key-value store with excellent performance characteristics. In principle, each node maintains a sorted array of its own elements, and another array for its children
-
-## What is Memento Pattern?
+### What is Memento Pattern?
 In Memento Pattern saves your stuff somewhere. Later on, this externalized state can be restored without violating encapsulation; that is, private data remains private. One of Apple’s specialized implementations of the Memento pattern is Archiving.
 
-## What is Responder Chain?
+### What is Factory Method Pattern?
+Factory Method is used to replace class constructors, to abstract and hide objects initialization so that the type can be determined at runtime, and to hide and contain switch/if statements that determine the type of object to be instantiated.
+
+### What is Responder Chain?
 A ResponderChain is a hierarchy of objects that have the opportunity to respond to events received.
 
-## What is Observer Pattern?
+### What is Observer Pattern?
 In the Observer pattern, one object notifies other objects of any state changes.
 
 ## What is Singleton Pattern?
 The Singleton design pattern ensures that only one instance exists for a given class and that there’s a global access point to that instance. It usually uses lazy loading to create the single instance when it’s needed the first time.
 
-## What is Decorator Design Pattern?
+### What is Decorator Design Pattern?
 The Decorator pattern dynamically adds behaviors and responsibilities to an object without modifying its code. It’s an alternative to subclassing where you modify a class’s behavior by wrapping it with another object.
 
-## What is Facade Design Pattern?
+### What is Facade Design Pattern?
 The Facade design pattern provides a single interface to a complex subsystem. Instead of exposing the user to a set of classes and their APIs, you only expose one simple unified API.
 
 # Architechture
@@ -392,7 +393,7 @@ The Facade design pattern provides a single interface to a complex subsystem. In
 `Views`  —  responsible for the presentation layer (GUI), for iOS environment think of everything starting with ‘UI’ prefix.
 `Controller/Presenter/ViewModel` —  mediator between the Model and the View, in general responsible for altering the Model by reacting to the user’s actions performed on the View and updating the View with changes from the Model.
 
-## MVVM
+### MVVM
 
 The MVVM defines the following
 ·      The View , which is generally passive, corresponds to the Presentation Layer
@@ -403,7 +404,7 @@ The key aspect of the MVVM pattern is the binding between the View and the View 
 
 In iOS, this can be accomplished using Key-Value-Observer (KVO) Pattern. In the KVO Pattern (https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/KeyValueObserving/KeyValueObserving.html) , one object is automatically notified of changes to the state of another object. In Objective C, this facility is built into the run-time. However, it’s not as straightforward in Swift. One option would be to add the “dynamic” modifiers to properties that need to be dynamically dispatched. However, this is limiting as objects now need to be of type NSObject.  The alternate is to simulate this behavior by defining a generic type that acts as a wrapper around properties that are observable.
 
-## MVP
+### MVP
 The MVP defines the following
 ·      The View , which is generally passive, corresponds to the  Presentation Layer
 ·      The Model , corresponds to the  Business Logic Layer and is identical to the MVC pattern
@@ -434,7 +435,7 @@ protocol PresentingViewProtocol: class{
 }
 ```
 
-## Viper
+### Viper
 
 This architecture is based on Single Responsibility Principle which leads to a clean architecture.
 
@@ -444,19 +445,19 @@ This architecture is based on Single Responsibility Principle which leads to a c
 - Entity: It contains basic model objects used by the Interactor.
 - Router: It has all navigation logic for describing which screens are to be shown when. It is normally written as a wireframe.
 
-## OOP
+# OOP
 
 ### Inheritance
 It allows a class to be defined that has a certain set of characteristics (such as methods and instance variables) and then other classes to be created which are derived from that class. The derived class inherits all of the features of the parent class and typically then adds some features of its own.
 
-## Polymorphism
+### Polymorphism
 The word polymorphism means having many forms. Typically, polymorphism occurs when there is a hierarchy of classes and they are related by inheritance.
 
 Objective-C polymorphism means that a call to a member function will cause a different function to be executed depending on the type of object that invokes the function.
 
 Consider the example, we have a class Shape that provides the basic interface for all the shapes. Square and Rectangle are derived from the base class Shape.
 
-## Encapsulation
+### Encapsulation
 Encapsulation is an Object-Oriented Programming concept that binds together the data and functions that manipulate the data and that keeps both safe from outside interference and misuse. Data encapsulation led to the important OOP concept of data hiding.
 
 Data encapsulation is a mechanism of bundling the data and the functions that use them, and data abstraction is a mechanism of exposing only the interfaces and hiding the implementation details from the user.
@@ -683,6 +684,9 @@ KVO stands for `Key-Value Observing` and allows a controller or class to observe
 
 ## KVC 
 KVC adds stands for `Key-Value Coding`. It’s a mechanism by which an object’s properties can be accessed using string’s at runtime rather than having to statically know the property names at development time.
+
+## What is the difference between Delegate and KVO?
+Both are ways to have relationships between objects. Delegation is a one-to-one relationship where one object implements a delegate protocol and another uses it and sends messages to it, assuming that those methods are implemented since the receiver promised to comply to the protocol. KVO is a many-to-many relationship where one object could broadcast a message and one or multiple other objects can listen to it and react. KVO does not rely on protocols. KVO is the first step and the fundamental block of reactive programming (RxSwift, ReactiveCocoa, etc.)
 
 ## By calling performSelector:withObject:afterDelay: is the object retained?
 Yes, the object is retained. It creates a timer that calls a selector on the current threads run loop. It may not be 100% precise time-wise as it attempts to dequeue the message from
