@@ -45,6 +45,7 @@
   * [Encapsulation](#encapsulation)
   * [Abstract class](#what-is-the-abstract-class)
 * [Language](#language)
+  * [Lazy Stored Property vs Stored Property](#lazy-stored-property-vs-stored-property)
   * [Fileprivate and Private access level](#what-is-the-difference-fileprivate-and-private-access-level)
   * [Final class](#what-is-final-class)
   * [Structs vs Classes](#structs-vs-classes)
@@ -475,7 +476,36 @@ An abstract class thus is something between a regular class and a pure interface
 
 ## Language
 
-### What is the difference fileprivate and private access level?
+### Lazy Stored Property vs Stored Property
+
+1. The closure associated to the lazy property is executed only if you read that property. So if for some reason that property is not used (maybe because of some decision of the user) you avoid unnecessary allocation and computation.
+You can populate a lazy property with the value of a stored property.
+
+2. You can use self inside the closure of a lazy property. If you need to use self inside the function. In fact, if you're using a class rather than a structure, you should also declare [unowned self] inside your function so that you don't create a strong reference cycle(check the code below).
+
+```swift
+
+import UIKit
+import Foundation
+
+class InterviewTest {
+ var name: String
+ lazy var greeting : String = { [unowned self] in
+   return “Hello \(self.name)”
+ }()
+ 
+ init(name: String) {
+  self.name = name
+ }
+}
+
+let testObj = InterviewTest(name:”abhi”)
+testObj.greeting
+
+```
+Note: Remember, the point of lazy properties is that they are computed only when they are first needed, after which their value is saved. So, if you call the iOSResumeDescription for the second time, the previously saved value is returned.
+
+## What is the difference fileprivate and private access level?
 `Fileprivate` is accessible within the current file, private is accessible within the current declaration.
 
 ## What is final class?
