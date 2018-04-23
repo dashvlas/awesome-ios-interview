@@ -6,6 +6,7 @@
   * [Intrinsic Content Size](#intrinsic-content-size)
   * [Frame and bounds](#whats-the-difference-between-the-frame-and-the-bounds)
   * [Layer objects](#what-are-layer-objects-and-what-do-they-represent)
+  * [File owner](#file-owner)
 * [Testing](#testing)
   * [Test types](#testing)
   	  * [Unit Tests](#unit-tests)
@@ -180,6 +181,20 @@ The Intrinsic Content Size is one of the most powerful features you gain when yo
 
 ## What are layer objects and what do they represent?
 `Layer objects` are data objects which represent visual content. Layer objects are used by views to render their content. Custom layer objects can also be added to the interface to implement complex animations and other types of sophisticated visual effects.
+
+## File owner
+
+Two points to be remembered:
+
+- The File owner is the object that loads the nib, i.e. that object which receives the message loadNibNamed: or initWithNibName:.
+- If you want to access any objects in the nib after loading it, you can set an outlet in the file owner.
+
+So you created a fancy view with lots of buttons, subviews etc . If you want to modify any of these views / objects any time after loading the nib FROM the loading object (usually a view or window controller) you set outlets for these objects to the file owner. It's that simple.
+
+This is the reason why by default all View Controllers or Window Controllers act as file owners, and also have an outlet to the main window or view object in the nib file: because duh, if you're controlling something you'll definitely need to have an outlet to it so that you can send messages to it.
+
+The reason it's called file owner and given a special place, is because unlike the other objects in the nib, the file owner is external to the nib and is not part of it. In fact, it only becomes available when the nib is loaded. So the file owner is a stand-in or proxy for the actual object which will later load the nib.
+
 
 ## Testing
 
