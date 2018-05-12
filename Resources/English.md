@@ -793,7 +793,6 @@ AnyObject can represent an instance of any class type.
 ## General
 
 ### Waterfall vs Agile
-### What is waterfall methodology and Agile methodology? What are the differences between them?
 
 Waterfall methodology is a sequential model for software development. It is separated into a sequence of pre-defined phases including feasibility, planning, design, build, test, production, and support.
 
