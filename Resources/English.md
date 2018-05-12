@@ -35,7 +35,7 @@
   * [Singleton Pattern](#what-is-singleton-pattern)
   * [Decorator Design Pattern](#what-is-decorator-design-pattern)
   * [Facade Design Pattern](#what-is-facade-design-pattern)
-* [Architecture](#acrhitecture)
+* [Architecture](#architecture)
   * [MVC](#mvc)
   * [MVVM](#mvvm)
   * [MVP](#mvp)
@@ -46,6 +46,8 @@
   * [Encapsulation](#encapsulation)
   * [Abstract class](#what-is-the-abstract-class)
 * [Language](#language)
+  * [What is the difference between _ vs self. in Objective-C?](#what-is-the-difference-between-_-vs-self-in-objective-c)
+  * [What are blocks in Objective-C?](#what-are-blocks-in-objective-c)
   * [Lazy Stored Property vs Stored Property](#lazy-stored-property-vs-stored-property)
   * [Fileprivate and Private access level](#what-is-the-difference-fileprivate-and-private-access-level)
   * [Final class](#what-is-final-class)
@@ -76,18 +78,19 @@
   * [Selectors](#selectors)
   * [What is the difference Any and AnyObject?](#what-is-the-difference-any-and-anyobject)
 * [General](#general)
+  * [Waterfall vs Agile](#waterfall-vs-agile)
   * [HTTP request types](#http-request-types)
   * [Communication protocols](#communication-protocols)
-   	* [Sokets](#sokets)
-   	* [Web Sockets](#web-sokets)
-   	* [TCP](#tcp)
-   	* [UDP](#udp)
+   	* [Network soket](#network-soket)
+   	* [WebSocket](#websoket)
+   	* [TCP Stream Socket](#tcp-stream-socket)
+   	* [UDP Datagram Socket](#udp-datagram-socket)
    	* [CFStream](#cfstream)
     * [NSStream](#nsstream)
   * [REST](#rest)
   * [SOAP](#soap)
   * [Deep and shallow copy](#deep-and-shallow-copy)
-  * [Difference between functions and methods in Swift?](#what-is-the-difference-between-functions-and-methods-in-swift?)
+  * [Difference between functions and methods in Swift?](#what-is-the-difference-between-functions-and-methods-in-swift)
   * [Protocol Oriented Programming](#protocol-oriented-programming)
 * [Data](#data)
   * [How does NSManagedObjectContext work?](#how-does-nsmanagedobjectcontext-work)
@@ -268,7 +271,7 @@ struct IntStack {
 }
 ```
 
-## Spot the bug that occurs in the code:
+## Spot the bug that occurs in the code
 
 ```objectivec
 @interface MyCustomController : UIViewController  
@@ -382,6 +385,10 @@ iBeacon.com defines iBeacon as Apple’s technology standard which allows Mobile
 
 # Patterns
 
+### What is the delegation pattern? 
+
+The delegation pattern is a powerful pattern used in building iOS applications. The basic idea is that one object will act on another object's behalf or in coordination with another object. The delegating object typically keeps a reference to the other object (delegate) and sends a message to it at the appropriate time. It is important to note that they have a one to one relationship.
+
 ### What is Adapter Pattern?
 An Adapter allows classes with incompatible interfaces to work together. It wraps itself around an object and exposes a standard interface to interact with that object.
 
@@ -409,9 +416,12 @@ The Facade design pattern provides a single interface to a complex subsystem. In
 # Architechture
 
 ### MVC
-`Model` —   responsible for the domain data or a data access layer which manipulates the data, think of ‘Person’ or ‘PersonDataProvider’ classes.
-`Views`  —  responsible for the presentation layer (GUI), for iOS environment think of everything starting with ‘UI’ prefix.
-`Controller/Presenter/ViewModel` —  mediator between the Model and the View, in general responsible for altering the Model by reacting to the user’s actions performed on the View and updating the View with changes from the Model.
+MVC stands for **Model-View-Controller**. It is a software architecture pattern for implementing user interfaces. 
+
+MVC consists of three layers: the model, the view, and the controller.
+- The **model layer** is typically where the data resides (persistence, model objects, etc)
+- The **view layer** is typically where all the UI interface lies. Things like displaying buttons and numbers belong in the view layer. The view layer does not know anything about the model layer and vice versa.
+- The **controller (view controller)** is the layer that integrates the view layer and the model layer together. 
 
 ### MVVM
 
@@ -490,6 +500,27 @@ The purpose of this is to provide a kind of template to inherit from and to forc
 An abstract class thus is something between a regular class and a pure interface. Also interfaces are a special case of abstract classes where ALL methods are abstract
 
 ## Language
+
+### What is the difference between _ vs self. in Objective-C?
+
+You typically use either when accessing a property in Objective-C. When you use _, you're referencing the actual instance variable directly. You should avoid this. Instead, you should use self. to ensure that any getter/setter actions are honored. 
+
+In the case that you would write your own setter method, using _ would not call that setter method. Using self. on the property, however, would call the setter method you implemented. 
+
+
+### What are blocks in Objective-C?
+
+Blocks are a language-level feature of Objective (C and C++ too). They are objects that allow you to create distinct segments of code that can be passed around to methods or functions as if they were values. This means that a block is capable of being added to collections such as NSArray or NSDictionary. Blocks are also able to take arguments and return values similar to methods and functions.
+
+The syntax to define a block literal uses the caret symbol(^):
+
+```
+
+^{
+  NSLog(@"This is an example of a block")
+}
+
+```
 
 ### Lazy Stored Property vs Stored Property
 
@@ -716,7 +747,6 @@ Dynamic for properties means that it setters and getters will be created manuall
 ## What is made up of NSError object?
 There are three parts of NSError object a domain, an error code, and a user info dictionary. The domain is a string that identifies what categories of errors this error is coming from.
 
-
 ## Extensions
 Extensions add new functionality to an existing class, structure, enumeration, or protocol type. This includes the ability to extend types for which you do not have access to the original source code. Extensions are similar to categories in Objective-C
 
@@ -762,6 +792,22 @@ AnyObject can represent an instance of any class type.
 
 ## General
 
+### Waterfall vs Agile
+### What is waterfall methodology and Agile methodology? What are the differences between them?
+
+Waterfall methodology is a sequential model for software development. It is separated into a sequence of pre-defined phases including feasibility, planning, design, build, test, production, and support.
+
+On the other hand, Agile development methodology is a linear sequential apporach that provides flexibility for changing project requirements.
+
+List of differences:
+- Waterfall model divides software development process into different phases while Agile segregates the project development lifecycle into sprints. This makes waterfall more rigid while agile allows for more flexibility
+- Waterfall model describes the software development life cycle as a single project while Agile considers it as a collection of many different projects; are iterations of different phases focusing on improving overall software quality with feedback from users and QA team.
+- Since waterfall is more rigid, development requirements need to be clearly established beforehand since there is little flexibility for changing once project development starts. Meanwhile, Agile allow changes to be made anytime along the project development process even after initial planning has been completed.
+- In Waterfall, the testing phase typically occurs after the build phase. In Agile, testing is often performed concurrently with programming or at least in the same iteration.
+- Waterfall is more of an interal process that does not involve user feedback. Agile tends to involve user participation more in order to improve customer satisfaction.
+- Waterfall model best fits projects that have a clearly defined set of requirements and where change to requirements is not expect. Agile fits more for projects where the requirements are expected to change and evolve.
+- Waterfall can exhibit a project mindset that focuses on completion of the project while Agile can allow for more focus on developing a product that satisfies customers.
+
 ### HTTP request types
 An HTTP request is a class consisting of HTTP style requests, request lines, request methods, request URL, header fields, and body content. The most common methods that are used by a client in an HTTP request are as follows:
 
@@ -780,13 +826,13 @@ An HTTP request is a class consisting of HTTP style requests, request lines, req
 __Network socket__ is an internal endpoint for sending or receiving data at a single node in a computer network. Concretely, it is a representation of this endpoint in networking software (protocol stack), such as an entry in a table (listing communication protocol, destination, status, etc.), and is a form of system resource.
 The term "socket" is analogous to physical female connectors, communication between two nodes through a channel being visualized as a cable with two male connectors plugging into sockets at each node. Similarly, the term "port" (another term for a female connector) is used for external endpoints at a node, and the term "socket" is also used for an internal endpoint of local inter-process communication (IPC) (not over a network). However, the analogy is strained, as network communication need not be one-to-one or have a channel.
 
-## WebSocket
+### WebSocket
 
 __WebSocket__ is a computer communications protocol, providing full-duplex communication channels over a single TCP connection. The WebSocket protocol was standardized by the IETF as RFC 6455 in 2011, and the WebSocket API in Web IDL is being standardized by the W3C.
 WebSocket is a different TCP protocol from HTTP. Both protocols are located at layer 7 in the OSI model and, as such, depend on TCP at layer 4. Although they are different, RFC 6455 states that WebSocket "is designed to work over HTTP ports 80 and 443 as well as to support HTTP proxies and intermediaries" thus making it compatible with the HTTP protocol. To achieve compability, the WebSocket handshake uses the HTTP Upgrade header[1] to change from the HTTP protocol to the WebSocket protocol.
 The WebSocket protocol enables interaction between a browser and a web server with lower overheads, facilitating real-time data transfer from and to the server. This is made possible by providing a standardized way for the server to send content to the browser without being solicited by the client, and allowing for messages to be passed back and forth while keeping the connection open. In this way, a two-way (bi-directional) ongoing conversation can take place between a browser and the server. The communications are done over TCP port number 80 (or 443 in the case of TLS-encrypted connections), which is of benefit for those environments which block non-web Internet connections using a firewall. Similar two-way browser-server communications have been achieved in non-standardized ways using stopgap technologies such as Comet.
 
-## TCP Stream Socket
+### TCP Stream Socket
 Is much more commonly used, as it provides the framework for a complete, structured "conversation" to occur between the two endpoints. TCP connections provide a means to ensure the message was received, and guarantees that packets are received in order. TCP is used by protocols including HTTP, FTP, and others where data must be reliably sent and received in order. To keep track of the ordering of packets, TCP employs a sequence number, which identifies the sequence of each packet. This not only keeps your conversation in order, but also adds a basic level of protection against some forms of spoofing (data forgery by a malicious party).
 
 * Dedicated & point-to-point channel between server and client.
@@ -795,7 +841,7 @@ Is much more commonly used, as it provides the framework for a complete, structu
 * Long time for recovering lost/mistaken data
 * Web, SSH, FTP, TELNET, SMTP, IMAP/POP
 
-## UDP Datagram Socket
+### UDP Datagram Socket
 
 Is used for sending short messages called datagrams to the recipient. Datagrams are single packets of data that are sent and received without any "return postage." There is no guarantee that the recipient will receive a particular packet, and multiple packets may be received out of order. Datagrams are generally thought of as unreliable, in the same way that a carrier pigeon can be unreliable. This form of communication is used for sending short query/response-type messages that do not require authentication, such as DNS (name resolution) lookups, as well as by some protocols where lost packets are irrelevant; such as live video streams and online multiplayer games, where an interruption can be ignored.
 
@@ -819,11 +865,11 @@ CFSocketRef CFSocketCreate (
     const CFSocketContext *context
 );
 ```
-## CFStream
+### CFStream
 
 Socket streams provide an easy interface for reading and writing data to or from a socket. Each socket can be bound to a read and write stream, allowing for synchronous or asynchronous communication. Streams encapsulate most of the work needed for reading and writing byte streams, and replace the traditional `send()` and `recv()` functions used in C. Two different stream objects are used with sockets: `CFReadStream` and `CFWriteStream`
 
-## NSStream
+### NSStream
 
 __`NSStream`__ is an abstract class that defines the fundamental interface and properties for all stream objects. `NSInputStream` and `NSOutputStream` are subclasses of `NSStream` and implement default input-stream and output-stream behavior. `NSStream` is built on the `CFStream` layer of Core Foundation. This close relationship means that the concrete subclasses of `NSStream`, `NSOutputStream` and `NSInputStream`, are toll-free bridged with their Core Foundation counterparts `CFWriteStream` and `CFReadStream`. Although there are strong similarities between the Cocoa and Core Foundation stream APIs, their implementations are not exactly coincident. The Cocoa stream classes use the delegation model for asynchronous behavior (assuming run-loop scheduling) while Core Foundation uses client callbacks. Despite their strong similarities, __`NSStream` does give you a major advantage over `CFStream`. Because of its Objective-C underpinnings, it is extensible.__ You can subclass `NSStream`, `NSInputStream`, or `NSOutputStream` to customize stream attributes and behavior. For example, you could create an input stream that maintains statistics on the bytes it reads; or you could make a `NSStream` subclass whose instances can seek through their stream, putting back bytes that have been read. `NSStream` has its own set of required overrides, as do `NSInputStream` and `NSOutputStream`.
 
@@ -875,16 +921,6 @@ Swift types can adopt multiple protocols.
 
 ## Data
 
-### How does NSManagedObjectContext work?
-`Managed object context` exists for three reasons: life-cycle management, notifications, and concurrency. It allows the developer to fetch an object from a persistent store and make the necessary modifications before deciding whether to discard or commit these changes back to the persistent store. The managed object context tracks these changes and allows the developer to undo and redo changes.
-
-## NSFetchedResultsController
-`NSFetchedResultsController` is a controller, but it’s not a view controller. It has no user interface. Its purpose is to make developers’ lives easier by abstracting away much of the code needed to synchronize a table view with a data source backed by Core Data.
-Set up an NSFetchedResultsController correctly, and your table will mimic its data source without you have to write more than a few lines of code.
-
-## NSPersistentContainer
-The persistent container creates and returns a container, having loaded the store for the application to it. This property is optional since there are legitimate error conditions that could cause the creation of the store to fail.
-
 ## Managed object context and the functionality that it provides
 A managed object context (represented by an instance of NSManagedObjectContext) is basically a temporary “scratch pad” in an application for a (presumably) related collection of objects. These objects collectively represent an internally consistent view of one or more persistent stores. A single managed object instance exists in one and only one context, but multiple copies of an object can exist in different contexts.
 
@@ -895,6 +931,16 @@ Key functionality provided by a managed object context includes:
 Life-cycle management. The context provides validation, inverse relationship handling, and undo/redo. Through a context you can retrieve or “fetch” objects from a persistent store, make changes to those objects, and then either discard the changes or commit them back to the persistent store. The context is responsible for watching for changes in its objects and maintains an undo manager so you can have finer-grained control over undo and redo. You can insert new objects and delete ones you have fetched, and commit these modifications to the persistent store.
 Notifications. A context posts notifications at various points which can optionally be monitored elsewhere in your application.
 Concurrency. Core Data uses thread (or serialized queue) confinement to protect managed objects and managed object contexts. In OS X v10.7 and later and iOS v5.0 and later, when you create a context you can specify the concurrency pattern with which you will use it using initWithConcurrencyType:
+
+### How does NSManagedObjectContext work?
+`Managed object context` exists for three reasons: life-cycle management, notifications, and concurrency. It allows the developer to fetch an object from a persistent store and make the necessary modifications before deciding whether to discard or commit these changes back to the persistent store. The managed object context tracks these changes and allows the developer to undo and redo changes.
+
+## NSFetchedResultsController
+`NSFetchedResultsController` is a controller, but it’s not a view controller. It has no user interface. Its purpose is to make developers’ lives easier by abstracting away much of the code needed to synchronize a table view with a data source backed by Core Data.
+Set up an NSFetchedResultsController correctly, and your table will mimic its data source without you have to write more than a few lines of code.
+
+## NSPersistentContainer
+The persistent container creates and returns a container, having loaded the store for the application to it. This property is optional since there are legitimate error conditions that could cause the creation of the store to fail.
 
 ## What is NSFetchRequest?
 `NSFetchRequest` is the class responsible for fetching from Core Data. Fetch requests are both powerful and flexible. You can use fetch requests to fetch a set of objects meeting the provided criteria, individual values and more.
