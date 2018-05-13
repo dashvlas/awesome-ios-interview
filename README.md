@@ -5,7 +5,7 @@
 Prepare for iOS interview by reviewing these iOS interview questions - and get some practical tips along the way.
 A small guide to help those looking to hire a iOS developer for work. 
 
-Select question's language and get started!  
+💻 Select question's language and get started!  
 <a href="Resources/Russian.md"><img src="Resources/Artboard-filled-left.png" width=50%></a><a href="Resources/English.md"><img src="Resources/Artboard-filled-right.png" width=50%></a>
 
 ## Install the app  
