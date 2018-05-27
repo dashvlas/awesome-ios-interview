@@ -9,13 +9,13 @@ A small guide to help those looking to hire a iOS developer for work.
 <a href="Resources/Russian.md"><img src="Resources/Artboard-filled-left.png" width=50%></a><a href="Resources/English.md"><img src="Resources/Artboard-filled-right.png" width=50%></a>
 
 ## Install the app  
-It's more convenient to have a nice mobile solution to prepare for the iOS-Developer interview on the go. Never miss tricky question. You can find free app on the App Store: 
+It's more convenient to have a nice mobile solution to prepare for the iOS-Developer interview on the go. Never miss a tricky question. You can find free app on the App Store: 
 
 📲 http://appstore.com/awesomeinterview  
 <p align="center"><img src="Resources/Devices.jpg"></p>
 
 🌟 Star to store
-We've added the feature to save favorite question directly in the app
+We've added the feature to save favorite questions directly in the app
 
 ## Available question types
 <p align="center"><img src="Resources/Available QA types.png"></p>
