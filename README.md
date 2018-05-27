@@ -20,8 +20,6 @@ It's more convenient to have a nice mobile solution to prepare for the iOS-Devel
 ## Available question types
 <p align="center"><img src="Resources/Available QA types.png"></p>
 
-#
-
 ## Contribute
 ⏰ App is updated once a week.
 
