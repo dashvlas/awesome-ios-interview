@@ -3,7 +3,7 @@
 
 ## Question's localization
 Review these iOS interview questions - and get some practical tips along the way.
-A small guide to help those looking to hire a iOS developer for work. 
+A small guide to help those looking to hire a iOS developer for work.
 
 🔛 Select language for questions and get started!  
 <a href="Resources/Russian.md"><img src="Resources/Artboard-filled-left.png" width=50%></a><a href="Resources/English.md"><img src="Resources/Artboard-filled-right.png" width=50%></a>
@@ -14,8 +14,13 @@ It's more convenient to have a nice mobile solution to prepare for the iOS-Devel
 📲 http://appstore.com/awesomeinterview  
 <p align="center"><img src="Resources/Devices.jpg"></p>
 
+🌟 Star to store
+We've added the feature to save favorite question directly in the app
+
 ## Available question types
 <p align="center"><img src="Resources/Available QA types.png"></p>
+
+#
 
 ## Contribute
 ⏰ App is updated once a week.
