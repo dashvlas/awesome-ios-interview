@@ -16,6 +16,7 @@ It's more convenient to have a nice mobile solution to prepare for the iOS-Devel
 
 ## Star to save QA
 Feature to save favorite questions is added. More about new app features here:  
+
 🌟 http://dashvlas.com/portfolio/ai
 
 ## Available question types
