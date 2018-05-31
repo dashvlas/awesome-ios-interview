@@ -14,8 +14,9 @@ It's more convenient to have a nice mobile solution to prepare for the iOS-Devel
 📲 http://appstore.com/awesomeinterview  
 <p align="center"><img src="Resources/Devices.jpg"></p>
 
-## Star to store
-🌟 We've added the feature to save favorite questions directly in the app
+## Star to save QA
+Feature to save favorite questions is added. More about new app features here:
+🌟 http://dashvlas.com/portfolio/ai
 
 ## Available question types
 <p align="center"><img src="Resources/Available QA types.png"></p>
