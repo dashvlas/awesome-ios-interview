@@ -2,7 +2,7 @@
 <img src="Resources/Main.png">
 
 ## Question's localization
-Review these iOS interview questions - and get some practical tips along the way.
+Guide for interviewers and interviewees. Review these iOS interview questions - and get some practical tips along the way.
 A small guide to help those looking to hire a iOS developer for work.
 
 🔛 Select language for questions and get started!  
