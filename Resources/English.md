@@ -7,6 +7,7 @@
   * [Frame and bounds](#whats-the-difference-between-the-frame-and-the-bounds)
   * [Layer objects](#what-are-layer-objects-and-what-do-they-represent)
   * [File owner](#file-owner)
+  
 * [Testing](#testing)
   * [Test types](#testing)
   	  * [Unit Tests](#unit-tests)
@@ -16,13 +17,16 @@
   * [Writing tests for iOS apps](#what-is-the-benefit-writing-tests-in-ios-apps)
   * [“Arrange-Act-Assert”](#please-explain-arrange-act-assert)
   * [Test Driven Development](#what-is-the-test-driven-development-of-three-simple-rules)
+  
 * [Tasks](#tasks)
   * [Explain why a compile time error occurs](#explain-why-a-compile-time-error-occurs-how-can-you-fix-it)
   * [Spot the bug that occurs in the code](#spot-the-bug-that-occurs-in-the-code)
   * [Consider the following code](#consider-the-following-code)
   * [Determine the value of “x” in the Swift code](#determine-the-value-of-x-in-the-swift-code-below)
+  
 * [SDK](#sdk)
   * [Application States](#application-states)
+  
 * [Patterns](#patterns)
   * [Adapter Pattern](#adapter-pattern)
   * [Memento Pattern](#memento-pattern)
@@ -32,15 +36,18 @@
   * [Singleton Pattern](#singleton-pattern)
   * [Decorator Pattern](#decorator-pattern)
   * [Facade Pattern](#facade-pattern)
+  
 * [Architecture](#architecture)
   * [MVC](#mvc)
   * [MVVM](#mvvm)
   * [MVP](#mvp)
   * [Viper](#viper)
+  
 * [OOP](#oop)
   * [Inheritance](#inheritance)
   * [Polymorphism](#polymorphism)
   * [Encapsulation](#encapsulation)
+  
 * [Language](#language)
   * [KVO](#kvo)
   * [KVC ](#kvc)
@@ -48,6 +55,7 @@
   * [What happens when you call autorelease on an object?](#what-happens-when-you-call-autorelease-on-an-object)
   * [By calling performSelector:withObject:afterDelay: is the object retained?](#by-calling-performselectorwithobjectafterdelay-is-the-object-retained)
   * [Selectors](#selectors)
+  
   * [Swift](#swift)
     * [Lazy Stored Property vs Stored Property](#lazy-stored-property-vs-stored-property)
     * [Fileprivate and Private access level](#fileprivate-and-private-access-level)
@@ -67,6 +75,7 @@
     * [Extensions](#extensions)
     * [What is defer?](#what-is-defer)
     * [What is the difference Any and AnyObject?](#what-is-the-difference-any-and-anyobject)
+    
   * [Objective-C](#objective-c)
     * [What is the difference between _ vs self. in Objective-C?](#what-is-the-difference-between-_-vs-self-in-objective-c)
     * [What are blocks in Objective-C?](#what-are-blocks-in-objective-c)
@@ -74,6 +83,7 @@
     * [Strong, Weak, Readonly and Copy](#what-is-the-difference-strong-weak-readonly-and-copy)
     * [@dynamic in Objective-C](#what-is-dynamic-in-objective-c)
     * [NSError object](#what-is-made-up-of-nserror-object)
+    
 * [General](#general)
   * [Waterfall vs Agile](#waterfall-vs-agile)
   * [HTTP request types](#http-request-types)
@@ -89,12 +99,14 @@
   * [Deep and shallow copy](#deep-and-shallow-copy)
   * [Difference between functions and methods in Swift?](#what-is-the-difference-between-functions-and-methods-in-swift)
   * [Protocol Oriented Programming](#protocol-oriented-programming)
+  
 * [Data](#data)
   * [How does NSManagedObjectContext work?](#how-does-nsmanagedobjectcontext-work)
   * [NSFetchedResultsController](#nsfetchedresultscontroller)
   * [NSPersistentContainer](#nspersistentcontainer)
   * [Managed object context and the functionality that it provides](#managed-object-context-and-the-functionality-that-it-provides)
   * [What is NSFetchRequest?](#what-is-nsfetchrequest)
+  
 * [Concurrency](#concurrency)
   * [Concurrency in Mac OS and iOS](#different-ways-of-achieving-concurrency-in-mac-os-and-ios)
   * [POSIX Threads](#posix-threads)
