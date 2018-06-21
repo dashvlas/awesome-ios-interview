@@ -1,6 +1,6 @@
 * [UIKit](#uikit)
   * [Live Rendering](#how-could-you-setup-live-rendering)
-  * [Layout](#different-ways-to-specify-the-layout-of-elements)
+  * [Ways of specifing the layout of elements](#ways-of-specifing-the-layout-of-elements)
   * [Autolayout formula](#formula-of-autolayout)
   * [Size Classes](#size-classes)
   * [Intrinsic Content Size](#intrinsic-content-size)
@@ -24,17 +24,15 @@
 * [SDK](#sdk)
   * [Application States](#application-states)
   * [What happens when you call autorelease on an object?](#can-you-explain-what-happens-when-you-call-autorelease-on-an-object)
-  * [iBeacons](#what-are-ibeacons)
-  * [JSONSerialization](#what-kind-of-jsonserialization-have-readingoptions)
 * [Patterns](#patterns)
-  * [Adapter Pattern](#what-is-adapter-pattern)
-  * [Memento Pattern](#what-is-memento-pattern)
-  * [Factory Method Pattern](#what-is-factory-method-pattern)
-  * [Responder Chain](#what-is-responder-chain)
-  * [Observer Pattern](#what-is-observer-pattern)
-  * [Singleton Pattern](#what-is-singleton-pattern)
-  * [Decorator Design Pattern](#what-is-decorator-design-pattern)
-  * [Facade Design Pattern](#what-is-facade-design-pattern)
+  * [Adapter Pattern](#adapter-pattern)
+  * [Memento Pattern](#memento-pattern)
+  * [Factory Method Pattern](#factory-method-pattern)
+  * [Responder Chain](#responder-chain)
+  * [Observer Pattern](#observer-pattern)
+  * [Singleton Pattern](#singleton-pattern)
+  * [Decorator Pattern](#decorator-pattern)
+  * [Facade Pattern](#facade-pattern)
 * [Architecture](#architecture)
   * [MVC](#mvc)
   * [MVVM](#mvvm)
@@ -44,22 +42,21 @@
   * [Inheritance](#inheritance)
   * [Polymorphism](#polymorphism)
   * [Encapsulation](#encapsulation)
-  * [Abstract class](#what-is-the-abstract-class)
 * [Language](#language)
   * [What is the difference between _ vs self. in Objective-C?](#what-is-the-difference-between-_-vs-self-in-objective-c)
   * [What are blocks in Objective-C?](#what-are-blocks-in-objective-c)
   * [Lazy Stored Property vs Stored Property](#lazy-stored-property-vs-stored-property)
   * [Fileprivate and Private access level](#what-is-the-difference-fileprivate-and-private-access-level)
-  * [Final class](#what-is-final-class)
+  * [Final class](#final-class)
   * [Structs vs Classes](#structs-vs-classes)
   * [Swift Standard Library Protocol](#swift-standard-library-protocol)
-  * [Downcasting](#what-is-downcasting)
-  * [“Strong” and “Weak” references?](#what-are-strong-and-weak-references)
-  * [Explain [weak self] and [unowned self]?](#explain-weak-self-and-unowned-self)
+  * [Downcasting](#downcasting)
+  * [“Strong” and “Weak” references](#strong-and-weak-references)
+  * [Explain [weak self] and [unowned self]?](#weak-self-and-unowned-self)
   * [Lazy in Swift](#lazy-in-swift)
   * [Raw and associated values in Swift](#difference-between-raw-and-associated-values-in-swift)
   * [Swift vs Objective-C](#can-you-briefly-describe-differences-between-swift-and-objective-c)
-  * [Non-Escaping and Escaping Closures](#what-is-the-difference-non-escaping-and-escaping-closures)
+  * [Non-Escaping and Escaping Closures](#non-escaping-and-escaping-closures)
   * [Method Swizzling](#please-explain-method-swizzling)
   * [Error handling in Swift](#how-should-one-handle-errors-in-swift)
   * [Strong, Weak, Readonly and Copy](#what-is-the-difference-strong-weak-readonly-and-copy)
@@ -81,8 +78,8 @@
   * [Waterfall vs Agile](#waterfall-vs-agile)
   * [HTTP request types](#http-request-types)
   * [Communication protocols](#communication-protocols)
-   	* [Network soket](#network-soket)
-   	* [WebSocket](#websoket)
+   	* [Network socket](#network-socket)
+   	* [WebSocket](#websocket)
    	* [TCP Stream Socket](#tcp-stream-socket)
    	* [UDP Datagram Socket](#udp-datagram-socket)
    	* [CFStream](#cfstream)
@@ -99,7 +96,7 @@
   * [Managed object context and the functionality that it provides](#managed-object-context-and-the-functionality-that-it-provides)
   * [What is NSFetchRequest?](#what-is-nsfetchrequest)
 * [Concurrency](#concurrency)
-  * [Achieving concurrency in OS X and iOS](#different-ways-of-achieving-concurrency-in-os-x-and-ios)
+  * [Achieving concurrency in Mac OS and iOS](#different-ways-of-achieving-concurrency-in-os-x-and-ios)
   * [POSIX Threads](#posix-threads)
   * [NSThread](#nsthread)
   * [GCD](#gcd)
@@ -145,7 +142,7 @@ class MyCustomView: UIView {
 }
 ```
 
-## Different ways to specify the layout of elements
+## Ways of specifing the layout of elements
 
 Here are a few common ways to specify the layout of elements in a UIView:
 
@@ -189,7 +186,7 @@ The Intrinsic Content Size is one of the most powerful features you gain when yo
 
 Two points to be remembered:
 
-- The File owner is the object that loads the nib, i.e. that object which receives the message loadNibNamed: or initWithNibName:.
+- The File owner is the object that loads the nib, i.e. that object which receives the message `loadNibNamed:` or `initWithNibName:`.
 - If you want to access any objects in the nib after loading it, you can set an outlet in the file owner.
 
 So you created a fancy view with lots of buttons, subviews etc . If you want to modify any of these views / objects any time after loading the nib FROM the loading object (usually a view or window controller) you set outlets for these objects to the file owner. It's that simple.
@@ -323,7 +320,6 @@ func printString(string: String) {
 }
 ```
 
-
 Solution:
 The second line uses the stringForKey method of UserDefaults, which returns an optional, to account for the key not being found, or for the corresponding value not being convertible to a string.
 
@@ -364,56 +360,52 @@ The iOS application states are as follows:
 
 Not running state: The app has not been launched or was running but was terminated by the system.  
 
-Inactive state: The app is running in the foreground but is currently not receiving events. (It may be executing other code though.) An app usually stays in this state only briefly as it transitions to a different state. The only time it stays inactive for any period of time is when the user locks the screen or the system prompts the user to respond to some event (such as an incoming phone call or SMS message).  
+#### Inactive state:
+The app is running in the foreground but is currently not receiving events. (It may be executing other code though.) An app usually stays in this state only briefly as it transitions to a different state. The only time it stays inactive for any period of time is when the user locks the screen or the system prompts the user to respond to some event (such as an incoming phone call or SMS message).  
 
-Active state: The app is running in the foreground and is receiving events. This is the normal mode for foreground apps.  
+#### Active state: 
+The app is running in the foreground and is receiving events. This is the normal mode for foreground apps.  
 
-Background state: The app is in the background and executing code. Most apps enter this state briefly on their way to being suspended. However, an app that requests extra execution time may remain in this state for a period of time. In addition, an app being launched directly into the background enters this state instead of the inactive state.  
+#### Background state:
+The app is in the background and executing code. Most apps enter this state briefly on their way to being suspended. However, an app that requests extra execution time may remain in this state for a period of time. In addition, an app being launched directly into the background enters this state instead of the inactive state.  
 
-Suspended state: While suspended, an app remains in memory but does not execute any code. When a low-memory condition occurs, the system may purge suspended apps without notice to make more space for the foreground app.
+#### Suspended state:
+While suspended, an app remains in memory but does not execute any code. When a low-memory condition occurs, the system may purge suspended apps without notice to make more space for the foreground app.
 
 ## Can you explain what happens when you call autorelease on an object?
 When you send an object a autorelease message, its retain count is decremented by 1 at some stage in the future. The object is added to an autorelease pool on the current thread. The main thread loop creates an autorelease pool at the beginning of the function, and release it at the end. This establishes a pool for the lifetime of the task. However, this also means that any autoreleased objects created during the lifetime of the task are not disposed of until the task completes. This may lead to the taskʼs memory footprint increasing unnecessarily. You can also consider creating pools with a narrower scope or use NSOperationQueue with itʼs own autorelease pool. (Also important – You only release or autorelease objects you own.)
 
-## What are iBeacons?
-iBeacon.com defines iBeacon as Apple’s technology standard which allows Mobile Apps to listen for signals from beacons in the physical world and react accordingly. iBeacon technology allows Mobile Apps to understand their position on a micro-local scale, and deliver hyper-contextual content to users based on location. The underlying communication technology is Bluetooth Low Energy.
-
-## What kind of JSONSerialization have ReadingOptions?
-- MutableContainers specifies that arrays and dictionaries are created as variables objects, not constants    
-- MutableLeaves specifies that leaf strings in the JSON object graph are created as instances of variable String   
-- AllowFragments specifies that the parser should allow top-level objects that are not an instance of Array or Dictionary   
-
 # Patterns
 
-### What is the delegation pattern? 
+### Delegation pattern
 
 The delegation pattern is a powerful pattern used in building iOS applications. The basic idea is that one object will act on another object's behalf or in coordination with another object. The delegating object typically keeps a reference to the other object (delegate) and sends a message to it at the appropriate time. It is important to note that they have a one to one relationship.
 
-### What is Adapter Pattern?
+### Adapter Pattern
 An Adapter allows classes with incompatible interfaces to work together. It wraps itself around an object and exposes a standard interface to interact with that object.
 
-### What is Memento Pattern?
+### Memento Pattern
 In Memento Pattern saves your stuff somewhere. Later on, this externalized state can be restored without violating encapsulation; that is, private data remains private. One of Apple’s specialized implementations of the Memento pattern is Archiving.
 
-### What is Factory Method Pattern?
+### Factory Method Pattern
 Factory Method is used to replace class constructors, to abstract and hide objects initialization so that the type can be determined at runtime, and to hide and contain switch/if statements that determine the type of object to be instantiated.
 
-### What is Responder Chain?
+### Responder Chain
 A ResponderChain is a hierarchy of objects that have the opportunity to respond to events received.
 
-### What is Observer Pattern?
+### Observer Pattern
 In the Observer pattern, one object notifies other objects of any state changes.
 
-## What is Singleton Pattern?
+### Singleton Pattern
 The Singleton design pattern ensures that only one instance exists for a given class and that there’s a global access point to that instance. It usually uses lazy loading to create the single instance when it’s needed the first time.
 
-### What is Decorator Design Pattern?
+### Decorator Pattern
 The Decorator pattern dynamically adds behaviors and responsibilities to an object without modifying its code. It’s an alternative to subclassing where you modify a class’s behavior by wrapping it with another object.
 
-### What is Facade Design Pattern?
+### Facade Pattern
 The Facade design pattern provides a single interface to a complex subsystem. Instead of exposing the user to a set of classes and their APIs, you only expose one simple unified API.
 
-# Architechture
+# Architecture
 
 ### MVC
 MVC stands for **Model-View-Controller**. It is a software architecture pattern for implementing user interfaces. 
@@ -492,14 +484,7 @@ Encapsulation is an Object-Oriented Programming concept that binds together the 
 
 Data encapsulation is a mechanism of bundling the data and the functions that use them, and data abstraction is a mechanism of exposing only the interfaces and hiding the implementation details from the user.
 
-## What is the abstract class?
-An abstract class is a class that contains at least one abstract method, which is a method without any actual code in it, just the name and the parameters, and that has been marked as "abstract".
-
-The purpose of this is to provide a kind of template to inherit from and to force the inheriting class to implement the abstract methods.
-
-An abstract class thus is something between a regular class and a pure interface. Also interfaces are a special case of abstract classes where ALL methods are abstract
-
-## Language
+# Language
 
 ### What is the difference between _ vs self. in Objective-C?
 
@@ -551,13 +536,13 @@ testObj.greeting
 ```
 Note: Remember, the point of lazy properties is that they are computed only when they are first needed, after which their value is saved. So, if you call the iOSResumeDescription for the second time, the previously saved value is returned.
 
-## What is the difference fileprivate and private access level?
+### What is the difference fileprivate and private access level?
 `Fileprivate` is accessible within the current file, private is accessible within the current declaration.
 
-## What is final class?
+### Final class
 By adding the keyword final in front of the method name, we prevent the method from being overridden
 
-## Structs vs Classes
+### Structs vs Classes
 1. Inheritance.
 
 Structures can't inherit in swift. If you want
@@ -580,17 +565,17 @@ Swift structures pass by value and class instances pass by reference.
 
 Structs are thread-safe
 
-## Swift Standard Library Protocol
+### Swift Standard Library Protocol
 There are a few different protocol. Equatable protocol, that governs how we can distinguish between two instances of the same type. That means we can analyze. If we have a specific value is in our array. The comparable protocol, to compare two instances of the same type and sequence protocol: prefix(while:) and drop(while:) [SE-0045].
 Swift 4 introduces a new Codable protocol that lets us serialize and deserialize custom data types without writing any special code.
 
-## What is Downcasting?
+### Downcasting
 When we’re casting an object to another type in Objective-C, it’s pretty simple since there’s only one way to do it. In Swift, though, there are two ways to cast — one that’s safe and one that’s not .
 as used for upcasting and type casting to bridged type
 as? used for safe casting, return nil if failed
 as! used to force casting, crash if failed. should only be used when we know the downcast will succeed.
 
-## What are “strong” and “weak” references?
+### "Strong” and “weak” references
 By default, any variable that points to another object does so with what is referred to as a “strong” reference. A retain cycle occurs when two or more objects have reciprocal strong references (i.e., strong references to each other). Any such objects will never be destroyed by ARC (iOS’ Automatic Reference Counting). Even if every other object in the application releases ownership of these objects, these objects (and, in turn, any objects that reference them) will continue to exist by virtue of those mutual strong references. This therefore results in a memory leak.
 
 Reciprocal strong references between objects should therefore be avoided to the extent possible. However, when they are necessary, a way to avoid this type of memory leak is to employ weak references. Declaring one of the two references as weak will break the retain cycle and thereby avoid the memory leak.
@@ -599,7 +584,7 @@ To decide which of the two references should be weak, think of the objects in th
 
 For example, if you have Employer and Employee objects, which reference one another, you would most likely want to maintain a strong reference from the Employer to the Employee object, but have a weak reference from the Employee to thr Employer.
 
-## Explain [weak self] and [unowned self]?
+### [weak self] and [unowned self]
 unowned does the same as weak with one exception: The variable will not become nil and therefore the variable must not be an optional.
 But when you try to access the variable after its instance has been deallocated. That means, you should only use unowned when you are sure, that this variable will never be accessed after the corresponding instance has been deallocated.
 However, if you don’t want the variable to be weak AND you are sure that it can’t be accessed after the corresponding instance has been deallocated, you can use unowned.
@@ -631,7 +616,7 @@ case C(String)
 When Swift was first launched in 2014, it was aptly described as “Objective-C without the C.” By dropping the legacy conventions that come with a language built on C, Swift is faster, safer, easier to read, easier to maintain, and designed specifically for the modern world of consumer-facing apps. One of the most immediately visible differences is the fact that Objective-C lacks formal support for namespaces, which forces Objective-C code to use two- or three-letter prefixes to differentiate itself. Instead of simple names like “String,” “Dictionary,” and “Array,” Objective-C must use oddities like “NSString,” “NSDictionary,” and “NSArray.”
 Another major advantage is that Swift avoids exposing pointers and other “unsafe” accessors when referring to object instances. That said, Objective-C has been around since 1983, and there is a mountain of Objective-C code and resources available to the iOS developer. The best iOS developers tend to be pretty well versed in both, with an understanding that Swift is the future of iOS development.
 
-## What is the difference Non-Escaping and Escaping Closures?
+## Non-Escaping and Escaping Closures
 The lifecycle of a non-escaping closure is simple:
 Pass a closure into a function
 The function runs the closure (or not)
@@ -946,7 +931,7 @@ The persistent container creates and returns a container, having loaded the stor
 
 ## Concurrency
 
-### Different ways of achieving concurrency in OS X and iOS
+### Different ways of achieving concurrency in Mac OS and iOS
 There are basically three ways of achieving concurrency in iOS:  
 1. threads  
 2. GCD
