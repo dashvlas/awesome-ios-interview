@@ -41,16 +41,13 @@
   * [Inheritance](#inheritance)
   * [Polymorphism](#polymorphism)
   * [Encapsulation](#encapsulation)
-  
 * [Language](#language)
-
   * [KVO](#kvo)
   * [KVC ](#kvc)
   * [Difference between Delegate and KVO?](#what-is-the-difference-between-delegate-and-kvo)
   * [What happens when you call autorelease on an object?](#what-happens-when-you-call-autorelease-on-an-object)
   * [By calling performSelector:withObject:afterDelay: is the object retained?](#by-calling-performselectorwithobjectafterdelay-is-the-object-retained)
   * [Selectors](#selectors)
-
   * [Swift](#swift)
     * [Lazy Stored Property vs Stored Property](#lazy-stored-property-vs-stored-property)
     * [Fileprivate and Private access level](#fileprivate-and-private-access-level)
@@ -70,7 +67,6 @@
     * [Extensions](#extensions)
     * [What is defer?](#what-is-defer)
     * [What is the difference Any and AnyObject?](#what-is-the-difference-any-and-anyobject)
-
   * [Objective-C](#objective-c)
     * [What is the difference between _ vs self. in Objective-C?](#what-is-the-difference-between-_-vs-self-in-objective-c)
     * [What are blocks in Objective-C?](#what-are-blocks-in-objective-c)
@@ -78,7 +74,6 @@
     * [Strong, Weak, Readonly and Copy](#what-is-the-difference-strong-weak-readonly-and-copy)
     * [@dynamic in Objective-C](#what-is-dynamic-in-objective-c)
     * [NSError object](#what-is-made-up-of-nserror-object)
-    
 * [General](#general)
   * [Waterfall vs Agile](#waterfall-vs-agile)
   * [HTTP request types](#http-request-types)
@@ -105,6 +100,7 @@
   * [POSIX Threads](#posix-threads)
   * [NSThread](#nsthread)
   * [GCD](#gcd)
+  * [Quality of Service (QoS)](#quality-of-service-qos)
   * [NSOperationQueue](#nsoperationqueue)
   * [DispatchGroup](#what-is-dispatchgroup)
   * [@synchronized](#synchronized)
@@ -115,7 +111,8 @@
   * [Semaphore vs Mutex vs Lock](#semaphore-vs-mutex-vs-lock)
 
 # UIKit
-### How could you setup Live Rendering?
+
+## How could you setup Live Rendering?
 With `@IBInspectable` and `@IBDesignable`, it’s possible to build a custom interface for configuring your custom controls and have them rendered in real-time while designing your project.
 
 `@IBInspectable` properties provide new access to an old feature: user-defined runtime attributes. Currently accessible from the identity inspector, these attributes have been available since before Interface Builder was integrated into Xcode. They provide a powerful mechanism for configuring any key-value coded property of an instance in a NIB, XIB, or storyboard.
@@ -198,8 +195,7 @@ This is the reason why by default all View Controllers or Window Controllers act
 
 The reason it's called file owner and given a special place, is because unlike the other objects in the nib, the file owner is external to the nib and is not part of it. In fact, it only becomes available when the nib is loaded. So the file owner is a stand-in or proxy for the actual object which will later load the nib.
 
-
-## Testing
+# Testing
 
 ### Unit Tests
 Tests the smallest unit of functionality, typically a method/function (e.g. given a class with a particular state, calling x method on the class should cause y to happen). Unit tests should be focussed on one particular feature (e.g., calling the pop method when the stack is empty should throw an InvalidOperationException). Everything it touches should be done in memory; this means that the test code and the code under test shouldn't:
@@ -213,16 +209,16 @@ Tests the smallest unit of functionality, typically a method/function (e.g. give
 Any kind of dependency that is slow / hard to understand / initialise / manipulate should be stubbed / mocked / whatevered using the appropriate techniques so you can focus on what the unit of code is doing, not what its dependencies do.
 In short, unit tests are as simple as possible, easy to debug, reliable (due to reduced external factors), fast to execute and help to prove that the smallest building blocks of your program function as intended before they're put together. The caveat is that, although you can prove they work perfectly in isolation, the units of code may blow up when combined which brings us to ...
 
-## Integration Tests
+### Integration Tests
 Integration tests build on unit tests by combining the units of code and testing that the resulting combination functions correctly. This can be either the innards of one system, or combining multiple systems together to do something useful. Also, another thing that differentiates integration tests from unit tests is the environment. Integration tests can and will use threads, access the database or do whatever is required to ensure that all of the code and the different environment changes will work correctly.
 If you've built some serialization code and unit tested its innards without touching the disk, how do you know that it'll work when you are loading and saving to disk? Maybe you forgot to flush and dispose filestreams. Maybe your file permissions are incorrect and you've tested the innards using in memory streams. The only way to find out for sure is to test it 'for real' using an environment that is closest to production.
 The main advantage is that they will find bugs that unit tests can't such as wiring bugs (e.g. an instance of class A unexpectedly receives a null instance of B) and environment bugs (it runs fine on my single-CPU machine, but my colleague's 4 core machine can't pass the tests). The main disadvantage is that integration tests touch more code, are less reliable, failures are harder to diagnose and the tests are harder to maintain.
 Also, integration tests don't necessarily prove that a complete feature works. The user may not care about the internal details of my programs, but I do!
 
-## Functional Tests
+### Functional Tests
 Functional tests check a particular feature for correctness by comparing the results for a given input against the specification. Functional tests don't concern themselves with intermediate results or side-effects, just the result (they don't care that after doing x, object y has state z). They are written to test part of the specification such as, "calling function `Square(x)` with the argument of `2` returns `4`".
 
-## Acceptance Tests
+### Acceptance Tests
 Acceptance testing seems to be split into two types:
 Standard acceptance testing involves performing tests on the full system (e.g. using your web page via a web browser) to see whether the application's functionality satisfies the specification. E.g. "clicking a zoom icon should enlarge the document view by 25%." There is no real continuum of results, just a pass or fail outcome.
 The advantage is that the tests are described in plain English and ensures the software, as a whole, is feature complete. The disadvantage is that you've moved another level up the testing pyramid. Acceptance tests touch mountains of code, so tracking down a failure can be tricky.
@@ -245,9 +241,9 @@ You are not allowed to write any production code unless it is to make a failing 
 You are not allowed to write any more of a unit test than is sufficient to fail; and compilation failures are failures.
 You are not allowed to write any more production code than is sufficient to pass the one failing unit test.
 
-## Tasks
+# Tasks
 
-### Explain why a compile time error occurs. How can you fix it?
+## Explain why a compile time error occurs. How can you fix it?
 Task:
 The following code snippet results in a compile time error:
 ```objectivec  
@@ -358,7 +354,7 @@ a2 = [1, 2, 3, 4, 5, 6]
 
 ## SDK
 
-### Application States
+## Application States
 The iOS application states are as follows:
 
 Not running state: The app has not been launched or was running but was terminated by the system.  
@@ -377,37 +373,37 @@ While suspended, an app remains in memory but does not execute any code. When a 
 
 # Patterns
 
-### Delegation pattern
+## Delegation pattern
 
 The delegation pattern is a powerful pattern used in building iOS applications. The basic idea is that one object will act on another object's behalf or in coordination with another object. The delegating object typically keeps a reference to the other object (delegate) and sends a message to it at the appropriate time. It is important to note that they have a one to one relationship.
 
-### Adapter Pattern
+## Adapter Pattern
 An Adapter allows classes with incompatible interfaces to work together. It wraps itself around an object and exposes a standard interface to interact with that object.
 
-### Memento Pattern
+## Memento Pattern
 In Memento Pattern saves your stuff somewhere. Later on, this externalized state can be restored without violating encapsulation; that is, private data remains private. One of Apple’s specialized implementations of the Memento pattern is Archiving.
 
-### Factory Method Pattern
+## Factory Method Pattern
 Factory Method is used to replace class constructors, to abstract and hide objects initialization so that the type can be determined at runtime, and to hide and contain switch/if statements that determine the type of object to be instantiated.
 
-### Responder Chain
+## Responder Chain
 A ResponderChain is a hierarchy of objects that have the opportunity to respond to events received.
 
-### Observer Pattern
+## Observer Pattern
 In the Observer pattern, one object notifies other objects of any state changes.
 
-### Singleton Pattern
+## Singleton Pattern
 The Singleton design pattern ensures that only one instance exists for a given class and that there’s a global access point to that instance. It usually uses lazy loading to create the single instance when it’s needed the first time.
 
-### Decorator Pattern
+## Decorator Pattern
 The Decorator pattern dynamically adds behaviors and responsibilities to an object without modifying its code. It’s an alternative to subclassing where you modify a class’s behavior by wrapping it with another object.
 
-### Facade Pattern
+## Facade Pattern
 The Facade design pattern provides a single interface to a complex subsystem. Instead of exposing the user to a set of classes and their APIs, you only expose one simple unified API.
 
 # Architecture
 
-### MVC
+## MVC
 MVC stands for **Model-View-Controller**. It is a software architecture pattern for implementing user interfaces. 
 
 MVC consists of three layers: the model, the view, and the controller.
@@ -415,7 +411,7 @@ MVC consists of three layers: the model, the view, and the controller.
 - The **view layer** is typically where all the UI interface lies. Things like displaying buttons and numbers belong in the view layer. The view layer does not know anything about the model layer and vice versa.
 - The **controller (view controller)** is the layer that integrates the view layer and the model layer together. 
 
-### MVVM
+## MVVM
 
 The MVVM defines the following
 ·      The View , which is generally passive, corresponds to the Presentation Layer
@@ -426,7 +422,7 @@ The key aspect of the MVVM pattern is the binding between the View and the View 
 
 In iOS, this can be accomplished using Key-Value-Observer (KVO) Pattern. In the KVO Pattern (https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/KeyValueObserving/KeyValueObserving.html) , one object is automatically notified of changes to the state of another object. In Objective C, this facility is built into the run-time. However, it’s not as straightforward in Swift. One option would be to add the “dynamic” modifiers to properties that need to be dynamically dispatched. However, this is limiting as objects now need to be of type NSObject.  The alternate is to simulate this behavior by defining a generic type that acts as a wrapper around properties that are observable.
 
-### MVP
+## MVP
 The MVP defines the following
 ·      The View , which is generally passive, corresponds to the  Presentation Layer
 ·      The Model , corresponds to the  Business Logic Layer and is identical to the MVC pattern
@@ -457,7 +453,7 @@ protocol PresentingViewProtocol: class{
 }
 ```
 
-### Viper
+## Viper
 
 This architecture is based on Single Responsibility Principle which leads to a clean architecture.
 
@@ -469,17 +465,17 @@ This architecture is based on Single Responsibility Principle which leads to a c
 
 # OOP
 
-### Inheritance
+## Inheritance
 It allows a class to be defined that has a certain set of characteristics (such as methods and instance variables) and then other classes to be created which are derived from that class. The derived class inherits all of the features of the parent class and typically then adds some features of its own.
 
-### Polymorphism
+## Polymorphism
 The word polymorphism means having many forms. Typically, polymorphism occurs when there is a hierarchy of classes and they are related by inheritance.
 
 Objective-C polymorphism means that a call to a member function will cause a different function to be executed depending on the type of object that invokes the function.
 
 Consider the example, we have a class Shape that provides the basic interface for all the shapes. Square and Rectangle are derived from the base class Shape.
 
-### Encapsulation
+## Encapsulation
 Encapsulation is an Object-Oriented Programming concept that binds together the data and functions that manipulate the data and that keeps both safe from outside interference and misuse. Data encapsulation led to the important OOP concept of data hiding.
 
 Data encapsulation is a mechanism of bundling the data and the functions that use them, and data abstraction is a mechanism of exposing only the interfaces and hiding the implementation details from the user.
@@ -508,12 +504,12 @@ Both are ways to have relationships between objects. Delegation is a one-to-one 
 Yes, the object is retained. It creates a timer that calls a selector on the current threads run loop. It may not be 100% precise time-wise as it attempts to dequeue the message from
 the run loop and perform the selector
 
-### Can you explain what happens when you call autorelease on an object?
+## What happens when you call autorelease on an object?
 When you send an object a autorelease message, its retain count is decremented by 1 at some stage in the future. The object is added to an autorelease pool on the current thread. The main thread loop creates an autorelease pool at the beginning of the function, and release it at the end. This establishes a pool for the lifetime of the task. However, this also means that any autoreleased objects created during the lifetime of the task are not disposed of until the task completes. This may lead to the taskʼs memory footprint increasing unnecessarily. You can also consider creating pools with a narrower scope or use NSOperationQueue with itʼs own autorelease pool. (Also important – You only release or autorelease objects you own.)
 
 ## Swift
 
-### Lazy Stored Property vs Stored Property
+## Lazy Stored Property vs Stored Property
 
 1. The closure associated to the lazy property is executed only if you read that property. So if for some reason that property is not used (maybe because of some decision of the user) you avoid unnecessary allocation and computation.
 You can populate a lazy property with the value of a stored property.
@@ -542,13 +538,13 @@ testObj.greeting
 ```
 Note: Remember, the point of lazy properties is that they are computed only when they are first needed, after which their value is saved. So, if you call the iOSResumeDescription for the second time, the previously saved value is returned.
 
-### Fileprivate and Private access level
+## Fileprivate and Private access level
 `Fileprivate` is accessible within the current file, private is accessible within the current declaration.
 
-### Final class
+## Final class
 By adding the keyword final in front of the method name, we prevent the method from being overridden
 
-### Structs vs Classes
+## Structs vs Classes
 1. Inheritance.
 
 Structures can't inherit in swift. If you want
@@ -571,35 +567,26 @@ Swift structures pass by value and class instances pass by reference.
 
 Structs are thread-safe
 
-### Swift Standard Library Protocol
+## Swift Standard Library Protocol
 There are a few different protocol. Equatable protocol, that governs how we can distinguish between two instances of the same type. That means we can analyze. If we have a specific value is in our array. The comparable protocol, to compare two instances of the same type and sequence protocol: prefix(while:) and drop(while:) [SE-0045].
 Swift 4 introduces a new Codable protocol that lets us serialize and deserialize custom data types without writing any special code.
 
-### Downcasting
+## Downcasting
 When we’re casting an object to another type in Objective-C, it’s pretty simple since there’s only one way to do it. In Swift, though, there are two ways to cast — one that’s safe and one that’s not .
 as used for upcasting and type casting to bridged type
 as? used for safe casting, return nil if failed
 as! used to force casting, crash if failed. should only be used when we know the downcast will succeed.
 
-### "Strong” and “weak” references
-By default, any variable that points to another object does so with what is referred to as a “strong” reference. A retain cycle occurs when two or more objects have reciprocal strong references (i.e., strong references to each other). Any such objects will never be destroyed by ARC (iOS’ Automatic Reference Counting). Even if every other object in the application releases ownership of these objects, these objects (and, in turn, any objects that reference them) will continue to exist by virtue of those mutual strong references. This therefore results in a memory leak.
-
-Reciprocal strong references between objects should therefore be avoided to the extent possible. However, when they are necessary, a way to avoid this type of memory leak is to employ weak references. Declaring one of the two references as weak will break the retain cycle and thereby avoid the memory leak.
-
-To decide which of the two references should be weak, think of the objects in the retain cycle as being in a parent-child relationship. In this relationship, the parent should maintain a strong reference (i.e., ownership of) its child, but the child should not maintain maintain a strong reference (i.e., ownership of) its parent.
-
-For example, if you have Employer and Employee objects, which reference one another, you would most likely want to maintain a strong reference from the Employer to the Employee object, but have a weak reference from the Employee to thr Employer.
-
-### [weak self] and [unowned self]
+## [weak self] and [unowned self]
 unowned does the same as weak with one exception: The variable will not become nil and therefore the variable must not be an optional.
 But when you try to access the variable after its instance has been deallocated. That means, you should only use unowned when you are sure, that this variable will never be accessed after the corresponding instance has been deallocated.
 However, if you don’t want the variable to be weak AND you are sure that it can’t be accessed after the corresponding instance has been deallocated, you can use unowned.
 By declaring it [weak self] you get to handle the case that it might be nil inside the closure at some point and therefore the variable must be an optional. A case for using [weak self] in an asynchronous network request, is in a view controller where that request is used to populate the view.
 
-### Lazy in Swift
+## Lazy in Swift
 An initial value of the lazy stored properties is calculated only when the property is called for the first time. There are situations when the lazy properties come very handy to developers.
 
-### Raw and associated values
+## Raw and associated values
 This question tests the developer’s understanding of enumeration in Swift. Enumeration provides a type-safe method of working with a group of related values. Raw values are compile time-set values directly assigned to every case within an enumeration, as in the example detailed below:
 ```swift
 enum Alphabet: Int {
@@ -618,7 +605,7 @@ case C(String)
 }
 ```
 
-### Non-Escaping and Escaping Closures
+## Non-Escaping and Escaping Closures
 The lifecycle of a non-escaping closure is simple:
 Pass a closure into a function
 The function runs the closure (or not)
@@ -628,7 +615,7 @@ Asynchronous execution: If you execute the closure asynchronously on a dispatch 
 Storage: Storing the closure to a global variable, property, or any other bit of storage that lives on past the function call means the closure has also escaped.
 
 
-### How should one handle errors in Swift?
+## How should one handle errors in Swift?
 The method for handling errors in Swift differ a bit from Objective-C. In Swift, it's possible to declare that a function throws an error. It is, therefore, the caller's responsibility to handle the error or propagate it. This is similar to how Java handles the situation.
 
 You simply declare that a function can throw an error by appending the throws keyword to the function name. Any function that calls such a method must call it from a try block.
@@ -643,17 +630,17 @@ try canThrowErrors()
 let maybe = try? canThrowErrors()
 ```
 
-### What are benefits of Guard?
+## What are benefits of Guard?
 There are two big benefits to guard. One is avoiding the pyramid of doom, as others have mentioned — lots of annoying if let statements nested inside each other moving further and further to the right. The other benefit is provide an early exit out of the function using break or using return.
 
 
-### When applied to strings, what’s the complexity of the countElements function and why?
+## When applied to strings, what’s the complexity of the countElements function and why?
 Comments: The String struct doesn’t provide a count or length property or method to count the number of characters it contains. Instead a global countElements<T>() function is available.
 
 
 Solution: Swift strings support extended grapheme clusters. Each character stored in a string is a sequence of one or more unicode scalars that, when combined, produce a single human readable character. Since different characters can require different amounts of memory, and considering that an extreme grapheme cluster must be accessed sequentially in order to determine which character it represents, it’s not possible to know the number of characters contained in a string upfront, without traversing the entire string. For that reason, the complexity of the countElements function is O(n).
 
-### In Swift enumerations, what’s the difference between raw values and associated values?
+## In Swift enumerations, what’s the difference between raw values and associated values?
 Raw values are used to associate constant (literal) values to enum cases. The value type is part of the enum type, and each enum case must specify a unique raw value (duplicate values are not allowed).
 
 The following example shows an enum with raw values of type Int:
@@ -722,14 +709,14 @@ AnyObject can represent an instance of any class type.
 
 ## Objective-C
 
-### What is the difference between _ vs self. in Objective-C?
+## What is the difference between _ vs self. in Objective-C?
 
 You typically use either when accessing a property in Objective-C. When you use _, you're referencing the actual instance variable directly. You should avoid this. Instead, you should use self. to ensure that any getter/setter actions are honored. 
 
 In the case that you would write your own setter method, using _ would not call that setter method. Using self. on the property, however, would call the setter method you implemented. 
 
 
-### What are blocks in Objective-C?
+## What are blocks in Objective-C?
 
 Blocks are a language-level feature of Objective (C and C++ too). They are objects that allow you to create distinct segments of code that can be passed around to methods or functions as if they were values. This means that a block is capable of being added to collections such as NSArray or NSDictionary. Blocks are also able to take arguments and return values similar to methods and functions.
 
@@ -743,7 +730,7 @@ The syntax to define a block literal uses the caret symbol(^):
 
 ```
 
-### Please explain Method Swizzling
+## Please explain Method Swizzling
 
 Method swizzling allows the implementation of an existing selector to be switched at runtime for a different implementation in a classes dispatch table. Swizzling allows you to write code that can be executed before and/or after the original method. For example perhaps to track the time method execution took, or to insert log statements.  
 
@@ -766,9 +753,16 @@ Method swizzling allows the implementation of an existing selector to be switche
     }
 @end
 ```
+## "Strong” and “weak” references
+By default, any variable that points to another object does so with what is referred to as a “strong” reference. A retain cycle occurs when two or more objects have reciprocal strong references (i.e., strong references to each other). Any such objects will never be destroyed by ARC (iOS’ Automatic Reference Counting). Even if every other object in the application releases ownership of these objects, these objects (and, in turn, any objects that reference them) will continue to exist by virtue of those mutual strong references. This therefore results in a memory leak.
 
+Reciprocal strong references between objects should therefore be avoided to the extent possible. However, when they are necessary, a way to avoid this type of memory leak is to employ weak references. Declaring one of the two references as weak will break the retain cycle and thereby avoid the memory leak.
 
-### What is the difference strong, weak, readonly and copy?
+To decide which of the two references should be weak, think of the objects in the retain cycle as being in a parent-child relationship. In this relationship, the parent should maintain a strong reference (i.e., ownership of) its child, but the child should not maintain maintain a strong reference (i.e., ownership of) its parent.
+
+For example, if you have Employer and Employee objects, which reference one another, you would most likely want to maintain a strong reference from the Employer to the Employee object, but have a weak reference from the Employee to thr Employer.
+
+## What is the difference strong, weak, readonly and copy?
 - `Strong` means that the reference count will be increased and the reference to it will be maintained through the life of the object
 - `Weak` means that we are pointing to an object but not increasing its reference count. It’s often used when creating a parent child relationship. The parent has a strong reference to the child but the child only has a weak reference to the parent.
 - `Readonly`, we can set the property initially but then it can’t be changed.
@@ -781,9 +775,9 @@ Dynamic for properties means that it setters and getters will be created manuall
 ## What is made up of NSError object?
 There are three parts of NSError object a domain, an error code, and a user info dictionary. The domain is a string that identifies what categories of errors this error is coming from.
 
-## General
+# General
 
-### Waterfall vs Agile
+## Waterfall vs Agile
 
 Waterfall methodology is a sequential model for software development. It is separated into a sequence of pre-defined phases including feasibility, planning, design, build, test, production, and support.
 
@@ -798,7 +792,7 @@ List of differences:
 - Waterfall model best fits projects that have a clearly defined set of requirements and where change to requirements is not expect. Agile fits more for projects where the requirements are expected to change and evolve.
 - Waterfall can exhibit a project mindset that focuses on completion of the project while Agile can allow for more focus on developing a product that satisfies customers.
 
-### HTTP request types
+## HTTP request types
 An HTTP request is a class consisting of HTTP style requests, request lines, request methods, request URL, header fields, and body content. The most common methods that are used by a client in an HTTP request are as follows:
 
 1) GET:- Used when the client is requesting a resource on the Web server.
@@ -809,20 +803,20 @@ An HTTP request is a class consisting of HTTP style requests, request lines, req
 
 4) PUT:- Used when the client is sending a replacement document or uploading a new document to the Web server under the request URL.  
 
-## Communication protocols
+# Communication protocols
 
-### Network socket
+## Network socket
 
 __Network socket__ is an internal endpoint for sending or receiving data at a single node in a computer network. Concretely, it is a representation of this endpoint in networking software (protocol stack), such as an entry in a table (listing communication protocol, destination, status, etc.), and is a form of system resource.
 The term "socket" is analogous to physical female connectors, communication between two nodes through a channel being visualized as a cable with two male connectors plugging into sockets at each node. Similarly, the term "port" (another term for a female connector) is used for external endpoints at a node, and the term "socket" is also used for an internal endpoint of local inter-process communication (IPC) (not over a network). However, the analogy is strained, as network communication need not be one-to-one or have a channel.
 
-### WebSocket
+## WebSocket
 
 __WebSocket__ is a computer communications protocol, providing full-duplex communication channels over a single TCP connection. The WebSocket protocol was standardized by the IETF as RFC 6455 in 2011, and the WebSocket API in Web IDL is being standardized by the W3C.
 WebSocket is a different TCP protocol from HTTP. Both protocols are located at layer 7 in the OSI model and, as such, depend on TCP at layer 4. Although they are different, RFC 6455 states that WebSocket "is designed to work over HTTP ports 80 and 443 as well as to support HTTP proxies and intermediaries" thus making it compatible with the HTTP protocol. To achieve compability, the WebSocket handshake uses the HTTP Upgrade header[1] to change from the HTTP protocol to the WebSocket protocol.
 The WebSocket protocol enables interaction between a browser and a web server with lower overheads, facilitating real-time data transfer from and to the server. This is made possible by providing a standardized way for the server to send content to the browser without being solicited by the client, and allowing for messages to be passed back and forth while keeping the connection open. In this way, a two-way (bi-directional) ongoing conversation can take place between a browser and the server. The communications are done over TCP port number 80 (or 443 in the case of TLS-encrypted connections), which is of benefit for those environments which block non-web Internet connections using a firewall. Similar two-way browser-server communications have been achieved in non-standardized ways using stopgap technologies such as Comet.
 
-### TCP Stream Socket
+## TCP Stream Socket
 Is much more commonly used, as it provides the framework for a complete, structured "conversation" to occur between the two endpoints. TCP connections provide a means to ensure the message was received, and guarantees that packets are received in order. TCP is used by protocols including HTTP, FTP, and others where data must be reliably sent and received in order. To keep track of the ordering of packets, TCP employs a sequence number, which identifies the sequence of each packet. This not only keeps your conversation in order, but also adds a basic level of protection against some forms of spoofing (data forgery by a malicious party).
 
 * Dedicated & point-to-point channel between server and client.
@@ -831,7 +825,7 @@ Is much more commonly used, as it provides the framework for a complete, structu
 * Long time for recovering lost/mistaken data
 * Web, SSH, FTP, TELNET, SMTP, IMAP/POP
 
-### UDP Datagram Socket
+## UDP Datagram Socket
 
 Is used for sending short messages called datagrams to the recipient. Datagrams are single packets of data that are sent and received without any "return postage." There is no guarantee that the recipient will receive a particular packet, and multiple packets may be received out of order. Datagrams are generally thought of as unreliable, in the same way that a carrier pigeon can be unreliable. This form of communication is used for sending short query/response-type messages that do not require authentication, such as DNS (name resolution) lookups, as well as by some protocols where lost packets are irrelevant; such as live video streams and online multiplayer games, where an interruption can be ignored.
 
@@ -855,11 +849,11 @@ CFSocketRef CFSocketCreate (
     const CFSocketContext *context
 );
 ```
-### CFStream
+## CFStream
 
 Socket streams provide an easy interface for reading and writing data to or from a socket. Each socket can be bound to a read and write stream, allowing for synchronous or asynchronous communication. Streams encapsulate most of the work needed for reading and writing byte streams, and replace the traditional `send()` and `recv()` functions used in C. Two different stream objects are used with sockets: `CFReadStream` and `CFWriteStream`
 
-### NSStream
+## NSStream
 
 __`NSStream`__ is an abstract class that defines the fundamental interface and properties for all stream objects. `NSInputStream` and `NSOutputStream` are subclasses of `NSStream` and implement default input-stream and output-stream behavior. `NSStream` is built on the `CFStream` layer of Core Foundation. This close relationship means that the concrete subclasses of `NSStream`, `NSOutputStream` and `NSInputStream`, are toll-free bridged with their Core Foundation counterparts `CFWriteStream` and `CFReadStream`. Although there are strong similarities between the Cocoa and Core Foundation stream APIs, their implementations are not exactly coincident. The Cocoa stream classes use the delegation model for asynchronous behavior (assuming run-loop scheduling) while Core Foundation uses client callbacks. Despite their strong similarities, __`NSStream` does give you a major advantage over `CFStream`. Because of its Objective-C underpinnings, it is extensible.__ You can subclass `NSStream`, `NSInputStream`, or `NSOutputStream` to customize stream attributes and behavior. For example, you could create an input stream that maintains statistics on the bytes it reads; or you could make a `NSStream` subclass whose instances can seek through their stream, putting back bytes that have been read. `NSStream` has its own set of required overrides, as do `NSInputStream` and `NSOutputStream`.
 
@@ -909,7 +903,7 @@ __Protocol Composition__
 
 Swift types can adopt multiple protocols.
 
-## Data
+# Data
 
 ## Managed object context and the functionality that it provides
 A managed object context (represented by an instance of NSManagedObjectContext) is basically a temporary “scratch pad” in an application for a (presumably) related collection of objects. These objects collectively represent an internally consistent view of one or more persistent stores. A single managed object instance exists in one and only one context, but multiple copies of an object can exist in different contexts.
@@ -922,7 +916,7 @@ Life-cycle management. The context provides validation, inverse relationship han
 Notifications. A context posts notifications at various points which can optionally be monitored elsewhere in your application.
 Concurrency. Core Data uses thread (or serialized queue) confinement to protect managed objects and managed object contexts. In OS X v10.7 and later and iOS v5.0 and later, when you create a context you can specify the concurrency pattern with which you will use it using initWithConcurrencyType:
 
-### How does NSManagedObjectContext work?
+## How does NSManagedObjectContext work?
 `Managed object context` exists for three reasons: life-cycle management, notifications, and concurrency. It allows the developer to fetch an object from a persistent store and make the necessary modifications before deciding whether to discard or commit these changes back to the persistent store. The managed object context tracks these changes and allows the developer to undo and redo changes.
 
 ## NSFetchedResultsController
@@ -935,9 +929,9 @@ The persistent container creates and returns a container, having loaded the stor
 ## What is NSFetchRequest?
 `NSFetchRequest` is the class responsible for fetching from Core Data. Fetch requests are both powerful and flexible. You can use fetch requests to fetch a set of objects meeting the provided criteria, individual values and more.
 
-## Concurrency
+# Concurrency
 
-### Different ways of achieving concurrency in Mac OS and iOS
+## Different ways of achieving concurrency in Mac OS and iOS
 There are basically three ways of achieving concurrency in iOS:  
 1. threads  
 2. GCD
@@ -953,7 +947,7 @@ All dispatch queues are first-in, first-out (FIFO) data structures, so tasks are
 
 An operation queue is the Cocoa equivalent of a concurrent dispatch queue and is implemented by the NSOperationQueue class. Unlike dispatch queues, operation queues are not limited to executing tasks in FIFO order and support the creation of complex execution-order graphs for your tasks.
 
-### POSIX Threads
+## POSIX Threads
 Usually referred to as Pthreads, is a POSIX standard for threads defines an API for creating and manipulating threads. Pthreads defines a set of C programming language types, functions and constants. It is implemented with a pthread.h header and a thread library. There are around 100 Pthreads procedures, all prefixed `pthread_` and they can be categorized into four groups:
 
 * Thread management - creating, joining threads etc.
@@ -1015,7 +1009,7 @@ Dispatch sources are a C-based mechanism __for processing specific types of syst
 - sync - concurrent: the code runs on a background thread but the main thread waits for it to finish, blocking any updates to the UI. The block can't assume that it's the only block running on that queue (I could have added another block using async a few seconds previously)
 - sync - serial: the code runs on a background thread but the main thread waits for it to finish, blocking any updates to the UI. The block can assume that it's the only block running on that queue
 
-### Swift 3 API
+## Quality of Service (QoS)
 
 The QoS classes are:
 * User-interactive: This represents tasks that need to be done immediately in order to provide a nice user experience. Use it for UI updates, event handling and small workloads that require low latency. The total amount of work done in this class during the execution of your app should be small. This should run on the main thread.
