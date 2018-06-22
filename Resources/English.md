@@ -52,7 +52,7 @@
   
 * [Language](#language)
   * [KVO](#kvo)
-  * [KVC ](#kvc)
+  * [KVC](#kvc)
   * [Difference between Delegate and KVO?](#what-is-the-difference-between-delegate-and-kvo)
   * [What happens when you call autorelease on an object?](#what-happens-when-you-call-autorelease-on-an-object)
   * [By calling performSelector:withObject:afterDelay: is the object retained?](#by-calling-performselectorwithobjectafterdelay-is-the-object-retained)
