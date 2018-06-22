@@ -1,5 +1,6 @@
 * [UIKit](#uikit)
     * [Bounds и Frame](#Чем-отличаются-bounds-и-frame)
+    * [Когда bounds будет отлично от нуля?](#Когда-bounds-будет-отлично-от-нуля)
     * [Как работает UITableView?](#Как-работает-uitableview)
     * [Points и Pixels](#Разница-между-points-и-pixels)
     * [Как поймать неприятный лаг?](#Как-поймать-неприятный-лаг-На-что-обращать-внимание)
@@ -133,6 +134,11 @@
 `bounds` – это прямоугольник описываемый положением location(x, y) и размерами size (width, height) вьюхи относительно ее собственной системы координат (0, 0).  
 
 <center><img src = "/Resources/Articles/Frame-Bounds.png"></center>
+
+## Когда bounds будет отлично от нуля?
+
+Рассмотрим на примере UIScrollView:
+Bounds будет отлично от нуля, когда contentOffset у скролла не равен (0;0)
 
 ## Как работает UITableView?
 
