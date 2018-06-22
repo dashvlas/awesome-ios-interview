@@ -27,7 +27,7 @@
   * [Given two sorted arrays, the task is to merge them in a sorted manner](#given-two-sorted-arrays-the-task-is-to-merge-them-in-a-sorted-manner)  
   
 * [SDK](#sdk)
-  * [Application States](#application-states). 
+  * [Application States](#application-states)  
   
 * [Patterns](#patterns)
   * [Adapter Pattern](#adapter-pattern)
@@ -37,7 +37,7 @@
   * [Observer Pattern](#observer-pattern)
   * [Singleton Pattern](#singleton-pattern)
   * [Decorator Pattern](#decorator-pattern)
-  * [Facade Pattern](#facade-pattern). 
+  * [Facade Pattern](#facade-pattern)  
   
 * [Architecture](#architecture)
   * [MVC](#mvc)
@@ -56,7 +56,7 @@
   * [Difference between Delegate and KVO?](#what-is-the-difference-between-delegate-and-kvo)
   * [What happens when you call autorelease on an object?](#what-happens-when-you-call-autorelease-on-an-object)
   * [By calling performSelector:withObject:afterDelay: is the object retained?](#by-calling-performselectorwithobjectafterdelay-is-the-object-retained)
-  * [Selectors](#selectors). 
+  * [Selectors](#selectors)   
   
   * [Swift](#swift)
     * [Lazy Stored Property vs Stored Property](#lazy-stored-property-vs-stored-property)
@@ -107,7 +107,7 @@
   * [NSFetchedResultsController](#nsfetchedresultscontroller)
   * [NSPersistentContainer](#nspersistentcontainer)
   * [Managed object context and the functionality that it provides](#managed-object-context-and-the-functionality-that-it-provides)
-  * [What is NSFetchRequest?](#what-is-nsfetchrequest)
+  * [What is NSFetchRequest?](#what-is-nsfetchrequest)  
   
 * [Concurrency](#concurrency)
   * [Concurrency in Mac OS and iOS](#different-ways-of-achieving-concurrency-in-mac-os-and-ios)
@@ -122,7 +122,7 @@
   * [Semaphore](#semaphore)
   * [Lock](#lock)
   * [Mutex](#mutex)
-  * [Semaphore vs Mutex vs Lock](#semaphore-vs-mutex-vs-lock)
+  * [Semaphore vs Mutex vs Lock](#semaphore-vs-mutex-vs-lock)  
 
 # UIKit
 
