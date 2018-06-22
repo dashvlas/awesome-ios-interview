@@ -116,6 +116,7 @@
   * [GCD](#gcd)
   * [Quality of Service (QoS)](#quality-of-service-qos)
   * [NSOperationQueue](#nsoperationqueue)
+  * [Cancel NSOperation problem](#cancel-nsoperation-problem)
   * [DispatchGroup](#what-is-dispatchgroup)
   * [@synchronized](#synchronized)
   * [Synchronous &amp; asynchronous tasks](#what-is-the-difference-between-synchronous--asynchronous-task)
@@ -1070,6 +1071,23 @@ Operation queues are a Cocoa abstraction of the queue model exposed by GCD. Whil
 `NSBlockOperation` exectues a block. `NSInvocationOperation` executes a `NSInvocation` (or a method defined by target, selector, object). `NSOperation` must be subclassed, it offers the most flexibility but requires the most code. `NSBlockOperation` and `NSInvocationOperation` are both subclasses of `NSOperation`. They are provided by the system so you don't have to create a new subclass for simple tasks. Using `NSBlockOperation` and `NSInvocationOperation` should be enough for most tasks.
 
 After an operation begins executing, it continues performing its task until it is finished or until your code explicitly cancels the operation. Cancellation can occur at any time, even before an operation begins executing. Although the NSOperation class provides a way for clients to cancel an operation, recognizing the cancellation event is voluntary by necessity. If an operation were terminated outright, there might not be a way to reclaim resources that had been allocated. As a result, operation objects are expected to check for cancellation events and to exit gracefully when they occur in the middle of the operation.
+
+## Cancel NSOperation problem
+
+Canceling the operation will only update its isCancelled property to YES.
+To be able to cancel the operation, you should do the following: 
+
+```objectivec  
+NSBlockOperation * op = [NSBlockOperation new];
+__weak NSBlockOperation * weakOp = op; // Use a weak reference to avoid a retain cycle
+[op addExecutionBlock:^{
+    // Put this code between whenever you want to allow an operation to cancel
+    // For example: Inside a loop, before a large calculation, before saving/updating data or UI, etc.
+    if (weakOp.isCancelled) return;
+
+    // Do something..
+];
+```
 
 ## GCD
 With GCD you don’t interact with threads directly anymore. Instead you add blocks of code to queues, and GCD manages a thread pool behind the scenes. GCD decides on which particular thread your code blocks are going to be executed on, and it manages these threads according to the available system resources. This alleviates the problem of too many threads being created, because the threads are now centrally managed and abstracted away from application developers. The other important change with GCD is that you as a developer think about work items in a queue rather than threads. This new mental model of concurrency is easier to work with. GCD exposes five different queues: the main queue running on the main thread, three background queues with different priorities, and one background queue with an even lower priority, which is I/O throttled. Furthermore, you can create custom queues, which can either be serial or concurrent queues. While custom queues are a powerful abstraction, all blocks you schedule on them will ultimately trickle down to one of the system’s global queues and its thread pool(s).
