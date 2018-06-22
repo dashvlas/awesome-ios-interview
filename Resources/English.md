@@ -17,16 +17,17 @@
      * [Acceptance Tests](#acceptance-tests)
   * [Writing tests for iOS apps](#what-is-the-benefit-writing-tests-in-ios-apps)
   * [“Arrange-Act-Assert”](#please-explain-arrange-act-assert)
-  * [Test Driven Development](#what-is-the-test-driven-development-of-three-simple-rules)
+  * [Test Driven Development](#what-is-the-test-driven-development-of-three-simple-rules)  
   
 * [Tasks](#tasks)
   * [Explain why a compile time error occurs](#explain-why-a-compile-time-error-occurs-how-can-you-fix-it)
   * [Spot the bug that occurs in the code](#spot-the-bug-that-occurs-in-the-code)
   * [Consider the following code](#consider-the-following-code)
   * [Determine the value of “x” in the Swift code](#determine-the-value-of-x-in-the-swift-code-below)
+  * [Given two sorted arrays, the task is to merge them in a sorted manner](#given-two-sorted-arrays-the-task-is-to-merge-them-in-a-sorted-manner)  
   
 * [SDK](#sdk)
-  * [Application States](#application-states)
+  * [Application States](#application-states). 
   
 * [Patterns](#patterns)
   * [Adapter Pattern](#adapter-pattern)
@@ -36,18 +37,18 @@
   * [Observer Pattern](#observer-pattern)
   * [Singleton Pattern](#singleton-pattern)
   * [Decorator Pattern](#decorator-pattern)
-  * [Facade Pattern](#facade-pattern)
+  * [Facade Pattern](#facade-pattern). 
   
 * [Architecture](#architecture)
   * [MVC](#mvc)
   * [MVVM](#mvvm)
   * [MVP](#mvp)
-  * [Viper](#viper)
+  * [Viper](#viper)  
   
 * [OOP](#oop)
   * [Inheritance](#inheritance)
   * [Polymorphism](#polymorphism)
-  * [Encapsulation](#encapsulation)
+  * [Encapsulation](#encapsulation)  
   
 * [Language](#language)
   * [KVO](#kvo)
@@ -55,7 +56,7 @@
   * [Difference between Delegate and KVO?](#what-is-the-difference-between-delegate-and-kvo)
   * [What happens when you call autorelease on an object?](#what-happens-when-you-call-autorelease-on-an-object)
   * [By calling performSelector:withObject:afterDelay: is the object retained?](#by-calling-performselectorwithobjectafterdelay-is-the-object-retained)
-  * [Selectors](#selectors)
+  * [Selectors](#selectors). 
   
   * [Swift](#swift)
     * [Lazy Stored Property vs Stored Property](#lazy-stored-property-vs-stored-property)
@@ -75,7 +76,7 @@
     * [Swift Transforming Array functions](#swift-transforming-array-functions)
     * [Extensions](#extensions)
     * [What is defer?](#what-is-defer)
-    * [What is the difference Any and AnyObject?](#what-is-the-difference-any-and-anyobject)
+    * [What is the difference Any and AnyObject?](#what-is-the-difference-any-and-anyobject)   
     
   * [Objective-C](#objective-c)
     * [What is the difference between _ vs self. in Objective-C?](#what-is-the-difference-between-_-vs-self-in-objective-c)
@@ -83,7 +84,7 @@
     * [“Strong” and “Weak” references](#strong-and-weak-references)
     * [Strong, Weak, Readonly and Copy](#what-is-the-difference-strong-weak-readonly-and-copy)
     * [@dynamic in Objective-C](#what-is-dynamic-in-objective-c)
-    * [NSError object](#what-is-made-up-of-nserror-object)
+    * [NSError object](#what-is-made-up-of-nserror-object)  
     
 * [General](#general)
   * [Waterfall vs Agile](#waterfall-vs-agile)
@@ -99,7 +100,7 @@
   * [SOAP](#soap)
   * [Deep and shallow copy](#deep-and-shallow-copy)
   * [Difference between functions and methods in Swift?](#what-is-the-difference-between-functions-and-methods-in-swift)
-  * [Protocol Oriented Programming](#protocol-oriented-programming)
+  * [Protocol Oriented Programming](#protocol-oriented-programming)  
   
 * [Data](#data)
   * [How does NSManagedObjectContext work?](#how-does-nsmanagedobjectcontext-work)
@@ -370,7 +371,27 @@ a1 = [1, 2, 3, 4, 5]
 a2 = [1, 2, 3, 4, 5, 6]  
 ```
 
-## SDK
+## Given two sorted arrays, the task is to merge them in a sorted manner
+
+Input  :  arr1 = [1, 3, 4, 5]  
+          arr2 = [2, 4, 6, 8]
+Output :  arr3 = [1, 2, 3, 4, 5, 6, 7, 8]
+
+1. Method 1 (O(n1 * n2) Time and O(1) Extra Space)
+
+Create an array arr3 of size n1 + n2.
+Copy all n1 elements of arr1 to arr3
+Traverse arr2 and one by one insert elements (like insertion sort) of arr3 to arr1. This step take O(n1 * n2) time.
+
+2. Method 2 (O(n1 + n2) Time and O(n1 + n2) Extra Space)
+The idea is to use Merge function of Merge sort.
+
+Create an array arr3 of size n1 + n2.
+Simultaneously traverse arr1 and arr2.
+Pick smaller of current elements in arr1 and arr2, copy this smaller element to next position in arr3 and move ahead in arr3 and the array whose element is picked.
+If there are are remaining elements in arr1 or arr2, copy them also in arr3.
+
+# SDK
 
 ## Application States
 The iOS application states are as follows:
