@@ -5,6 +5,7 @@
   * [Size Classes](#size-classes)
   * [Intrinsic Content Size](#intrinsic-content-size)
   * [Frame and bounds](#whats-the-difference-between-the-frame-and-the-bounds)
+  * [When bounds origin will be different from 0,0?](#when-bounds-origin-will-be-different-from-00)
   * [Layer objects](#what-are-layer-objects-and-what-do-they-represent)
   * [File owner](#file-owner)
   
@@ -190,6 +191,11 @@ The Intrinsic Content Size is one of the most powerful features you gain when yo
 `The frame` of an UIView is the rectangle, expressed as a location (x,y) and size (width,height) relative to the superview it is contained within.  
 
 <center><img src = "/Resources/Articles/Frame-Bounds.png"></center>
+
+## When bounds origin will be different from 0,0?
+
+Let's take an example of `UIScrollView`:
+UIScrollView's bounds.origin will not be (0, 0) when its contentOffset is not (0, 0).
 
 ## What are layer objects and what do they represent?
 `Layer objects` are data objects which represent visual content. Layer objects are used by views to render their content. Custom layer objects can also be added to the interface to implement complex animations and other types of sophisticated visual effects.
