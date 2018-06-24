@@ -1,13 +1,13 @@
 * [UIKit](#uikit)
-  * [Live Rendering](#how-could-you-setup-live-rendering)
+  * [Live Rendering in Storyboards](#how-could-you-setup-live-rendering)
   * [Ways of specifing the layout of elements](#ways-of-specifing-the-layout-of-elements)
   * [Autolayout formula](#formula-of-autolayout)
   * [Size Classes](#size-classes)
   * [Intrinsic Content Size](#intrinsic-content-size)
   * [Frame and bounds](#whats-the-difference-between-the-frame-and-the-bounds)
   * [When bounds origin will be different from 0,0?](#when-bounds-origin-will-be-different-from-00)
-  * [Layer objects](#what-are-layer-objects-and-what-do-they-represent)
-  * [File owner](#file-owner)
+  * [What do layer objects represent?](#what-are-layer-objects-and-what-do-they-represent)
+  * [File owner meaning](#file-owner)
   
 * [Testing](#testing)
   * [Test types](#testing)
@@ -53,7 +53,7 @@
 * [Language](#language)
   * [KVO](#kvo)
   * [KVC](#kvc)
-  * [Difference between Delegate and KVO?](#what-is-the-difference-between-delegate-and-kvo)
+  * [Difference between Delegate and KVO](#what-is-the-difference-between-delegate-and-kvo)
   * [What happens when you call autorelease on an object?](#what-happens-when-you-call-autorelease-on-an-object)
   * [By calling performSelector:withObject:afterDelay: is the object retained?](#by-calling-performselectorwithobjectafterdelay-is-the-object-retained)
   * [Selectors](#selectors)   
@@ -62,17 +62,19 @@
     * [Lazy Stored Property vs Stored Property](#lazy-stored-property-vs-stored-property)
     * [Fileprivate and Private access level](#fileprivate-and-private-access-level)
     * [Final class](#final-class)
-    * [Structs vs Classes](#structs-vs-classes)
+    * [Struct vs Class](#structs-vs-classes)
     * [Swift Standard Library Protocol](#swift-standard-library-protocol)
     * [Downcasting](#downcasting)
     * [Explain [weak self] and [unowned self]?](#weak-self-and-unowned-self)
     * [Lazy in Swift](#lazy-in-swift)
-    * [Raw and associated values](#raw-and-associated-values)
+    * [What are failable and throwing initializers?](#what-are-failable-and-throwing-initializers)
+    * [What are type aliases?](#what-are-type-aliases)
     * [Raw values and associated values](#in-swift-enumerations-whats-the-difference-between-raw-values-and-associated-values)
     * [Non-Escaping and Escaping Closures](#non-escaping-and-escaping-closures)
     * [Error handling in Swift](#how-should-one-handle-errors-in-swift)
     * [Guard benefits](#what-are-benefits-of-guard)
-    * [When applied to strings, what’s the complexity of the countElements function and why?](#when-applied-to-strings-whats-the-complexity-of-the-countelements-function-and-why)
+    * [What’s the complexity of the countElements function of a string and why?](#when-applied-to-strings-whats-the-complexity-of-the-countelements-function-and-why)
+    * [What are designated and convenience initializers?](#what-are-designated-and-convenience-initializers)
     * [Swift Transforming Array functions](#swift-transforming-array-functions)
     * [Extensions](#extensions)
     * [What is defer?](#what-is-defer)
@@ -587,7 +589,7 @@ By adding the keyword final in front of the method name, we prevent the method f
 ## Structs vs Classes
 1. Inheritance.
 
-Structures can't inherit in swift. If you want
+Structures can't inherit in swift.
 
 ```swift
 class Vehicle {
@@ -596,8 +598,6 @@ class Vehicle {
 class Car : Vehicle {
 }
 ```
-
-Go for an class.
 
 2. Pass By
 
@@ -610,6 +610,12 @@ Structs are thread-safe
 ## Swift Standard Library Protocol
 There are a few different protocol. Equatable protocol, that governs how we can distinguish between two instances of the same type. That means we can analyze. If we have a specific value is in our array. The comparable protocol, to compare two instances of the same type and sequence protocol: prefix(while:) and drop(while:) [SE-0045].
 Swift 4 introduces a new Codable protocol that lets us serialize and deserialize custom data types without writing any special code.
+
+## What are failable and throwing initializers?  
+
+Very often initialization depends on external data, this data can exist as it can not, for that Swift provides two ways to deal with this.
+Failable initializers return nil of there is no data, and let the developer “create” a different path in the application based on that.
+In other hand throwing initializers returns an error on initialization instead of returning nil.
 
 ## Downcasting
 When we’re casting an object to another type in Objective-C, it’s pretty simple since there’s only one way to do it. In Swift, though, there are two ways to cast — one that’s safe and one that’s not .
@@ -645,6 +651,11 @@ case C(String)
 }
 ```
 
+## What are type aliases?  
+
+Swift comes with two type aliases to represent non-specific types “Any” and “AnyObject”.
+AnyObject represents an instance of any class type and Any is the most generic representation of a type in Swift, it can represent an instance of absolutely any type including functions.
+
 ## Non-Escaping and Escaping Closures
 The lifecycle of a non-escaping closure is simple:
 Pass a closure into a function
@@ -654,6 +665,25 @@ Escaping closure means, inside the function, you can still run the closure (or n
 Asynchronous execution: If you execute the closure asynchronously on a dispatch queue, the queue will hold onto the closure for you. You have no idea when the closure will be executed and there’s no guarantee it will complete before the function returns.
 Storage: Storing the closure to a global variable, property, or any other bit of storage that lives on past the function call means the closure has also escaped.
 
+## What are designated and convenience initializers?
+
+Designated initializers are:
+- The CENTRAL point of initialization of a class.
+- Classes MUST have at least one.
+- Is the responsible for initializing stored properties.
+- Is the responsible for calling super init.
+
+Convenience initializers are:
+- SECONDARY supporting initializers for a class.
+- It can only call a designated initializer that is defined in the same class
+- It can also call another convenience initializers defined in the same class
+- They are not required, that sort of implied. they are just initializers that we can write for a CONVENIENCE use case
+- In a class, They use the keyword “convenience before the init keyword.
+
+Finally here are 3 basic rules of class initialization:
+1. Every class must have a designated initializer, if this class inherits from another, the designated initializer is responsible for calling the designated initializer of its immediate superclass.
+2. Classes can have any number of convenience initializers, a convenience initializer must call another initializer from the same class, whether it is a designated initializer or another conveniences initializer.
+3. Convenience initializers must ultimately call a designated initializer.
 
 ## How should one handle errors in Swift?
 The method for handling errors in Swift differ a bit from Objective-C. In Swift, it's possible to declare that a function throws an error. It is, therefore, the caller's responsibility to handle the error or propagate it. This is similar to how Java handles the situation.
