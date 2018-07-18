@@ -151,8 +151,8 @@ UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentif
 
 ## Разница между points и pixels?
 
-`Pixels` (px) - физические пиксели на экране приложения.
-`Points` (pt) - виртуальные точки, которыми оперируют UI объекты внутри приложения.  
+-`Pixels` (px) - точки на экране. 
+-`Points` (pt) - плотность точек на экране.  
 
 <center><img src = "/Resources/Articles/Points-Pixels.png"></center>
 
@@ -164,15 +164,12 @@ UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentif
 - Перегруженный `main thread`
 - Инстанциирующиеся ячейки. Если у вас таблица состоит больше, чем из одного вида ячеек, то при отсутствии в очереди нужной, она сначала создастся, это требует ресурсов. Особенно при разархивации из `nib`
 - Все касающееся прорисовки, подсчет высоты и переиспользуемые ресурсы
-- Прозрачность объектов, в частности, Navigation Bar'a
-- Перегруженный AutoLayout
-- Тени
-- Слишком много subviews
+- Тени и большое количество blur
 - Дробные значения фреймов у subviews
 
-## Autolayout
+### Autolayout
 
-`Auto Layout` занимается динамическим вычислением позиции и размера всех view в иерархии, на основе constraints — правил заданных для того или иного view. Самый большой и очевидный плюс для разработчика в использовании `Auto Layout` в том, что исчезает необходимость в подгонке размеров приложения под определенные устройства — `Auto Layout` динамически изменяет интерфейс в зависимости от внешних или внутренних изменений. Минус `Auto Layout` в том, что вычисление конкретных значений по сути сводится к задаче решение системы линейных уравнений, поэтому добавление каждого нового констрейнта ощутиво увеличивает сложность расчета конкретных значений. 
+`Auto Layout` занимается динамическим вычислением позиции и размера всех view на основе constraints — правил заданных для того или иного view. Самый большой и очевидный плюс для разработчика в использовании `Auto Layout` в том, что исчезает необходимость в подгонке размеров приложения под определенные устройства. `Auto Layout`  изменяет интерфейс в зависимости от внешних или внутренних изменений. Минус `Auto Layout` состоит в том, что вычисление конкретных значений сводится к задаче решения системы линейных уравнений, поэтому добавление каждого нового констрейнта ощутимо увеличивает сложность расчета конкретных значений. 
 
 # SDK
 
@@ -681,7 +678,7 @@ P.s я так понимаю, что в версии XCode начиная с 4.2
 
 ## Что такое runLoop, когда он используется?
 
-Циклы выполнения (run loop) - цикл обработки событий, который используется для планирования работы и координации получения входящих событий. Объект NSRunLoop также обрабатывает события NSTimer (он не будет работать в потоке, в которм нет NSRunloop)
+Циклы выполнения (run loop) - цикл обработки событий, который используется для планирования работы и координации получения входящих событий. Объект NSRunLoop также обрабатывает события NSTimer (он не будет работать в потоке, в котором нет NSRunloop)
 
 ## nil, Nil, NULL, NSNull
 
@@ -946,8 +943,6 @@ DELETE /book/3 — удалить книгу
 }
 ```
 
-> Довольно спорный момент, никогда не слышал об этом ни в интернете, ни в любой из команд, в которых работал. В самом UIKit есть противоречие этому принципу, например, у `UIView` есть `initWithFrame` и `initWithCoder` и они друг друга не вызывают. Также существуют кейсы, когда такое поведение организовать довольно сложно
-
 ## Виды запросов
 
 ### HEAD
@@ -1032,7 +1027,9 @@ NSFetchedResultsController предоставляет механизм для о
 
 `NSManagedObjectContext` не thread-safe read для многопоточности основная идея - создавать для каждого потока свой NSManagedObjectContext и потом синхронизировать.
 
-## Realm. Его преимущества над другими БД
+## Realm
+
+### Преимущества над другими БД
 
 - `Быстрая`: 
 Realm — невероятно быстрая библиотека для работы с базой данных. Realm быстрее, чем SQLite и CoreData (ORM-обертка над SQLite), и сравнительные тесты — лучшее доказательство для этого.
@@ -1072,28 +1069,6 @@ char *errMsg;
 rc = sqlite3_exec(db, query, NULL, NULL, &errMsg);
 if (SQLITE_OK != rc) {
 NSLog(@"Failed to create table rc:%d, msg=%s",rc,errMsg);
-}
-sqlite3_close(db);
-}
-return rc;
-}
-```
-
-```objectivec
-
-- (int)insert:(NSString *)filePath withName:(NSString *)name age:(NSInteger)age marks:(NSInteger)marks {
-sqlite3 *db = NULL;
-int rc = 0;
-rc = sqlite3_open_v2([filePath cStringUsingEncoding:NSUTF8StringEncoding], &db, SQLITE_OPEN_READWRITE, NULL);
-if (SQLITE_OK != rc) {
-sqlite3_close(db);
-NSLog(@"Failed to open db connection");
-} else {
-NSString *query  = [NSString stringWithFormat:@"INSERT INTO students (name, age, marks) VALUES (\"%@\", %ld, %ld)", name, (long)age, (long)marks];
-char *errMsg;
-rc = sqlite3_exec(db, [query UTF8String], NULL, NULL, &errMsg);
-if (SQLITE_OK != rc) {
-NSLog(@"Failed to insert record  rc:%d, msg=%s",rc,errMsg);
 }
 sqlite3_close(db);
 }
