@@ -18,6 +18,7 @@
   * [Writing tests for iOS apps](#what-is-the-benefit-writing-tests-in-ios-apps)
   * [“Arrange-Act-Assert”](#please-explain-arrange-act-assert)
   * [Test Driven Development](#what-is-the-test-driven-development-of-three-simple-rules)  
+  * [Your new app is prone to crashing. What do you do?](#youve-just-been-alerted-that-your-new-app-is-prone-to-crashing-what-do-you-do)
   
 * [Tasks](#tasks)
   * [Explain why a compile time error occurs](#explain-why-a-compile-time-error-occurs-how-can-you-fix-it)
@@ -262,6 +263,17 @@ Assert that the expected results have occurred.
 You are not allowed to write any production code unless it is to make a failing unit test pass.
 You are not allowed to write any more of a unit test than is sufficient to fail; and compilation failures are failures.
 You are not allowed to write any more production code than is sufficient to pass the one failing unit test.
+
+## You’ve just been alerted that your new app is prone to crashing. What do you do?
+
+This classic interview question is designed to see how well your prospective programmer can solve problems. What you’re looking for is a general methodology for isolating a bug, and their ability to troubleshoot issues like sudden crashes or freezing. In general, when something goes wrong within an app, a standard approach might look something like this:  
+
+#### Determine the iOS version and make or model of the device.
+#### Gather enough information to reproduce the issue.
+#### Acquire device logs, if possible.  
+
+Once you have an idea as to the nature of the issue, acquire tooling or create a unit test and begin debugging.
+A great answer would include all of the above, with specific examples of debugging tools like Buglife or ViewMonitor, and a firm grasp of software debugging theory—knowledge on what to do with compile time errors, run-time errors, and logical errors. The one answer you don’t want to hear is the haphazard approach—visually scanning through hundreds of lines of code until the error is found. When it comes to debugging software, a methodical approach is must.
 
 # Tasks
 
