@@ -363,7 +363,6 @@ The reason is that the forced unwrapping operator ! is attempting to force unwra
 
 The solution consists of making sure that the optional is not nil before force-unwrapping it:
 ```objectivec  
-
 let userPref = defaults.stringForKey("userPref")
 if userPref != nil {
     printString(userPref!)
