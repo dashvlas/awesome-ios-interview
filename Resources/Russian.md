@@ -146,8 +146,7 @@ Bounds будет отлично от нуля, когда contentOffset у ск
 Ячейки таблицы, которые больше не отображаются на экране, не выбрасываются из памяти. Их можно использовать повторно, указав идентификатор в процессе инициализации. Когда ячейка, отмеченная для повторного использования, пропадает с экрана, `UITableView` помещает ее в очередь для повторного использования в дальнейшем. Когда `dataSource` запрашивает у `UITableView` новую ячейку и указывает идентификатор, `UITableView` сначала проверяет очередь ячеек для повторного использования на предмет наличия необходимой. Если ячейка не была обнаружена, то создается новая, которая затем передается `dataSource`'у.
 
 ```objectivec
-UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier  
-							forIndexPath:indexPath];
+UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
 ```
 
 ## Разница между points и pixels?
