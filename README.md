@@ -1,10 +1,9 @@
 
 <img src="Resources/Main.png">
 
+## Interview guide
 Review these iOS interview questions - and get some practical tips along the way.  
 A handy guide to help those looking to hire an iOS developer for work, guide for interviewers and interviewees.  
-
-
 
 ## Get started from here
 🔛 Select language for questions and get started right now!  
