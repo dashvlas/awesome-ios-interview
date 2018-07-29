@@ -1,15 +1,15 @@
 
 <img src="Resources/Main.png">
 
-## What's that?
-Guide for interviewers and interviewees. Review these iOS interview questions - and get some practical tips along the way.
+## Guide for interviewers and interviewees
+Review these iOS interview questions - and get some practical tips along the way.  
 A small guide to help those looking to hire an iOS developer for work.
 
-## Just select language!
+## Get started from here
 🔛 Select language for questions and get started right now!  
 <a href="Resources/Russian.md"><img src="Resources/Artboard-filled-left.png" width=50%></a><a href="Resources/English.md"><img src="Resources/Artboard-filled-right.png" width=50%></a>
 
-## Install the app  
+## Or install the app  
 Prepare for the iOS-Developer interview on the go. Never miss a tricky question.  
 You can find free app on the App Store: 
 
