@@ -16,7 +16,7 @@ You can find free app on the App Store:
 <p align="center"><img src="Resources/Devices.jpg"></p>
 
 ## Star to save QA
-Feature to save favorite questions is added. More about new app features here:  
+Feature to save favorite questions. Full app feature list is here:  
 
 🌟 http://dashvlas.com/portfolio/ai
 
@@ -24,7 +24,8 @@ Feature to save favorite questions is added. More about new app features here:
 <p align="center"><img src="Resources/Available QA types.png"></p>
 
 ## Contribute
-⏰ App is updated once a week.
+⏰ Trying to update app with questions ASAP. But if you'd like to participate in app production just email me.
+dariakorneichuk@icloud.com
 
 💻 Feel free to add your questions and tasks to database.
 
