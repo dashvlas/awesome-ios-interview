@@ -24,8 +24,8 @@ Feature to save favorite questions. Full app feature list is here:
 <p align="center"><img src="Resources/Available QA types.png"></p>
 
 ## Contribute
-⏰ Trying to update app with questions ASAP. But if you'd like to participate in app production just email me.
-dariakorneichuk@icloud.com
+⏰ Trying to update app with questions ASAP. But if you'd like to participate in app production just email me.  
+   dariakorneichuk@icloud.com
 
 💻 Feel free to add your questions and tasks to database.
 
