@@ -1,7 +1,7 @@
 
 <img src="Resources/Main.png">
 
-## iOS Interview guide
+## iOS Interview
 Review these iOS interview questions - and get some practical tips along the way.  
 A handy guide to help those looking to hire an iOS developer for work, guide for interviewers and interviewees.
 
@@ -21,14 +21,16 @@ You can find free app on the App Store:
 
 ## Latest update
 🌟 We've added feature to save your favorite questions.  
+
    You can find full app feature list is here:  
-   http://dashvlas.com/portfolio/ai
+   http://dashvlas.com/portfolio/ai. 
 
 ## Contribute
 ⏰ We are trying to update app with questions ASAP.  
-   But if you'd like to participate in app production just email me.  
-   dariakorneichuk@icloud.com
 
-💻 Feel free to add your questions and tasks to database.
+   But if you'd like to participate in app production just email me.  
+   dariakorneichuk@icloud.com  
+   
+💻 Feel free to add your questions and tasks to database.  
 🚀 Just fork the project and pull request.
 
