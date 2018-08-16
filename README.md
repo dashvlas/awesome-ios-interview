@@ -1,12 +1,8 @@
 
 <img src="Resources/Main.png">
 
-## iOS Interview Questions
-Review these iOS interview questions - and get some practical tips along the way.  
-A handy guide to help those looking to hire an iOS developer for work.  
-
-## Get started here  
-🔛 Select language for questions and get started right now!  
+## Review QA here  
+🔛 Get started by picking questions's language and start preparing right now!  
 <a href="Resources/Russian.md"><img src="Resources/Artboard-filled-left.png" width=50%></a><a href="Resources/English.md"><img src="Resources/Artboard-filled-right.png" width=50%></a>
 
 ## Install the app  
@@ -15,6 +11,10 @@ You can find free app on the App Store:
 
 📲 http://appstore.com/awesomeinterview  
 <p align="center"><img src="Resources/Devices.jpg"></p>
+
+## iOS Interview Questions
+Review these iOS interview questions - and get some practical tips along the way.  
+A handy guide to help those looking to hire an iOS developer for work.  
 
 ## Questions categories  
 <p align="center"><img src="Resources/Available QA types.png"></p>
