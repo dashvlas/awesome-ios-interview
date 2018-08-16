@@ -12,10 +12,6 @@ You can find free app on the App Store:
 📲 http://appstore.com/awesomeinterview  
 <p align="center"><img src="Resources/Devices.jpg"></p>
 
-## iOS Interview Questions
-Review these iOS interview questions - and get some practical tips along the way.  
-A handy guide to help those looking to hire an iOS developer for work.  
-
 ## Questions categories  
 <p align="center"><img src="Resources/Available QA types.png"></p>
 
@@ -33,5 +29,9 @@ A handy guide to help those looking to hire an iOS developer for work.
    
 💻 Feel free to add your questions and tasks to database.  
 🚀 Just fork the project and pull request.
+
+## iOS Interview Questions
+Review these iOS interview questions - and get some practical tips along the way.  
+A handy guide to help those looking to hire an iOS developer for work.  
 
 
