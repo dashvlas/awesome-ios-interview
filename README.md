@@ -21,6 +21,10 @@ You can find free app on the App Store:
    You can find full app feature list is here:  
    http://dashvlas.com/portfolio/ai. 
 
+## About
+Review these iOS interview questions - and get some practical tips along the way.  
+A handy guide to help those looking to hire an iOS developer for work.  
+
 ## Contribution
 ⏰ We are trying to update app with questions ASAP.  
 
@@ -28,10 +32,4 @@ You can find free app on the App Store:
    dariakorneichuk@icloud.com  
    
 💻 Feel free to add your questions and tasks to database.  
-🚀 Just fork the project and pull request.
-
-## iOS Interview Questions
-Review these iOS interview questions - and get some practical tips along the way.  
-A handy guide to help those looking to hire an iOS developer for work.  
-
-
+🚀 Just fork the project and pull request. 
