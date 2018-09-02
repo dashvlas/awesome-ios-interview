@@ -21,7 +21,7 @@ You can find free app on the App Store:
    You can find full app feature list is here:  
    http://dashvlas.com/portfolio/ai. 
 
-## About
+## About Awesome iOS interview questions
 Review these iOS interview questions - and get some practical tips along the way.  
 A handy guide to help those looking to hire an iOS developer for work.  
 
