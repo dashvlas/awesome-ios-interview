@@ -1,7 +1,7 @@
 
 <img src="Resources/Main.png">
 
-## Review interview questions here  
+## Interview questions here  
 🔛 Get started by picking questions's language and start preparing right now!  
 <a href="Resources/Russian.md"><img src="Resources/Artboard-filled-left.png" width=50%></a><a href="Resources/English.md"><img src="Resources/Artboard-filled-right.png" width=50%></a>
 
