@@ -8,6 +8,7 @@
   * [When bounds origin will be different from 0,0?](#when-bounds-origin-will-be-different-from-00)
   * [What do layer objects represent?](#what-are-layer-objects-and-what-do-they-represent)
   * [File owner meaning](#file-owner)
+  * [Life Cycle of App](#life-cycle)
   
 * [Testing](#testing)
   * [Test types](#testing)
@@ -217,6 +218,23 @@ So you created a fancy view with lots of buttons, subviews etc . If you want to 
 This is the reason why by default all View Controllers or Window Controllers act as file owners, and also have an outlet to the main window or view object in the nib file: because duh, if you're controlling something you'll definitely need to have an outlet to it so that you can send messages to it.
 
 The reason it's called file owner and given a special place, is because unlike the other objects in the nib, the file owner is external to the nib and is not part of it. In fact, it only becomes available when the nib is loaded. So the file owner is a stand-in or proxy for the actual object which will later load the nib.
+
+## Life Cycle of App
+
+application:willFinishLaunchingWithOptions:—This method is your app’s first chance to execute code at launch time.
+
+application:didFinishLaunchingWithOptions:—This method allows you to perform any final initialization before your app is displayed to the user.
+
+applicationDidBecomeActive:—Lets your app know that it is about to become the foreground app. Use this method for any last minute preparation.
+
+applicationWillResignActive:—Lets you know that your app is transitioning away from being the foreground app. Use this method to put your app into a quiescent state.
+
+applicationDidEnterBackground:—Lets you know that your app is now running in the background and may be suspended at any time.
+
+applicationWillEnterForeground:—Lets you know that your app is moving out of the background and back into the foreground, but that it is not yet active.
+
+applicationWillTerminate:—Lets you know that your app is being terminated. This method is not called if your app is suspended.
+
 
 # Testing
 
