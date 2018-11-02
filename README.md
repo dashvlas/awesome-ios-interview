@@ -1,7 +1,7 @@
 
 <img src="Resources/Main.png">
 
-## Interview questions here  
+## Awesome iOS interview questions 
 🔛 Get started by picking interview's language and start preparing right now!  
 <a href="Resources/Russian.md"><img src="Resources/Artboard-filled-left.png" width=50%></a><a href="Resources/English.md"><img src="Resources/Artboard-filled-right.png" width=50%></a>
 
@@ -21,7 +21,7 @@ You can find free app on the App Store:
    You can find full app feature list is here:  
    http://dashvlas.com/portfolio/ai. 
 
-## About Awesome iOS interview questions
+## About
 Review these iOS interview questions - and get some practical tips along the way.  
 A handy guide to help those looking to hire an iOS developer for work.  
 
