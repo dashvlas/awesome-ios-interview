@@ -8,7 +8,7 @@
   * [When bounds origin will be different from 0,0?](#when-bounds-origin-will-be-different-from-00)
   * [What do layer objects represent?](#what-are-layer-objects-and-what-do-they-represent)
   * [File owner meaning](#file-owner)
-  * [Life Cycle of App](#life-cycle)
+  * [Life Cycle of App](#app-life-cycle)
   
 * [Testing](#testing)
   * [Test types](#testing)
@@ -59,6 +59,7 @@
   * [What happens when you call autorelease on an object?](#what-happens-when-you-call-autorelease-on-an-object)
   * [By calling performSelector:withObject:afterDelay: is the object retained?](#by-calling-performselectorwithobjectafterdelay-is-the-object-retained)
   * [Selectors](#selectors)   
+  * [Major differences between Objective-C and Swift](#major-differences-between-objective-c-and-swift)
   
   * [Swift](#swift)
     * [Lazy Stored Property vs Stored Property](#lazy-stored-property-vs-stored-property)
@@ -219,7 +220,7 @@ This is the reason why by default all View Controllers or Window Controllers act
 
 The reason it's called file owner and given a special place, is because unlike the other objects in the nib, the file owner is external to the nib and is not part of it. In fact, it only becomes available when the nib is loaded. So the file owner is a stand-in or proxy for the actual object which will later load the nib.
 
-## Life Cycle of App
+## App Life Cycle
 
 application:willFinishLaunchingWithOptions:—This method is your app’s first chance to execute code at launch time.
 
@@ -577,6 +578,11 @@ the run loop and perform the selector
 
 ## What happens when you call autorelease on an object?
 When you send an object a autorelease message, its retain count is decremented by 1 at some stage in the future. The object is added to an autorelease pool on the current thread. The main thread loop creates an autorelease pool at the beginning of the function, and release it at the end. This establishes a pool for the lifetime of the task. However, this also means that any autoreleased objects created during the lifetime of the task are not disposed of until the task completes. This may lead to the taskʼs memory footprint increasing unnecessarily. You can also consider creating pools with a narrower scope or use NSOperationQueue with itʼs own autorelease pool. (Also important – You only release or autorelease objects you own.)
+
+## Major differences between Objective-C and Swift
+What Most People Say: “I prefer the look and feel of Swift and I certainly won’t miss Objective-C’s square brackets.”
+What You Should Say: “While Objective-C is more flexible than Swift, Swift is designed to catch programming errors much earlier. For instance, many errors that would occur at runtime in Objective-C—like sending a message to an object that doesn’t implement it—are now checked at compile-time. Objective-C can accomplish all of the things Swift can, but Swift can do so more safely. Swift supports more programming language features, like optionals, tuples and generics.”
+Why You Should Say It: The second answer demonstrates greater familiarity with the operational differences between Objective-C and Swift. It’s fairly easy to learn another programming language once you understand its strengths, weaknesses and compatibility with other languages.
 
 ## Swift
 
