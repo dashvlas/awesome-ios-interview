@@ -27,6 +27,7 @@
   * [Consider the following code](#consider-the-following-code)
   * [Determine the value of “x” in the Swift code](#determine-the-value-of-x-in-the-swift-code-below)
   * [Given two sorted arrays, the task is to merge them in a sorted manner](#given-two-sorted-arrays-the-task-is-to-merge-them-in-a-sorted-manner)  
+  * [Write down the custom method which works similar to reduce() api?](#write-down-the-custom-method-which-works-similar-to-reduce-api)
   
 * [SDK](#sdk)
   * [Application States](#application-states)  
@@ -82,6 +83,7 @@
     * [Extensions](#extensions)
     * [What is defer?](#what-is-defer)
     * [What is the difference Any and AnyObject?](#what-is-the-difference-any-and-anyobject)   
+    * [How will you make property’s getter available, but the property is settable only from within code in swift?](#how-will-you-make-propertys-getter-available-but-the-property-is-settable-only-from-within-code-in-swift)
     
   * [Objective-C](#objective-c)
     * [What is the difference between _ vs self. in Objective-C?](#what-is-the-difference-between-_-vs-self-in-objective-c)
@@ -92,7 +94,7 @@
     * [NSError object](#what-is-made-up-of-nserror-object)  
     
 * [General](#general)
-  * [Waterfall vs Agile](#waterfall-vs-agile)
+  * [What is the difference in functional programming and OOPS?](#what-is-the-difference-in-functional-programming-and-oops)
   * [HTTP request types](#http-request-types)
   * [Communication protocols](#communication-protocols)
    	* [Network socket](#network-socket)
@@ -423,6 +425,14 @@ Create an array arr3 of size n1 + n2.
 Simultaneously traverse arr1 and arr2.
 Pick smaller of current elements in arr1 and arr2, copy this smaller element to next position in arr3 and move ahead in arr3 and the array whose element is picked.
 If there are are remaining elements in arr1 or arr2, copy them also in arr3.
+
+## Write down the custom method which works similar to reduce() api
+```swift
+sum = array.reduce(0, +)
+//reduce() here is an ((Int, ((Int, Int) -> Bool)) -> Int)
+//and the + operator is func +(lhs: Int, rhs: Int) -> Bool,
+//... or ((Int, Int) -> Bool), so there's no need to define reduce's closure.
+```
 
 # SDK
 
@@ -811,6 +821,11 @@ According to Apple’s Swift documentation:
 Any can represent an instance of any type at all, including function types and optional types.
 AnyObject can represent an instance of any class type.
 
+## How will you make property’s getter available, but the property is settable only from within code in swift?
+
+The example below shows a version of the TrackedString structure in which the structure is defined with an explicit access level of public. The structure’s members (including the numberOfEdits property) therefore have an internal access level by default. You can make the structure’s numberOfEdits property getter public, and its property setter private, by combining the public and private(set) access-level modifiers:
+
+<center><img src = https://cdn-images-1.medium.com/max/1600/1*3P7lXezMt2bFTA9U9UDF6Q.png width="500"></center>
 
 ## Objective-C
 
@@ -882,20 +897,8 @@ There are three parts of NSError object a domain, an error code, and a user info
 
 # General
 
-## Waterfall vs Agile
-
-Waterfall methodology is a sequential model for software development. It is separated into a sequence of pre-defined phases including feasibility, planning, design, build, test, production, and support.
-
-On the other hand, Agile development methodology is a linear sequential apporach that provides flexibility for changing project requirements.
-
-List of differences:
-- Waterfall model divides software development process into different phases while Agile segregates the project development lifecycle into sprints. This makes waterfall more rigid while agile allows for more flexibility
-- Waterfall model describes the software development life cycle as a single project while Agile considers it as a collection of many different projects; are iterations of different phases focusing on improving overall software quality with feedback from users and QA team.
-- Since waterfall is more rigid, development requirements need to be clearly established beforehand since there is little flexibility for changing once project development starts. Meanwhile, Agile allow changes to be made anytime along the project development process even after initial planning has been completed.
-- In Waterfall, the testing phase typically occurs after the build phase. In Agile, testing is often performed concurrently with programming or at least in the same iteration.
-- Waterfall is more of an interal process that does not involve user feedback. Agile tends to involve user participation more in order to improve customer satisfaction.
-- Waterfall model best fits projects that have a clearly defined set of requirements and where change to requirements is not expect. Agile fits more for projects where the requirements are expected to change and evolve.
-- Waterfall can exhibit a project mindset that focuses on completion of the project while Agile can allow for more focus on developing a product that satisfies customers.
+## What is the difference in functional programming and OOPS?
+<center><img src = "https://cdn-images-1.medium.com/max/1600/1*wo1pE2iCDBIgVaCIPxw6cw.png" width=500></center>
 
 ## HTTP request types
 An HTTP request is a class consisting of HTTP style requests, request lines, request methods, request URL, header fields, and body content. The most common methods that are used by a client in an HTTP request are as follows:
