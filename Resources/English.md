@@ -63,6 +63,7 @@
   * [Major differences between Objective-C and Swift](#major-differences-between-objective-c-and-swift)
   
   * [Swift](#swift)
+    * [What is an in-out parameter?](#what-is-an-in-out-parameter)
     * [Lazy Stored Property vs Stored Property](#lazy-stored-property-vs-stored-property)
     * [Fileprivate and Private access level](#fileprivate-and-private-access-level)
     * [Final class](#final-class)
@@ -595,6 +596,10 @@ What You Should Say: “While Objective-C is more flexible than Swift, Swift is 
 Why You Should Say It: The second answer demonstrates greater familiarity with the operational differences between Objective-C and Swift. It’s fairly easy to learn another programming language once you understand its strengths, weaknesses and compatibility with other languages.
 
 ## Swift
+
+## What is an in-out parameter?
+
+In-out parameter lets you change the value of a function parameter from within the body of that function.
 
 ## Lazy Stored Property vs Stored Property
 
