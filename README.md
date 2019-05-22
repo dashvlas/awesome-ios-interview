@@ -18,7 +18,7 @@ You can find free app on the App Store:
 ## Latest app update
 🌟 We've added feature to save your favorite questions.  
 
-   You can find full app feature list is here:  
+   You can find full app feature list here:  
    http://dashvlas.com/portfolio/ai. 
 
 ## About
