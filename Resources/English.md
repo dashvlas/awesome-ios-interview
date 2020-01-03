@@ -728,7 +728,7 @@ Convenience initializers are:
 - It can only call a designated initializer that is defined in the same class
 - It can also call another convenience initializers defined in the same class
 - They are not required, that sort of implied. they are just initializers that we can write for a CONVENIENCE use case
-- In a class, They use the keyword “convenience before the init keyword.
+- In a class, They use the keyword “convenience” before the init keyword.
 
 Finally here are 3 basic rules of class initialization:
 1. Every class must have a designated initializer, if this class inherits from another, the designated initializer is responsible for calling the designated initializer of its immediate superclass.
