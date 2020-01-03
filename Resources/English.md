@@ -885,7 +885,7 @@ Reciprocal strong references between objects should therefore be avoided to the 
 
 To decide which of the two references should be weak, think of the objects in the retain cycle as being in a parent-child relationship. In this relationship, the parent should maintain a strong reference (i.e., ownership of) its child, but the child should not maintain maintain a strong reference (i.e., ownership of) its parent.
 
-For example, if you have Employer and Employee objects, which reference one another, you would most likely want to maintain a strong reference from the Employer to the Employee object, but have a weak reference from the Employee to thr Employer.
+For example, if you have Employer and Employee objects, which reference one another, you would most likely want to maintain a strong reference from the Employer to the Employee object, but have a weak reference from the Employee to the Employer.
 
 ## What is the difference strong, weak, readonly and copy?
 - `Strong` means that the reference count will be increased and the reference to it will be maintained through the life of the object
