@@ -10,7 +10,7 @@ Prepare for the iOS-Developer interview on the go. Never miss a tricky question.
 You can find free app on the App Store: 
 
 📲 http://appstore.com/awesomeinterview  
-<p align="center"><img src="Resources/Devices.jpg"></p>
+<p align="center"><img src="Resources/Artboard-min.png"></p>
 
 ## Questions categories  
 <p align="center"><img src="Resources/Available QA types.png"></p>
