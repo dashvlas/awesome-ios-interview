@@ -1,12 +1,13 @@
-<p align="center"><img src="Resources/Artboard-min.png"></p>
+<img src="Resources/Main.png">
 
 ## Awesome iOS interview questions and answers
-<img src="Resources/Main.png">
 🔛 Get started by picking interview's language and start preparing right now  
 <a href="Resources/Russian.md"><img src="Resources/Artboard-filled-left.png" width=50%></a><a href="Resources/English.md"><img src="Resources/Artboard-filled-right.png" width=50%></a>
 
 ## Install the app  
 Prepare for the iOS-Developer interview on the go. Never miss a tricky question.  
+<p align="center"><img src="Resources/Artboard-min.png"></p>
+
 You can find free app on the App Store: 
 
 📲 http://appstore.com/awesomeinterview  
