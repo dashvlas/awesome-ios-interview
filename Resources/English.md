@@ -63,9 +63,10 @@
   * [Major differences between Objective-C and Swift](#major-differences-between-objective-c-and-swift)
   
   * [Swift](#swift)
+    * [Access Levels](#access-levels)
     * [What is an in-out parameter?](#what-is-an-in-out-parameter)
     * [Lazy Stored Property vs Stored Property](#lazy-stored-property-vs-stored-property)
-    * [Fileprivate and Private access level](#fileprivate-and-private-access-level)
+    * [Open class](#open-class)
     * [Final class](#final-class)
     * [Struct vs Class](#structs-vs-classes)
     * [Swift Standard Library Protocol](#swift-standard-library-protocol)
@@ -597,6 +598,20 @@ Why You Should Say It: The second answer demonstrates greater familiarity with t
 
 ## Swift
 
+## Access Levels
+
+1. Public
+
+Enables entities to be processed with in any source file from their defining module, a source file from another module that imports the defining module.
+
+2. Internal
+
+Enables entities to be used within any source file from their defining module, but not in any source file outside of that module.
+
+3. Private
+
+Restricts the use of an entity to its own defining source file. Private access plays role to hide the implementation details of a specific code functionality.
+
 ## What is an in-out parameter?
 
 In-out parameter lets you change the value of a function parameter from within the body of that function.
@@ -630,8 +645,8 @@ testObj.greeting
 ```
 Note: Remember, the point of lazy properties is that they are computed only when they are first needed, after which their value is saved. So, if you call the iOSResumeDescription for the second time, the previously saved value is returned.
 
-## Fileprivate and Private access level
-`Fileprivate` is accessible within the current file, private is accessible within the current declaration.
+## Open class 
+By adding the keyword final in front of the method name, we allow the method to being overridden
 
 ## Final class
 By adding the keyword final in front of the method name, we prevent the method from being overridden
