@@ -646,7 +646,7 @@ testObj.greeting
 Note: Remember, the point of lazy properties is that they are computed only when they are first needed, after which their value is saved. So, if you call the iOSResumeDescription for the second time, the previously saved value is returned.
 
 ## Open class 
-By adding the keyword final in front of the method name, we allow the method to being overridden
+By adding the keyword open in front of the method name, we allow the method to being overridden
 
 ## Final class
 By adding the keyword final in front of the method name, we prevent the method from being overridden
