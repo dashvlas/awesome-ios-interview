@@ -86,6 +86,8 @@
     * [What is defer?](#what-is-defer)
     * [What is the difference Any and AnyObject?](#what-is-the-difference-any-and-anyobject)   
     * [How will you make property’s getter available, but the property is settable only from within code in swift?](#how-will-you-make-propertys-getter-available-but-the-property-is-settable-only-from-within-code-in-swift)
+    * [Property Wrappers](#property-wrappers)
+
     
   * [Objective-C](#objective-c)
     * [What is the difference between _ vs self. in Objective-C?](#what-is-the-difference-between-_-vs-self-in-objective-c)
@@ -846,6 +848,25 @@ AnyObject can represent an instance of any class type.
 The example below shows a version of the TrackedString structure in which the structure is defined with an explicit access level of public. The structure’s members (including the numberOfEdits property) therefore have an internal access level by default. You can make the structure’s numberOfEdits property getter public, and its property setter private, by combining the public and private(set) access-level modifiers:
 
 <center><img src = https://cdn-images-1.medium.com/max/1600/1*3P7lXezMt2bFTA9U9UDF6Q.png width="500"></center>
+
+## Property Wrappers
+
+A property wrapper adds a layer of separation between code that manages how a property is stored and the code that defines a property. For example, if you have properties that provide thread-safety checks or store their underlying data in a database, you have to write that code on every property. When you use a property wrapper, you write the management code once when you define the wrapper, and then reuse that management code by applying it to multiple properties.
+
+To define a property wrapper, you make a structure, enumeration, or class that defines a wrappedValue property. In the code below, the TwelveOrLess structure ensures that the value it wraps always contains a number less than or equal to 12. If you ask it to store a larger number, it stores 12 instead.
+
+```swift
+@propertyWrapper
+struct TwelveOrLess {
+    private var number: Int
+    init() { self.number = 0 }
+    var wrappedValue: Int {
+        get { return number }
+        set { number = min(newValue, 12) }
+    }
+}
+```
+The setter ensures that new values are less than 12, and the getter returns the stored value.
 
 ## Objective-C
 
