@@ -15,12 +15,6 @@ You can find free app on the App Store:
 ## Questions categories  
 <p align="center"><img src="Resources/Available QA types.png"></p>
 
-## Latest app update
-🌟 We've added feature to save your favorite questions.  
-
-   You can find full app feature list here:  
-   http://dashvlas.com/portfolio/ai. 
-
 ## About
 Review these iOS interview questions - and get some practical tips along the way.  
 A handy guide to help those looking to hire an iOS developer for work.  
