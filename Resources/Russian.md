@@ -259,7 +259,7 @@ myMapView = [NSKeyedUnarchiver unarchiveObjectWithFile:@"/tmp/MapArchive"];
 
 `viewWillAppear` — вью будет добавлено в иерархию, определены bounds, но ориентация экрана не определена. Вызывается каждый раз, когда появляется вью.
 
-`viewWillLayoutSubviews` —  вызывается каждый раз, когда frame изменился, например, при смене ориентации. Если вы не используете autoresizing masks или constaints, вы, вероятно, хотите обновить сабвью здесь.
+`viewWillLayoutSubviews` —  вызывается каждый раз, когда frame изменился, например, при смене ориентации. Если вы не используете autoresizing masks или constraints, вы, вероятно, хотите обновить сабвью здесь.
 
 `viewDidLayoutSubviews` —  вызывается уведомить контроллер, что его вью только что залэйаутил сабвью.  
 
