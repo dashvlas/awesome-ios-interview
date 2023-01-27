@@ -20,10 +20,5 @@ Review these iOS interview questions - and get some practical tips along the way
 A handy guide to help those looking to hire an iOS developer for work.  
 
 ## Contribution
-⏰ We are trying to update app with questions ASAP.  
-
-   But if you'd like to participate in app production just email me.  
-   dariakorneichuk@icloud.com  
-   
 💻 Feel free to add your questions and tasks to database.  
 🚀 Just fork the project and pull request. 
