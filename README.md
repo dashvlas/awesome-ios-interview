@@ -8,7 +8,7 @@
 Prepare for the iOS-Developer interview on the go. Never miss a tricky question.  
 You can find free app on the App Store: 
 
-📲 http://appstore.com/awesomeinterview  
+📲 https://apps.apple.com/app/awesome-interview/id1187318406
 
 <p align="center"><img src="Resources/Artboard-min.png"></p>
 
